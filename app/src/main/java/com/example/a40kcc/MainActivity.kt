@@ -11,9 +11,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.a40kcc.data.Player
-import com.example.a40kcc.data.PlayerViewModel
-import com.example.a40kcc.data.PlayerViewModelFactory
+import com.example.a40kcc.data.adapter.PlayerListAdapter
+import com.example.a40kcc.data.`object`.Player
+import com.example.a40kcc.data.model.PlayerViewModel
+import com.example.a40kcc.data.model.PlayerViewModelFactory
 import com.example.a40kcc.ui.theme._40kCCTheme
 
 class MainActivity : ComponentActivity() {

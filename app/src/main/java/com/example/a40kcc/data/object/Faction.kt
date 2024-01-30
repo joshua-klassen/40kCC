@@ -1,4 +1,4 @@
-package com.example.a40kcc.data
+package com.example.a40kcc.data.`object`
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

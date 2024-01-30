@@ -2,7 +2,7 @@ package com.example.a40kcc
 
 import android.app.Application
 import com.example.a40kcc.data.Application40kCCDatabase
-import com.example.a40kcc.data.PlayerRepository
+import com.example.a40kcc.data.repository.PlayerRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 

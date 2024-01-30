@@ -1,8 +1,9 @@
-package com.example.a40kcc.data
+package com.example.a40kcc.data.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import com.example.a40kcc.data.`object`.Player
 import kotlinx.coroutines.flow.Flow
 
 @Dao

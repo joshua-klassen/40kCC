@@ -1,4 +1,4 @@
-package com.example.a40kcc
+package com.example.a40kcc.data.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,7 +7,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.a40kcc.data.Player
+import com.example.a40kcc.R
+import com.example.a40kcc.data.`object`.Player
 
 class PlayerListAdapter :
     ListAdapter<Player, PlayerListAdapter.PlayerViewHolder>(PlayerComparator()) {
