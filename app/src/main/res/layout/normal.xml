@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/player1Text"
+        android:layout_width="100dp"
+        android:layout_height="70dp"
+        android:layout_margin="3dp"
+        android:singleLine="true"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:text="Eric"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/player1Min"
+        android:layout_width="130dp"
+        android:layout_height="70dp"
+        android:layout_margin="3dp"
+        android:autofillHints=""
+        android:baselineAligned="false"
+        android:inputType="number"
+        android:singleLine="true"
+        android:textAlignment="center"
+        android:gravity="center"
+        app:layout_constraintStart_toEndOf="@+id/player1Text"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="LabelFor,SpeakableTextPresentCheck" />
+
+    <EditText
+        android:id="@+id/player1Max"
+        android:layout_width="130dp"
+        android:layout_height="70dp"
+        android:layout_margin="3dp"
+        android:autofillHints=""
+        android:baselineAligned="false"
+        android:inputType="number"
+        android:singleLine="true"
+        android:textAlignment="center"
+        android:gravity="center"
+        app:layout_constraintStart_toEndOf="@+id/player1Min"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="LabelFor,SpeakableTextPresentCheck" />
+
+    <TextView
+        android:id="@+id/player2Text"
+        android:layout_width="100dp"
+        android:layout_height="70dp"
+        android:layout_margin="3dp"
+        android:singleLine="true"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:text="Diogo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/player1Text" />
+
+    <EditText
+        android:id="@+id/player2Min"
+        android:layout_width="130dp"
+        android:layout_height="70dp"
+        android:layout_margin="3dp"
+        android:autofillHints=""
+        android:baselineAligned="false"
+        android:inputType="number"
+        android:singleLine="true"
+        android:textAlignment="center"
+        android:gravity="center"
+        app:layout_constraintStart_toEndOf="@+id/player2Text"
+        app:layout_constraintTop_toBottomOf="@+id/player1Min"
+        tools:ignore="LabelFor,SpeakableTextPresentCheck" />
+
+    <EditText
+        android:id="@+id/player2Max"
+        android:layout_width="130dp"
+        android:layout_height="70dp"
+        android:layout_margin="3dp"
+        android:autofillHints=""
+        android:baselineAligned="false"
+        android:inputType="number"
+        android:singleLine="true"
+        android:textAlignment="center"
+        android:gravity="center"
+        app:layout_constraintStart_toEndOf="@+id/player2Min"
+        app:layout_constraintTop_toBottomOf="@+id/player1Max"
+        tools:ignore="LabelFor,SpeakableTextPresentCheck" />
+
+    <TextView
+        android:id="@+id/player3Text"
+        android:layout_width="100dp"
+        android:layout_height="70dp"
+        android:layout_margin="3dp"
+        android:singleLine="true"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:text="Dustin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/player2Text" />
+
+    <EditText
+        android:id="@+id/player3Min"
+        android:layout_width="130dp"
+        android:layout_height="70dp"
+        android:layout_margin="3dp"
+        android:autofillHints=""
+        android:baselineAligned="false"
+        android:inputType="number"
+        android:singleLine="true"
+        android:textAlignment="center"
+        android:gravity="center"
+        app:layout_constraintStart_toEndOf="@+id/player3Text"
+        app:layout_constraintTop_toBottomOf="@+id/player2Min"
+        tools:ignore="LabelFor,SpeakableTextPresentCheck" />
+
+    <EditText
+        android:id="@+id/player3Max"
+        android:layout_width="130dp"
+        android:layout_height="70dp"
+        android:layout_margin="3dp"
+        android:autofillHints=""
+        android:baselineAligned="false"
+        android:inputType="number"
+        android:singleLine="true"
+        android:textAlignment="center"
+        android:gravity="center"
+        app:layout_constraintStart_toEndOf="@+id/player3Min"
+        app:layout_constraintTop_toBottomOf="@+id/player2Max"
+        tools:ignore="LabelFor,SpeakableTextPresentCheck" />
+
+    <TextView
+        android:id="@+id/player4Text"
+        android:layout_width="100dp"
+        android:layout_height="70dp"
+        android:layout_margin="3dp"
+        android:singleLine="true"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:text="Nick"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/player3Text" />
+
+    <EditText
+        android:id="@+id/player4Min"
+        android:layout_width="130dp"
+        android:layout_height="70dp"
+        android:layout_margin="3dp"
+        android:autofillHints=""
+        android:baselineAligned="false"
+        android:inputType="number"
+        android:singleLine="true"
+        android:textAlignment="center"
+        android:gravity="center"
+        app:layout_constraintStart_toEndOf="@+id/player4Text"
+        app:layout_constraintTop_toBottomOf="@+id/player3Min"
+        tools:ignore="LabelFor,SpeakableTextPresentCheck" />
+
+    <EditText
+        android:id="@+id/player4Max"
+        android:layout_width="130dp"
+        android:layout_height="70dp"
+        android:layout_margin="3dp"
+        android:autofillHints=""
+        android:baselineAligned="false"
+        android:inputType="number"
+        android:singleLine="true"
+        android:textAlignment="center"
+        android:gravity="center"
+        app:layout_constraintStart_toEndOf="@+id/player4Min"
+        app:layout_constraintTop_toBottomOf="@+id/player3Max"
+        tools:ignore="LabelFor,SpeakableTextPresentCheck" />
+
+    <TextView
+        android:id="@+id/player5Text"
+        android:layout_width="100dp"
+        android:layout_height="70dp"
+        android:layout_margin="3dp"
+        android:singleLine="true"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:text="Ridvan"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/player4Text" />
+
+    <EditText
+        android:id="@+id/player5Min"
+        android:layout_width="130dp"
+        android:layout_height="70dp"
+        android:layout_margin="3dp"
+        android:autofillHints=""
+        android:baselineAligned="false"
+        android:inputType="number"
+        android:singleLine="true"
+        android:textAlignment="center"
+        android:gravity="center"
+        app:layout_constraintStart_toEndOf="@+id/player5Text"
+        app:layout_constraintTop_toBottomOf="@+id/player4Min"
+        tools:ignore="LabelFor,SpeakableTextPresentCheck" />
+
+    <EditText
+        android:id="@+id/player5Max"
+        android:layout_width="130dp"
+        android:layout_height="70dp"
+        android:layout_margin="3dp"
+        android:autofillHints=""
+        android:baselineAligned="false"
+        android:inputType="number"
+        android:singleLine="true"
+        android:textAlignment="center"
+        android:gravity="center"
+        app:layout_constraintStart_toEndOf="@+id/player5Min"
+        app:layout_constraintTop_toBottomOf="@+id/player4Max"
+        tools:ignore="LabelFor,SpeakableTextPresentCheck" />
+
+    <TextView
+        android:id="@+id/player6Text"
+        android:layout_width="100dp"
+        android:layout_height="70dp"
+        android:layout_margin="3dp"
+        android:singleLine="true"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:text="Cody"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/player5Text" />
+
+    <EditText
+        android:id="@+id/player6Min"
+        android:layout_width="130dp"
+        android:layout_height="70dp"
+        android:layout_margin="3dp"
+        android:autofillHints=""
+        android:baselineAligned="false"
+        android:inputType="number"
+        android:singleLine="true"
+        android:textAlignment="center"
+        android:gravity="center"
+        app:layout_constraintStart_toEndOf="@+id/player6Text"
+        app:layout_constraintTop_toBottomOf="@+id/player5Min"
+        tools:ignore="LabelFor,SpeakableTextPresentCheck" />
+
+    <EditText
+        android:id="@+id/player6Max"
+        android:layout_width="130dp"
+        android:layout_height="70dp"
+        android:layout_margin="3dp"
+        android:autofillHints=""
+        android:baselineAligned="false"
+        android:inputType="number"
+        android:singleLine="true"
+        android:textAlignment="center"
+        android:gravity="center"
+        app:layout_constraintStart_toEndOf="@+id/player6Min"
+        app:layout_constraintTop_toBottomOf="@+id/player5Max"
+        tools:ignore="LabelFor,SpeakableTextPresentCheck" />
+
+    <TextView
+        android:id="@+id/player7Text"
+        android:layout_width="100dp"
+        android:layout_height="70dp"
+        android:layout_margin="3dp"
+        android:singleLine="true"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:text="Jeff"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/player6Text" />
+
+    <EditText
+        android:id="@+id/player7Min"
+        android:layout_width="130dp"
+        android:layout_height="70dp"
+        android:layout_margin="3dp"
+        android:autofillHints=""
+        android:baselineAligned="false"
+        android:inputType="number"
+        android:singleLine="true"
+        android:textAlignment="center"
+        android:gravity="center"
+        app:layout_constraintStart_toEndOf="@+id/player7Text"
+        app:layout_constraintTop_toBottomOf="@+id/player6Min"
+        tools:ignore="LabelFor,SpeakableTextPresentCheck" />
+
+    <EditText
+        android:id="@+id/player7Max"
+        android:layout_width="130dp"
+        android:layout_height="70dp"
+        android:layout_margin="3dp"
+        android:autofillHints=""
+        android:baselineAligned="false"
+        android:inputType="number"
+        android:singleLine="true"
+        android:textAlignment="center"
+        android:gravity="center"
+        app:layout_constraintStart_toEndOf="@+id/player7Min"
+        app:layout_constraintTop_toBottomOf="@+id/player6Max"
+        tools:ignore="LabelFor,SpeakableTextPresentCheck" />
+
+    <TextView
+        android:id="@+id/player8Text"
+        android:layout_width="100dp"
+        android:layout_height="70dp"
+        android:layout_margin="3dp"
+        android:singleLine="true"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:text="Richard"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/player7Text" />
+
+    <EditText
+        android:id="@+id/player8Min"
+        android:layout_width="130dp"
+        android:layout_height="70dp"
+        android:layout_margin="3dp"
+        android:autofillHints=""
+        android:baselineAligned="false"
+        android:inputType="number"
+        android:singleLine="true"
+        android:textAlignment="center"
+        android:gravity="center"
+        app:layout_constraintStart_toEndOf="@+id/player8Text"
+        app:layout_constraintTop_toBottomOf="@+id/player7Min"
+        tools:ignore="LabelFor,SpeakableTextPresentCheck" />
+
+    <EditText
+        android:id="@+id/player8Max"
+        android:layout_width="130dp"
+        android:layout_height="70dp"
+        android:layout_margin="3dp"
+        android:autofillHints=""
+        android:baselineAligned="false"
+        android:inputType="number"
+        android:singleLine="true"
+        android:textAlignment="center"
+        android:gravity="center"
+        app:layout_constraintStart_toEndOf="@+id/player8Min"
+        app:layout_constraintTop_toBottomOf="@+id/player7Max"
+        tools:ignore="LabelFor,SpeakableTextPresentCheck" />
+
+    <TextView
+        android:id="@+id/totalMinText"
+        android:layout_width="130dp"
+        android:layout_height="35dp"
+        android:layout_margin="3dp"
+        android:singleLine="true"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:text="Minimum"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/player8Min" />
+
+    <EditText
+        android:id="@+id/totalMin"
+        android:layout_width="130dp"
+        android:layout_height="50dp"
+        android:layout_margin="3dp"
+        android:autofillHints=""
+        android:singleLine="true"
+        android:inputType="none"
+        android:textAlignment="center"
+        android:gravity="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/totalMinText"
+        tools:ignore="LabelFor,SpeakableTextPresentCheck" />
+
+    <TextView
+        android:id="@+id/totalAvgText"
+        android:layout_width="130dp"
+        android:layout_height="35dp"
+        android:layout_margin="3dp"
+        android:singleLine="true"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:text="Average"
+        app:layout_constraintStart_toEndOf="@+id/totalMinText"
+        app:layout_constraintTop_toBottomOf="@+id/player8Min" />
+
+    <EditText
+        android:id="@+id/totalAvg"
+        android:layout_width="130dp"
+        android:layout_height="50dp"
+        android:layout_margin="3dp"
+        android:autofillHints=""
+        android:singleLine="true"
+        android:inputType="none"
+        android:textAlignment="center"
+        android:gravity="center"
+        app:layout_constraintStart_toEndOf="@+id/totalMin"
+        app:layout_constraintTop_toBottomOf="@+id/totalAvgText"
+        tools:ignore="LabelFor,SpeakableTextPresentCheck" />
+
+    <TextView
+        android:id="@+id/totalMaxText"
+        android:layout_width="130dp"
+        android:layout_height="35dp"
+        android:layout_margin="3dp"
+        android:singleLine="true"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:text="Maximum"
+        app:layout_constraintStart_toEndOf="@+id/totalAvgText"
+        app:layout_constraintTop_toBottomOf="@+id/player8Max" />
+
+    <EditText
+        android:id="@+id/totalMax"
+        android:layout_width="130dp"
+        android:layout_height="50dp"
+        android:layout_margin="3dp"
+        android:autofillHints=""
+        android:singleLine="true"
+        android:inputType="none"
+        android:textAlignment="center"
+        android:gravity="center"
+        app:layout_constraintStart_toEndOf="@+id/totalAvg"
+        app:layout_constraintTop_toBottomOf="@+id/totalMaxText"
+        tools:ignore="LabelFor,SpeakableTextPresentCheck" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
