@@ -1,5 +1,6 @@
 package com.example.a40kcc.ui.theme
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -37,6 +38,7 @@ private val LightColorScheme = lightColorScheme(
     */
 )
 
+@SuppressLint("ComposableNaming")
 @Composable
 fun _40kCCTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
