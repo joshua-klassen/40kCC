@@ -19,7 +19,7 @@ class PlayerListAdapter :
 
     override fun onBindViewHolder(holder: PlayerViewHolder, position: Int) {
         val current = getItem(position)
-        holder.bind(current.firstName)
+        holder.bind(current.name)
     }
 
     class PlayerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -44,7 +44,7 @@ class PlayerListAdapter :
         }
 
         override fun areContentsTheSame(oldItem: Player, newItem: Player): Boolean {
-            return oldItem.firstName == newItem.firstName
+            return oldItem.name == newItem.name
         }
     }
 }

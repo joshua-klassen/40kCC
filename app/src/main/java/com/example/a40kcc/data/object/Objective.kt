@@ -8,5 +8,5 @@ import androidx.room.PrimaryKey
 data class Objective(
     @PrimaryKey(true) val objectiveID: Int,
     @ColumnInfo("name") val name: String,
-    @ColumnInfo("nickname") val nickname: String?
+    @ColumnInfo("nickname", defaultValue = "NULL") val nickname: String?
 )

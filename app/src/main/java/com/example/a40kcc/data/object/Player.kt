@@ -9,25 +9,16 @@ import androidx.room.PrimaryKey
     "player",
     foreignKeys = [ForeignKey(
         entity = Faction::class,
-        childColumns = ["factionID"],
+        childColumns = ["preferred_faction"],
         parentColumns = ["factionID"],
         onDelete = 3,
         onUpdate = 5,
         deferred = true
-    ),
-        ForeignKey(
-            entity = Team::class,
-            childColumns = ["teamID"],
-            parentColumns = ["teamID"],
-            onDelete = 3,
-            onUpdate = 5,
-            deferred = true
-        )]
+    )]
 )
 data class Player(
     @PrimaryKey(true) val playerID: Int,
     @ColumnInfo("name") val name: String,
     @ColumnInfo("nickname", defaultValue = "NULL") val nickname: String?,
-    @ColumnInfo("preferred_faction", defaultValue = "NULL") val factionID: Int?,
-    @ColumnInfo("team", defaultValue = "NULL") val teamID: List<Int>?
+    @ColumnInfo("preferred_faction", defaultValue = "NULL") val factionID: Int?
 )

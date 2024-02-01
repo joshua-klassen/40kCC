@@ -9,5 +9,5 @@ data class Faction(
     @PrimaryKey(true) val factionID: Int,
     @ColumnInfo("name") val name: String,
     @ColumnInfo("super_faction") val superFaction: String,
-    @ColumnInfo("detachments") val detachments: List<String>
+    @ColumnInfo("detachments", defaultValue = "NULL") val detachments: String?
 )
