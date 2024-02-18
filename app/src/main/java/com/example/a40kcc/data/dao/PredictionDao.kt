@@ -3,6 +3,7 @@ package com.example.a40kcc.data.dao
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import com.example.a40kcc.data.`object`.Prediction
 import kotlinx.coroutines.flow.Flow
 
@@ -21,6 +22,9 @@ interface PredictionDao {
 
     @Insert
     suspend fun insert(vararg prediction: Prediction)
+
+    @Update
+    fun update(vararg prediction: Prediction)
 
     @Query("DELETE FROM prediction WHERE predictionID = :predictionId")
     fun delete(predictionId: Int)

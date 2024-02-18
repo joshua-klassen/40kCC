@@ -3,6 +3,7 @@ package com.example.a40kcc.data.dao
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import com.example.a40kcc.data.`object`.Tournament
 import kotlinx.coroutines.flow.Flow
 import java.sql.Date
@@ -27,6 +28,9 @@ interface TournamentDao {
 
     @Insert
     suspend fun insert(vararg tournament: Tournament)
+
+    @Update
+    fun update(vararg tournament: Tournament)
 
     @Query("DELETE FROM tournament WHERE tournamentID = :tournamentId")
     fun delete(tournamentId: Int)

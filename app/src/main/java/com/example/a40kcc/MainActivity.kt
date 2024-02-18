@@ -37,8 +37,8 @@ class MainActivity : ComponentActivity() {
                     recyclerView.layoutManager = LinearLayoutManager(this)
 
                     //playerViewModel.allPlayers.observe(this) { players ->
-                        // Update the cached copy of the words in the adapter.
-                     //   players.let { adapter.submitList(it) }
+                    // Update the cached copy of the words in the adapter.
+                    //   players.let { adapter.submitList(it) }
                     //}
                 }
             }
