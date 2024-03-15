@@ -1,39 +1,32 @@
 package com.example.a40kcc.data.dao
 
 import androidx.room.Dao
-import androidx.room.Insert
 import androidx.room.Query
-import androidx.room.Update
 import com.example.a40kcc.data.`object`.Outcome
 import com.example.a40kcc.data.`object`.OutcomeExpanded
+import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface OutcomeDao {
+interface OutcomeDao : BaseDao<Outcome> {
     @Query("SELECT * FROM outcome")
-    fun getAll(): List<Outcome>
+    fun getAll(): Flow<List<Outcome>>
 
     @Query("SELECT * FROM outcome")
-    fun getAlExpandedl(): List<OutcomeExpanded>
+    fun getAllExpanded(): Flow<List<OutcomeExpanded>>
 
     @Query("SELECT * FROM outcome WHERE outcomeID = :outcomeId")
-    fun getById(outcomeId: Int): Outcome
+    fun getById(outcomeId: Int): Flow<Outcome>
 
     @Query("SELECT * FROM outcome WHERE outcomeID = :outcomeId")
-    fun getByIdExpanded(outcomeId: Int): OutcomeExpanded
+    fun getByIdExpanded(outcomeId: Int): Flow<OutcomeExpanded>
 
     @Query(
         "SELECT * FROM outcome WHERE (player_01 = :playerId OR player_02 = :playerId)"
     )
-    fun getOutcomesByPlayer(playerId: Int): List<Outcome>
+    fun getOutcomesByPlayer(playerId: Int): Flow<List<Outcome>>
 
     @Query(
         "SELECT * FROM outcome WHERE (player_01 = :playerId OR player_02 = :playerId)"
     )
-    fun getOutcomesByPlayerExpanded(playerId: Int): List<OutcomeExpanded>
-
-    @Insert
-    suspend fun insert(vararg outcome: Outcome)
-
-    @Update
-    fun update(vararg outcome: Outcome)
+    fun getOutcomesByPlayerExpanded(playerId: Int): Flow<List<OutcomeExpanded>>
 }

@@ -11,7 +11,7 @@ class PlayerRepository(private val playerDao: PlayerDao) {
     val allPlayersExpanded: Flow<List<PlayerExpanded>> = playerDao.getAllExpanded()
 
     @WorkerThread
-    fun getPlayer(playerId: Int): Player {
+    fun getPlayer(playerId: Int): Flow<Player> {
         return playerDao.getById(playerId)
     }
 
@@ -26,12 +26,12 @@ class PlayerRepository(private val playerDao: PlayerDao) {
     }
 
     @WorkerThread
-    fun getPlayerByNickname(playerNickname: String): Player {
+    fun getPlayerByNickname(playerNickname: String): Flow<Player> {
         return playerDao.getPlayerByNickname(playerNickname)
     }
 
     @WorkerThread
-    fun getPlayerExpanded(playerId: Int): PlayerExpanded {
+    fun getPlayerExpanded(playerId: Int): Flow<PlayerExpanded> {
         return playerDao.getByIdExpanded(playerId)
     }
 
@@ -46,7 +46,7 @@ class PlayerRepository(private val playerDao: PlayerDao) {
     }
 
     @WorkerThread
-    fun getPlayerByNicknameExpanded(playerNickname: String): PlayerExpanded {
+    fun getPlayerByNicknameExpanded(playerNickname: String): Flow<PlayerExpanded> {
         return playerDao.getPlayerByNicknameExpanded(playerNickname)
     }
 
@@ -56,12 +56,12 @@ class PlayerRepository(private val playerDao: PlayerDao) {
     }
 
     @WorkerThread
-    fun update(player: Player) {
+    suspend fun update(player: Player) {
         playerDao.update(player)
     }
 
     @WorkerThread
-    fun delete(playerId: Int) {
-        playerDao.delete(playerId)
+    suspend fun delete(player: Player) {
+        playerDao.delete(player)
     }
 }

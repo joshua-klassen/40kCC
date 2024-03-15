@@ -10,15 +10,15 @@ import androidx.room.ForeignKey
         entity = Team::class,
         childColumns = ["teamID"],
         parentColumns = ["teamID"],
-        onDelete = 3,
-        onUpdate = 5,
+        onDelete = ForeignKey.SET_NULL,
+        onUpdate = ForeignKey.CASCADE,
         deferred = true
     ), ForeignKey(
         entity = Player::class,
         childColumns = ["playerID"],
         parentColumns = ["playerID"],
-        onDelete = 3,
-        onUpdate = 5,
+        onDelete = ForeignKey.SET_NULL,
+        onUpdate = ForeignKey.CASCADE,
         deferred = true
     )]
 )

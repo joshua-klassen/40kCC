@@ -11,72 +11,72 @@ import androidx.room.PrimaryKey
         entity = Player::class,
         childColumns = ["player_01"],
         parentColumns = ["playerID"],
-        onDelete = 3,
-        onUpdate = 5,
+        onDelete = ForeignKey.SET_NULL,
+        onUpdate = ForeignKey.CASCADE,
         deferred = true
     ),
         ForeignKey(
             entity = Player::class,
             childColumns = ["player_02"],
             parentColumns = ["playerID"],
-            onDelete = 3,
-            onUpdate = 5,
+            onDelete = ForeignKey.SET_NULL,
+            onUpdate = ForeignKey.CASCADE,
             deferred = true
         ),
         ForeignKey(
             entity = Prediction::class,
             childColumns = ["prediction"],
             parentColumns = ["predictionID"],
-            onDelete = 3,
-            onUpdate = 5,
+            onDelete = ForeignKey.SET_NULL,
+            onUpdate = ForeignKey.CASCADE,
             deferred = true
         ),
         ForeignKey(
             entity = Faction::class,
             childColumns = ["player_01_faction"],
             parentColumns = ["factionID"],
-            onDelete = 3,
-            onUpdate = 5,
+            onDelete = ForeignKey.SET_NULL,
+            onUpdate = ForeignKey.CASCADE,
             deferred = true
         ),
         ForeignKey(
             entity = Faction::class,
             childColumns = ["player_02_faction"],
             parentColumns = ["factionID"],
-            onDelete = 3,
-            onUpdate = 5,
+            onDelete = ForeignKey.SET_NULL,
+            onUpdate = ForeignKey.CASCADE,
             deferred = true
         ),
         ForeignKey(
             entity = Team::class,
             childColumns = ["player_01_team"],
             parentColumns = ["teamID"],
-            onDelete = 3,
-            onUpdate = 5,
+            onDelete = ForeignKey.SET_NULL,
+            onUpdate = ForeignKey.CASCADE,
             deferred = true
         ),
         ForeignKey(
             entity = Team::class,
             childColumns = ["player_02_team"],
             parentColumns = ["teamID"],
-            onDelete = 3,
-            onUpdate = 5,
+            onDelete = ForeignKey.SET_NULL,
+            onUpdate = ForeignKey.CASCADE,
             deferred = true
         ),
         ForeignKey(
             entity = Outcome::class,
             childColumns = ["outcome"],
             parentColumns = ["outcomeID"],
-            onDelete = 3,
-            onUpdate = 5,
+            onDelete = ForeignKey.SET_NULL,
+            onUpdate = ForeignKey.CASCADE,
             deferred = true
         ),
         ForeignKey(
             entity = Round::class,
             childColumns = ["round"],
             parentColumns = ["roundID"],
-            onDelete = 3,
-            onUpdate = 5,
+            onDelete = ForeignKey.SET_NULL,
+            onUpdate = ForeignKey.CASCADE,
             deferred = true
         )]
 )

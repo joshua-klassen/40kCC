@@ -1,28 +1,25 @@
 package com.example.a40kcc.data.dao
 
 import androidx.room.Dao
-import androidx.room.Insert
 import androidx.room.Query
 import com.example.a40kcc.data.`object`.Objective
+import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface ObjectiveDao {
+interface ObjectiveDao : BaseDao<Objective> {
     @Query("SELECT * FROM objective")
-    fun getAll(): List<Objective>
+    fun getAll(): Flow<List<Objective>>
 
     @Query("SELECT * FROM objective WHERE objectiveID = :objectiveId")
-    fun getById(objectiveId: Int): Objective
+    fun getById(objectiveId: Int): Flow<Objective>
 
     @Query(
-        "SELECT * FROM objective WHERE name LIKE :name LIMIT 1"
+        "SELECT * FROM objective WHERE name LIKE :objectiveName LIMIT 1"
     )
-    fun getByName(name: String): Objective
+    fun getByName(objectiveName: String): Flow<Objective>
 
     @Query(
-        "SELECT * FROM objective WHERE nickname LIKE :nickname LIMIT 1"
+        "SELECT * FROM objective WHERE nickname LIKE :objectiveNickname LIMIT 1"
     )
-    fun getByNickname(nickname: String): Objective
-
-    @Insert
-    suspend fun insert(vararg objective: Objective)
+    fun getByNickname(objectiveNickname: String): Flow<Objective>
 }

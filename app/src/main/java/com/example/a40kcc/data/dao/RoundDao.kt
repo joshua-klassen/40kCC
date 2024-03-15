@@ -1,85 +1,72 @@
 package com.example.a40kcc.data.dao
 
 import androidx.room.Dao
-import androidx.room.Insert
 import androidx.room.Query
-import androidx.room.Update
 import com.example.a40kcc.data.`object`.Round
 import com.example.a40kcc.data.`object`.RoundExpanded
+import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface RoundDao {
+interface RoundDao : BaseDao<Round> {
     @Query("SELECT * FROM round")
-    fun getAll(): List<Round>
+    fun getAll(): Flow<List<Round>>
 
     @Query("SELECT * FROM round")
-    fun getAllExpanded(): List<RoundExpanded>
+    fun getAllExpanded(): Flow<List<RoundExpanded>>
 
     @Query("SELECT * FROM round WHERE roundID = :roundId")
-    fun getById(roundId: Int): Round
+    fun getById(roundId: Int): Flow<Round>
 
     @Query("SELECT * FROM round WHERE roundID = :roundId")
-    fun getByIdExpanded(roundId: Int): RoundExpanded
+    fun getByIdExpanded(roundId: Int): Flow<RoundExpanded>
 
     @Query(
-        "SELECT * FROM round WHERE number = :round"
+        "SELECT * FROM round WHERE number = :roundNumber"
     )
-    fun getRoundByNumber(round: Int): List<Round>
+    fun getRoundByNumber(roundNumber: Int): Flow<List<Round>>
 
     @Query(
-        "SELECT * FROM round WHERE number = :round"
+        "SELECT * FROM round WHERE number = :roundNumber"
     )
-    fun getRoundByNumberExpanded(round: Int): List<RoundExpanded>
+    fun getRoundByNumberExpanded(roundNumber: Int): Flow<List<RoundExpanded>>
 
     @Query(
         "SELECT * FROM round WHERE mission = :missionId"
     )
-    fun getRoundByMission(missionId: Int): List<Round>
+    fun getRoundByMission(missionId: Int): Flow<List<Round>>
 
     @Query(
         "SELECT * FROM round WHERE mission = :missionId"
     )
-    fun getRoundByMissionExpanded(missionId: Int): List<RoundExpanded>
+    fun getRoundByMissionExpanded(missionId: Int): Flow<List<RoundExpanded>>
 
     @Query(
         "SELECT * FROM round WHERE objective = :objectiveId"
     )
-    fun getRoundByObjective(objectiveId: Int): List<Round>
+    fun getRoundByObjective(objectiveId: Int): Flow<List<Round>>
 
     @Query(
         "SELECT * FROM round WHERE objective = :objectiveId"
     )
-    fun getRoundByObjectiveExpanded(objectiveId: Int): List<RoundExpanded>
+    fun getRoundByObjectiveExpanded(objectiveId: Int): Flow<List<RoundExpanded>>
 
     @Query(
         "SELECT * FROM round WHERE deployment = :deploymentId"
     )
-    fun getRoundByDeployment(deploymentId: Int): List<Round>
+    fun getRoundByDeployment(deploymentId: Int): Flow<List<Round>>
 
     @Query(
         "SELECT * FROM round WHERE deployment = :deploymentId"
     )
-    fun getRoundByDeploymentExpanded(deploymentId: Int): List<RoundExpanded>
+    fun getRoundByDeploymentExpanded(deploymentId: Int): Flow<List<RoundExpanded>>
 
     @Query(
         "SELECT * FROM round WHERE tournament = :tournamentId"
     )
-    fun getRoundByTournament(tournamentId: Int): List<Round>
+    fun getRoundByTournament(tournamentId: Int): Flow<List<Round>>
 
     @Query(
         "SELECT * FROM round WHERE tournament = :tournamentId"
     )
-    fun getRoundByTournamentExpanded(tournamentId: Int): List<RoundExpanded>
-
-    @Insert
-    suspend fun insert(vararg round: Round)
-
-    @Update
-    fun update(vararg round: Round)
-
-    @Query("DELETE FROM round WHERE roundID = :roundId")
-    fun delete(roundId: Int)
-
-    @Query("DELETE FROM round")
-    suspend fun deleteAll()
+    fun getRoundByTournamentExpanded(tournamentId: Int): Flow<List<RoundExpanded>>
 }

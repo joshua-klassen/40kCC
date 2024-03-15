@@ -1,15 +1,13 @@
 package com.example.a40kcc.data.dao
 
 import androidx.room.Dao
-import androidx.room.Insert
 import androidx.room.Query
-import androidx.room.Update
 import com.example.a40kcc.data.`object`.Player
 import com.example.a40kcc.data.`object`.PlayerExpanded
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface PlayerDao {
+interface PlayerDao : BaseDao<Player> {
     @Query("SELECT * FROM player")
     fun getAll(): Flow<List<Player>>
 
@@ -17,10 +15,10 @@ interface PlayerDao {
     fun getAllExpanded(): Flow<List<PlayerExpanded>>
 
     @Query("SELECT * FROM player WHERE playerID = :playerId")
-    fun getById(playerId: Int): Player
+    fun getById(playerId: Int): Flow<Player>
 
     @Query("SELECT * FROM player WHERE playerID = :playerId")
-    fun getByIdExpanded(playerId: Int): PlayerExpanded
+    fun getByIdExpanded(playerId: Int): Flow<PlayerExpanded>
 
     @Query(
         "SELECT * FROM player WHERE name LIKE :playerName"
@@ -45,22 +43,10 @@ interface PlayerDao {
     @Query(
         "SELECT * FROM player WHERE nickname LIKE :playerNickname LIMIT 1"
     )
-    fun getPlayerByNickname(playerNickname: String): Player
+    fun getPlayerByNickname(playerNickname: String): Flow<Player>
 
     @Query(
         "SELECT * FROM player WHERE nickname LIKE :playerNickname LIMIT 1"
     )
-    fun getPlayerByNicknameExpanded(playerNickname: String): PlayerExpanded
-
-    @Insert
-    suspend fun insert(vararg player: Player)
-
-    @Update
-    fun update(vararg player: Player)
-
-    @Query("DELETE FROM player WHERE playerID = :playerId")
-    fun delete(playerId: Int)
-
-    @Query("DELETE FROM player")
-    suspend fun deleteAll()
+    fun getPlayerByNicknameExpanded(playerNickname: String): Flow<PlayerExpanded>
 }

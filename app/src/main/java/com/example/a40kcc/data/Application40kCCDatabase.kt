@@ -59,17 +59,23 @@ abstract class Application40kCCDatabase : RoomDatabase() {
             super.onCreate(db)
             INSTANCE?.let { database ->
                 scope.launch {
-                    populateDatabase(database.playerDao())
+                    populateFactions(database.factionDao())
+                    populatePlayers(database.playerDao())
                 }
             }
         }
 
-        suspend fun populateDatabase(playerDao: PlayerDao) {
-            playerDao.deleteAll()
+        suspend fun populateFactions(factionDao: FactionDao) {
+            var faction = Faction(0, "dsa", "dsa", "dsa")
+            factionDao.insert(faction)
+            faction = Faction(0, "asd", "asd", "asd")
+            factionDao.insert(faction)
+        }
 
-            //var player = Player(0, "Eric", "Elf")
+        suspend fun populatePlayers(playerDao: PlayerDao) {
+            //var player = Player(0, "Eric", "Elf", 0)
             //playerDao.insert(player)
-            //player = Player(0, "Diogo", "WE")
+            //player = Player(0, "Diogo", "WE", 0)
             //playerDao.insert(player)
             //player = Player(0, "Ridvan", "Dark")
             //playerDao.insert(player)

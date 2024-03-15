@@ -32,7 +32,7 @@ class PlayerListAdapter :
         companion object {
             fun create(parent: ViewGroup): PlayerViewHolder {
                 val view: View = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.playersview_item, parent, false)
+                    .inflate(R.layout.data_object, parent, false)
                 return PlayerViewHolder(view)
             }
         }

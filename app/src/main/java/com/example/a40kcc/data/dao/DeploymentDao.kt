@@ -1,38 +1,25 @@
 package com.example.a40kcc.data.dao
 
 import androidx.room.Dao
-import androidx.room.Insert
 import androidx.room.Query
-import androidx.room.Update
 import com.example.a40kcc.data.`object`.Deployment
+import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface DeploymentDao {
+interface DeploymentDao : BaseDao<Deployment> {
     @Query("SELECT * FROM deployment")
-    fun getAll(): List<Deployment>
+    fun getAll(): Flow<List<Deployment>>
 
     @Query("SELECT * FROM deployment WHERE deploymentID = :deploymentId")
-    fun getById(deploymentId: Int): Deployment
+    fun getById(deploymentId: Int): Flow<Deployment>
 
     @Query(
         "SELECT * FROM deployment WHERE name LIKE :deploymentName LIMIT 1"
     )
-    fun getByName(deploymentName: String): Deployment
+    fun getByName(deploymentName: String): Flow<Deployment>
 
     @Query(
         "SELECT * FROM deployment WHERE nickname LIKE :deploymentNickname LIMIT 1"
     )
-    fun getByNickname(deploymentNickname: String): Deployment
-
-    @Insert
-    suspend fun insert(vararg deployment: Deployment)
-
-    @Update
-    fun update(vararg deployment: Deployment)
-
-    @Query("DELETE FROM deployment WHERE deploymentID = :deploymentId")
-    fun delete(deploymentId: Int)
-
-    @Query("DELETE FROM deployment")
-    suspend fun deleteAll()
+    fun getByNickname(deploymentNickname: String): Flow<Deployment>
 }

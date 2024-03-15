@@ -1,28 +1,25 @@
 package com.example.a40kcc.data.dao
 
 import androidx.room.Dao
-import androidx.room.Insert
 import androidx.room.Query
 import com.example.a40kcc.data.`object`.Mission
+import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface MissionDao {
+interface MissionDao : BaseDao<Mission> {
     @Query("SELECT * FROM mission")
-    fun getAll(): List<Mission>
+    fun getAll(): Flow<List<Mission>>
 
     @Query("SELECT * FROM mission WHERE missionID = :missionId")
-    fun getById(missionId: Int): Mission
+    fun getById(missionId: Int): Flow<Mission>
 
     @Query(
-        "SELECT * FROM mission WHERE name LIKE :name LIMIT 1"
+        "SELECT * FROM mission WHERE name LIKE :missionName LIMIT 1"
     )
-    fun getByName(name: String): Mission
+    fun getByName(missionName: String): Flow<Mission>
 
     @Query(
-        "SELECT * FROM mission WHERE nickname LIKE :nickname LIMIT 1"
+        "SELECT * FROM mission WHERE nickname LIKE :missionNickname LIMIT 1"
     )
-    fun getByNickname(nickname: String): Mission
-
-    @Insert
-    suspend fun insert(vararg mission: Mission)
+    fun getByNickname(missionNickname: String): Flow<Mission>
 }

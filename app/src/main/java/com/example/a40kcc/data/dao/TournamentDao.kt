@@ -1,40 +1,26 @@
 package com.example.a40kcc.data.dao
 
 import androidx.room.Dao
-import androidx.room.Insert
 import androidx.room.Query
-import androidx.room.Update
 import com.example.a40kcc.data.`object`.Tournament
 import kotlinx.coroutines.flow.Flow
 import java.sql.Date
 
 @Dao
-interface TournamentDao {
+interface TournamentDao : BaseDao<Tournament> {
     @Query("SELECT * FROM tournament")
-    fun getAll(): List<Tournament>
+    fun getAll(): Flow<List<Tournament>>
 
     @Query("SELECT * FROM tournament WHERE tournamentID = :tournamentId")
-    fun getById(tournamentId: Int): Tournament
+    fun getById(tournamentId: Int): Flow<Tournament>
 
     @Query(
-        "SELECT * FROM tournament WHERE name LIKE :name"
+        "SELECT * FROM tournament WHERE name LIKE :tournamentName"
     )
-    fun getTournamentsByName(name: String): Flow<List<Tournament>>
+    fun getTournamentsByName(tournamentName: String): Flow<List<Tournament>>
 
     @Query(
-        "SELECT * FROM tournament WHERE date LIKE :date"
+        "SELECT * FROM tournament WHERE date LIKE :tournamentDate"
     )
-    fun getTournamentsByDate(date: Date): Flow<List<Tournament>>
-
-    @Insert
-    suspend fun insert(vararg tournament: Tournament)
-
-    @Update
-    fun update(vararg tournament: Tournament)
-
-    @Query("DELETE FROM tournament WHERE tournamentID = :tournamentId")
-    fun delete(tournamentId: Int)
-
-    @Query("DELETE FROM tournament")
-    suspend fun deleteAll()
+    fun getTournamentsByDate(tournamentDate: Date): Flow<List<Tournament>>
 }

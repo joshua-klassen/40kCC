@@ -11,32 +11,32 @@ import androidx.room.PrimaryKey
         entity = Mission::class,
         childColumns = ["mission"],
         parentColumns = ["missionID"],
-        onDelete = 3,
-        onUpdate = 5,
+        onDelete = ForeignKey.SET_NULL,
+        onUpdate = ForeignKey.CASCADE,
         deferred = true
     ),
         ForeignKey(
             entity = Objective::class,
             childColumns = ["objective"],
             parentColumns = ["objectiveID"],
-            onDelete = 3,
-            onUpdate = 5,
+            onDelete = ForeignKey.SET_NULL,
+            onUpdate = ForeignKey.CASCADE,
             deferred = true
         ),
         ForeignKey(
             entity = Deployment::class,
             childColumns = ["deployment"],
             parentColumns = ["deploymentID"],
-            onDelete = 3,
-            onUpdate = 5,
+            onDelete = ForeignKey.SET_NULL,
+            onUpdate = ForeignKey.CASCADE,
             deferred = true
         ),
         ForeignKey(
             entity = Tournament::class,
             childColumns = ["tournament"],
             parentColumns = ["tournamentID"],
-            onDelete = 3,
-            onUpdate = 5,
+            onDelete = ForeignKey.SET_NULL,
+            onUpdate = ForeignKey.CASCADE,
             deferred = true
         )]
 )

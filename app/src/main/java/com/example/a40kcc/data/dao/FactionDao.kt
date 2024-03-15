@@ -1,38 +1,25 @@
 package com.example.a40kcc.data.dao
 
 import androidx.room.Dao
-import androidx.room.Insert
 import androidx.room.Query
-import androidx.room.Update
 import com.example.a40kcc.data.`object`.Faction
+import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface FactionDao {
+interface FactionDao : BaseDao<Faction> {
     @Query("SELECT * FROM faction")
-    fun getAll(): List<Faction>
+    fun getAll(): Flow<List<Faction>>
 
     @Query("SELECT * FROM faction WHERE factionID = :factionId")
-    fun getById(factionId: Int): Faction
+    fun getById(factionId: Int): Flow<Faction>
 
     @Query(
         "SELECT * FROM faction WHERE name LIKE :factionName LIMIT 1"
     )
-    fun getByName(factionName: String): Faction
+    fun getByName(factionName: String): Flow<Faction>
 
     @Query(
         "SELECT * FROM faction WHERE super_faction LIKE :superFaction"
     )
-    fun getBySuperFaction(superFaction: String): List<Faction>
-
-    @Insert
-    suspend fun insert(vararg faction: Faction)
-
-    @Update
-    fun update(vararg faction: Faction)
-
-    @Query("DELETE FROM faction WHERE factionID = :factionId")
-    fun delete(factionId: Int)
-
-    @Query("DELETE FROM faction")
-    suspend fun deleteAll()
+    fun getBySuperFaction(superFaction: String): Flow<List<Faction>>
 }
