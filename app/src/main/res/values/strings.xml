@@ -1,14 +1,3 @@
 <resources>
     <string name="app_name">40kCC</string>
-    <string name="view_deployments">Deployments</string>
-    <string name="view_factions">Factions</string>
-    <string name="view_games">Games</string>
-    <string name="view_missions">Missions</string>
-    <string name="view_objectives">Objectives</string>
-    <string name="view_outcomes">Outcomes</string>
-    <string name="view_players">Players</string>
-    <string name="view_predictions">Predictions</string>
-    <string name="view_rounds">Rounds</string>
-    <string name="view_teams">Teams</string>
-    <string name="view_tournaments">Tournaments</string>
 </resources>

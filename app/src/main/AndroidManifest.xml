@@ -14,21 +14,6 @@
         android:theme="@style/Theme._40kCC"
         tools:targetApi="31">
         <activity
-            android:name=".PlayerViewActivity"
-            android:exported="false"
-            android:label="player_view"
-            android:theme="@style/Theme._40kCC" />
-        <activity
-            android:name=".PlayerAddActivity"
-            android:exported="false"
-            android:label="player_add"
-            android:theme="@style/Theme._40kCC" />
-        <activity
-            android:name=".FactionViewActivity"
-            android:exported="false"
-            android:label="faction_view"
-            android:theme="@style/Theme._40kCC" />
-        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:theme="@style/Theme._40kCC">

@@ -56,10 +56,12 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     androidTestImplementation(platform("androidx.compose:compose-bom:2024.02.02"))
     val roomVersion = "2.6.1"
+    val navVersion = "2.7.7"
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
+    implementation("androidx.compose.runtime:runtime-livedata:1.6.3")
     implementation("androidx.activity:activity-compose:1.8.2")
     implementation(platform("androidx.compose:compose-bom:2024.02.02"))
     implementation("androidx.compose.ui:ui")
@@ -75,6 +77,7 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
     implementation("com.google.android.material:material:1.11.0")
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
     implementation("androidx.room:room-runtime:$roomVersion")
     annotationProcessor("androidx.room:room-compiler:$roomVersion")
 
@@ -100,4 +103,17 @@ dependencies {
 
     // optional - Paging 3 Integration
     implementation("androidx.room:room-paging:$roomVersion")
+
+    // Kotlin
+    implementation("androidx.navigation:navigation-fragment-ktx:$navVersion")
+    implementation("androidx.navigation:navigation-ui-ktx:$navVersion")
+
+    // Feature module Support
+    implementation("androidx.navigation:navigation-dynamic-features-fragment:$navVersion")
+
+    // Testing Navigation
+    androidTestImplementation("androidx.navigation:navigation-testing:$navVersion")
+
+    // Jetpack Compose Integration
+    implementation("androidx.navigation:navigation-compose:$navVersion")
 }
