@@ -8,30 +8,6 @@ import androidx.room.PrimaryKey
 @Entity(
     "round",
     foreignKeys = [ForeignKey(
-        entity = Mission::class,
-        childColumns = ["mission"],
-        parentColumns = ["missionID"],
-        onDelete = ForeignKey.SET_NULL,
-        onUpdate = ForeignKey.CASCADE,
-        deferred = true
-    ),
-        ForeignKey(
-            entity = Objective::class,
-            childColumns = ["objective"],
-            parentColumns = ["objectiveID"],
-            onDelete = ForeignKey.SET_NULL,
-            onUpdate = ForeignKey.CASCADE,
-            deferred = true
-        ),
-        ForeignKey(
-            entity = Deployment::class,
-            childColumns = ["deployment"],
-            parentColumns = ["deploymentID"],
-            onDelete = ForeignKey.SET_NULL,
-            onUpdate = ForeignKey.CASCADE,
-            deferred = true
-        ),
-        ForeignKey(
             entity = Tournament::class,
             childColumns = ["tournament"],
             parentColumns = ["tournamentID"],

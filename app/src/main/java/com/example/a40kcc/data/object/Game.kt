@@ -32,22 +32,6 @@ import androidx.room.PrimaryKey
             deferred = true
         ),
         ForeignKey(
-            entity = Faction::class,
-            childColumns = ["player_01_faction"],
-            parentColumns = ["factionID"],
-            onDelete = ForeignKey.SET_NULL,
-            onUpdate = ForeignKey.CASCADE,
-            deferred = true
-        ),
-        ForeignKey(
-            entity = Faction::class,
-            childColumns = ["player_02_faction"],
-            parentColumns = ["factionID"],
-            onDelete = ForeignKey.SET_NULL,
-            onUpdate = ForeignKey.CASCADE,
-            deferred = true
-        ),
-        ForeignKey(
             entity = Team::class,
             childColumns = ["player_01_team"],
             parentColumns = ["teamID"],

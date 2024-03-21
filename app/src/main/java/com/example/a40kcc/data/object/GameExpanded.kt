@@ -16,16 +16,6 @@ data class GameExpanded(
     )
     val player02: Player?,
     @Relation(
-        parentColumn = "player_01_faction",
-        entityColumn = "factionID"
-    )
-    val player01Faction: Faction,
-    @Relation(
-        parentColumn = "player_02_faction",
-        entityColumn = "factionID"
-    )
-    val player02Faction: Faction,
-    @Relation(
         parentColumn = "player_01_team",
         entityColumn = "teamID"
     )

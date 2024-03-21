@@ -7,11 +7,6 @@ import androidx.room.Relation
 data class PlayerExpanded(
     @Embedded val player: Player,
     @Relation(
-        parentColumn = "preferred_faction",
-        entityColumn = "factionID"
-    )
-    val faction: Faction,
-    @Relation(
         parentColumn = "playerID",
         entityColumn = "teamID",
         associateBy = Junction(PlayerTeamCrossRef::class)

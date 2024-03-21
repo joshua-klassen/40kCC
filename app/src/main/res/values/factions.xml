@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="FactionsHeader">
+        <item>Faction Name</item>
+        <item>Data</item>
+    </array>
+    <array name="name">
+        <item>data</item>
+        <item>data</item>
+    </array>
+    <array name="Factions">
+        <item>@array/name</item>
+    </array>
+</resources>

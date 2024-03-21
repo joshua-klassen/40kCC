@@ -6,15 +6,7 @@ import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
 @Entity(
-    "player",
-    foreignKeys = [ForeignKey(
-        entity = Faction::class,
-        childColumns = ["preferred_faction"],
-        parentColumns = ["factionID"],
-        onDelete = ForeignKey.SET_NULL,
-        onUpdate = ForeignKey.CASCADE,
-        deferred = true
-    )]
+    "player"
 )
 data class Player(
     @PrimaryKey(true) val playerID: Int,

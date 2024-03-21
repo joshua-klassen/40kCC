@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="MissionHeader">
+        <item>Mission Name</item>
+        <item>Mission Rule</item>
+    </string-array>
+    <string-array name="TakeAndHold">
+        <item>Take and Hold</item>
+        <item>N/A</item>
+    </string-array>
+    <string-array name="ScorchedEarth">
+        <item>Scorched Earth</item>
+        <item>From the second battle round, in each player’s Shooting phase, the player whose turn it is can select one unit from their army that is not Battle-shocked and is eligible to shoot. Until the end of that turn, that unit is not eligible to shoot or declare a charge. At the start of its controlling player’s next Command phase, if that unit is within 1” of an objective marker that the player whose turn it is controls, that objective marker is burned and removed from the battlefield</item>
+    </string-array>
+    <string-array name="PurgeTheFoe">
+        <item>Purge the Foe</item>
+        <item>At the end of the battle round, each player scores 4VP if one of more enemy units were destroyed that battle round, and an extra 4VP if more enemy units than friendly units were destroyed that battle round. Note that a unit can, if it is returned to the battlefield for any reason, potentially contribute to this Primary Mission several times (assuming it is returned and subsequently destroyed several times over)</item>
+    </string-array>
+    <string-array name="SitesOfPower">
+        <item>Sites of Power</item>
+        <item>The objective markers in No Man’s Land are sites of power. At the end of each command phase, the player whose turn it is empowers all sites of power that they control that have one or more Character models from their army within range; each site of power remains empowered by that player while one or more of their Character models remains within range of it</item>
+    </string-array>
+    <string-array name="TheRitual">
+        <item>The Ritual</item>
+        <item>When setting up the battlefield, remove all objective markers in No Man’s Land except the one closest to the centre of the battlefield. In each player’s Shooting phase, the player whose turn it is can select one unit from their army that is not Battle-shocked and is eligible to shoot. Until the end of that turn, that unit is not eligible to shoot or declare a charge. At the end of that turn, the player whose turn it is can set up one objective marker wholly within No Man’s Land and within 1” of that unit provided it can be set up exactly 9” from one other objective marker and not within 6” of any other objective marker.</item>
+    </string-array>
+    <string-array name="PriorityTargets">
+        <item>Priority Targets</item>
+        <item>N/A</item>
+    </string-array>
+    <string-array name="SupplyDrop">
+        <item>Supply Drop</item>
+        <item>At the start of the battle, players randomly select two different objective markers in No Man’s Land: the first selected is the Alpha objective, the second is the Omega objective. At the start of the fourth battle round, the Alpha objective is removed from the battlefield. At the start of the fifth battle round, all objective markers in No Man’s Land apart from the Omega objective are also removed.</item>
+    </string-array>
+    <string-array name="DeployServoSkulls">
+        <item>Deploy Servo-Skulls</item>
+        <item>The objective markers that start the battle in No Man’s Land are servo-skulls. At the end of each turn, each of these objective markers can be moved up to 6” in any direction by the player that controls it. When moving objective markers, they cannot end that move on top of any other objective marker or model, or inside impassable parts of terrain features (such as the walls of a ruin).</item>
+    </string-array>
+    <string-array name="VitalGround">
+        <item>Vital Ground</item>
+        <item>If you draw this and the Hidden Supplies Mission Rule Card, discard this card and draw a new Primary Mission card. After setting up the battlefield, remove the objective marker in No Man’s Land that is closest to the centre of the battlefield.</item>
+    </string-array>
+    <array name="Missions">
+        <item>@array/TakeAndHold</item>
+        <item>@array/ScorchedEarth</item>
+        <item>@array/PurgeTheFoe</item>
+        <item>@array/SitesOfPower</item>
+        <item>@array/TheRitual</item>
+        <item>@array/PriorityTargets</item>
+        <item>@array/SupplyDrop</item>
+        <item>@array/DeployServoSkulls</item>
+        <item>@array/VitalGround</item>
+    </array>
+</resources>

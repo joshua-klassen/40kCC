@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="DeploymentHeader">
+        <item>Deployment Name</item>
+        <item>Map</item>
+    </array>
+    <array name="SearchAndDestroy">
+        <item>Search and Destroy</item>
+        <item>@drawable/search_and_destroy</item>
+    </array>
+    <array name="DawnOfWar">
+        <item>Dawn of War</item>
+        <item>@drawable/dawn_of_war</item>
+    </array>
+    <array name="SweepingEngagement">
+        <item>Sweeping Engagement</item>
+        <item>@drawable/sweeping_engagement</item>
+    </array>
+    <array name="CrucibleOfBattle">
+        <item>Crucible of Battle</item>
+        <item>@drawable/crucible_of_battle</item>
+    </array>
+    <array name="HammerAndAnvil">
+        <item>Hammer and Anvil</item>
+        <item>@drawable/hammer_and_anvil</item>
+    </array>
+    <array name="Deployments">
+        <item>@array/SearchAndDestroy</item>
+        <item>@array/DawnOfWar</item>
+        <item>@array/SweepingEngagement</item>
+        <item>@array/CrucibleOfBattle</item>
+        <item>@array/HammerAndAnvil</item>
+    </array>
+</resources>
