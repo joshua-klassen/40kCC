@@ -54,6 +54,7 @@ dependencies {
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation(platform("androidx.compose:compose-bom:2024.03.00"))
     implementation("androidx.appcompat:appcompat:1.6.1")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
     androidTestImplementation(platform("androidx.compose:compose-bom:2024.03.00"))
     val roomVersion = "2.6.1"
     val navVersion = "2.7.7"

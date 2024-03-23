@@ -73,7 +73,7 @@ private val ThemeDarkColors = darkColorScheme(
 @Composable
 fun Theme40kCC(
     useDarkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable() () -> Unit
+    content: @Composable () -> Unit
 ) {
     val themeColors = if (!useDarkTheme) {
         ThemeLightColors

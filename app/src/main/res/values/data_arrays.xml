@@ -33,6 +33,37 @@
         <item>@array/VoxStatic</item>
     </array>
     <array name="Factions">
-        <item>@array/name</item>
+        <item>@array/Ultramarines</item>
+        <item>@array/ImperialFists</item>
+        <item>@array/DarkAngels</item>
+        <item>@array/BloodAngels</item>
+        <item>@array/Salamanders</item>
+        <item>@array/IronHands</item>
+        <item>@array/SpaceWolves</item>
+        <item>@array/WhiteScars</item>
+        <item>@array/RavenGuard</item>
+        <item>@array/Deathwatch</item>
+        <item>@array/SpaceMarines</item>
+        <item>@array/AstraMilitarum</item>
+        <item>@array/AdeptaSororitas</item>
+        <item>@array/AdeptusCustodes</item>
+        <item>@array/AdeptusMechanicus</item>
+        <item>@array/GreyKnights</item>
+        <item>@array/ImperialKnights</item>
+        <item>@array/ChaosSpaceMarines</item>
+        <item>@array/DeathGuard</item>
+        <item>@array/ThousandSons</item>
+        <item>@array/WorldEaters</item>
+        <item>@array/ChaosDaemons</item>
+        <item>@array/ChaosKnights</item>
+        <item>@array/Necrons</item>
+        <item>@array/Orks</item>
+        <item>@array/TauEmpire</item>
+        <item>@array/LeaguesOfVotann</item>
+        <item>@array/Tyranids</item>
+        <item>@array/GenestealerCults</item>
+        <item>@array/Craftworlds</item>
+        <item>@array/Ynnari</item>
+        <item>@array/Drukhari</item>
     </array>
 </resources>
