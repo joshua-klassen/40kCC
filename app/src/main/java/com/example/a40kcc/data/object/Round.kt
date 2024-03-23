@@ -8,13 +8,13 @@ import androidx.room.PrimaryKey
 @Entity(
     "round",
     foreignKeys = [ForeignKey(
-            entity = Tournament::class,
-            childColumns = ["tournament"],
-            parentColumns = ["tournamentID"],
-            onDelete = ForeignKey.SET_NULL,
-            onUpdate = ForeignKey.CASCADE,
-            deferred = true
-        )]
+        entity = Tournament::class,
+        childColumns = ["tournament"],
+        parentColumns = ["tournamentID"],
+        onDelete = ForeignKey.SET_NULL,
+        onUpdate = ForeignKey.CASCADE,
+        deferred = true
+    )]
 )
 data class Round(
     @PrimaryKey(true) val roundID: Int,

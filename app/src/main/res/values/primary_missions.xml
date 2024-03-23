@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="MissionHeader">
-        <item>Mission Name</item>
+    <string-array name="PrimaryMissionHeader">
         <item>Mission Rule</item>
     </string-array>
     <string-array name="TakeAndHold">
@@ -40,15 +39,4 @@
         <item>Vital Ground</item>
         <item>If you draw this and the Hidden Supplies Mission Rule Card, discard this card and draw a new Primary Mission card. After setting up the battlefield, remove the objective marker in No Man’s Land that is closest to the centre of the battlefield.</item>
     </string-array>
-    <array name="Missions">
-        <item>@array/TakeAndHold</item>
-        <item>@array/ScorchedEarth</item>
-        <item>@array/PurgeTheFoe</item>
-        <item>@array/SitesOfPower</item>
-        <item>@array/TheRitual</item>
-        <item>@array/PriorityTargets</item>
-        <item>@array/SupplyDrop</item>
-        <item>@array/DeployServoSkulls</item>
-        <item>@array/VitalGround</item>
-    </array>
 </resources>

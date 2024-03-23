@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <array name="DeploymentHeader">
-        <item>Deployment Name</item>
         <item>Map</item>
     </array>
     <array name="SearchAndDestroy">
@@ -23,12 +22,5 @@
     <array name="HammerAndAnvil">
         <item>Hammer and Anvil</item>
         <item>@drawable/hammer_and_anvil</item>
-    </array>
-    <array name="Deployments">
-        <item>@array/SearchAndDestroy</item>
-        <item>@array/DawnOfWar</item>
-        <item>@array/SweepingEngagement</item>
-        <item>@array/CrucibleOfBattle</item>
-        <item>@array/HammerAndAnvil</item>
     </array>
 </resources>

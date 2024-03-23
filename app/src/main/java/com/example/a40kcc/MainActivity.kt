@@ -6,9 +6,11 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.dimensionResource
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -26,9 +28,10 @@ import com.example.a40kcc.data.model.TeamViewModel
 import com.example.a40kcc.data.model.TeamViewModelFactory
 import com.example.a40kcc.data.model.TournamentViewModel
 import com.example.a40kcc.data.model.TournamentViewModelFactory
+import com.example.a40kcc.data.`object`.DataObject
+import com.example.a40kcc.ui.screen.DataScreen
 import com.example.a40kcc.ui.screen.GameScreen
 import com.example.a40kcc.ui.screen.HomeScreen
-import com.example.a40kcc.ui.screen.DataScreen
 import com.example.a40kcc.ui.screen.OutcomeScreen
 import com.example.a40kcc.ui.screen.PlayerScreen
 import com.example.a40kcc.ui.screen.PredictionScreen
@@ -38,6 +41,11 @@ import com.example.a40kcc.ui.screen.TournamentScreen
 import com.example.a40kcc.ui.theme.Theme40kCC
 
 class MainActivity : ComponentActivity() {
+    private lateinit var deploymentData: DataObject
+    private lateinit var factionData: DataObject
+    private lateinit var primaryMissionData: DataObject
+    private lateinit var secondaryMissionData: DataObject
+
     private val gameViewModel: GameViewModel by viewModels {
         GameViewModelFactory((application as Application40kCC).game)
     }
@@ -70,43 +78,69 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             Theme40kCC {
-                Surface(modifier = Modifier.fillMaxSize()) {
+                val margin = dimensionResource(id = R.dimen.margin_small)
+                val modifier = Modifier.padding(margin, margin)
+                Surface(modifier = modifier.fillMaxSize()) {
                     val activity = (LocalContext.current as Activity)
+                    deploymentData = DataObject(
+                        activity.resources,
+                        R.array.DeploymentHeader,
+                        R.array.Deployments
+                    )
+                    factionData = DataObject(
+                        activity.resources,
+                        R.array.FactionsHeader,
+                        R.array.Factions
+                    )
+                    primaryMissionData = DataObject(
+                        activity.resources,
+                        R.array.PrimaryMissionHeader,
+                        R.array.PrimaryMissions
+                    )
+                    secondaryMissionData = DataObject(
+                        activity.resources,
+                        R.array.SecondaryMissionHeader,
+                        R.array.SecondaryMissions
+                    )
                     val navController = rememberNavController()
                     NavHost(navController = navController, startDestination = "home") {
-                        composable("home") { HomeScreen(navController) }
+                        composable("home") { HomeScreen(navController, modifier) }
                         composable("deployments") {
                             DataScreen(
-                                activity.resources,
-                                R.array.DeploymentHeader,
-                                R.array.Deployments,
-                                onBackClick = { navController.navigateUp() })
+                                deploymentData.getDataKeys(),
+                                navController,
+                                modifier,
+                                deploymentData
+                            )
                         }
                         composable("factions") {
                             DataScreen(
-                                activity.resources,
-                                R.array.FactionsHeader,
-                                R.array.Factions,
-                                onBackClick = { navController.navigateUp() })
+                                factionData.getDataKeys(),
+                                navController,
+                                modifier,
+                                factionData
+                            )
                         }
                         composable("games") {
                             GameScreen(
                                 gameViewModel,
                                 onBackClick = { navController.navigateUp() })
                         }
-                        composable("missions") {
+                        composable("primaryMissions") {
                             DataScreen(
-                                activity.resources,
-                                R.array.MissionHeader,
-                                R.array.Missions,
-                                onBackClick = { navController.navigateUp() })
+                                primaryMissionData.getDataKeys(),
+                                navController,
+                                modifier,
+                                primaryMissionData
+                            )
                         }
-                        composable("objectives") {
+                        composable("secondaryMissions") {
                             DataScreen(
-                                activity.resources,
-                                R.array.ObjectivesHeader,
-                                R.array.Objectives,
-                                onBackClick = { navController.navigateUp() })
+                                secondaryMissionData.getDataKeys(),
+                                navController,
+                                modifier,
+                                secondaryMissionData
+                            )
                         }
                         composable("outcomes") {
                             OutcomeScreen(

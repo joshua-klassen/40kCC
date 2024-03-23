@@ -9,9 +9,8 @@
 
     <dimen name="padding_large">48dp</dimen>
 
-    <dimen name="card_image_height">95dp</dimen>
-    <dimen name="card_side_margin">12dp</dimen>
-    <dimen name="card_bottom_margin">26dp</dimen>
+    <dimen name="card_side_margin">6dp</dimen>
+    <dimen name="card_bottom_margin">14dp</dimen>
 
     <dimen name="header_margin">24dp</dimen>
 </resources>

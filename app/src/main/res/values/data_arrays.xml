@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="Deployments">
+        <item>@array/SearchAndDestroy</item>
+        <item>@array/DawnOfWar</item>
+        <item>@array/SweepingEngagement</item>
+        <item>@array/CrucibleOfBattle</item>
+        <item>@array/HammerAndAnvil</item>
+    </array>
+    <array name="PrimaryMissions">
+        <item>@array/TakeAndHold</item>
+        <item>@array/ScorchedEarth</item>
+        <item>@array/PurgeTheFoe</item>
+        <item>@array/SitesOfPower</item>
+        <item>@array/TheRitual</item>
+        <item>@array/PriorityTargets</item>
+        <item>@array/SupplyDrop</item>
+        <item>@array/DeployServoSkulls</item>
+        <item>@array/VitalGround</item>
+    </array>
+    <array name="SecondaryMissions">
+        <item>@array/ChillingRain</item>
+        <item>@array/HiddenSupplies</item>
+        <item>@array/ScramblerFields</item>
+        <item>@array/ChosenBattlefield</item>
+        <item>@array/SweepAndClear</item>
+        <item>@array/Minefields</item>
+        <item>@array/TargetsOfOpportunity</item>
+        <item>@array/DelayedReserves</item>
+        <item>@array/MaelstromOfBattle</item>
+        <item>@array/SupplyLines</item>
+        <item>@array/SecretIntel</item>
+        <item>@array/VoxStatic</item>
+    </array>
+    <array name="Factions">
+        <item>@array/name</item>
+    </array>
+</resources>

@@ -1,85 +1,116 @@
 package com.example.a40kcc.ui.screen
 
-import android.content.res.Resources
+import android.graphics.drawable.Drawable
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import android.content.res.TypedArray
-import android.graphics.drawable.Drawable
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.res.stringArrayResource
-import androidx.compose.ui.res.painterResource
-import androidx.core.content.res.getResourceIdOrThrow
-import com.example.a40kcc.R
+import androidx.navigation.NavHostController
+import com.example.a40kcc.data.`object`.DataObject
+import com.google.accompanist.drawablepainter.rememberDrawablePainter
 
 @Composable
-fun DataScreen(resources: Resources, headerID: Int, dataID: Int, onBackClick: () -> Unit) {
+fun DataScreen(
+    cardItems: Set<Any>,
+    navController: NavHostController,
+    modifier: Modifier = Modifier,
+    data: DataObject? = null
+) {
     Column {
-        val margin = dimensionResource(id = R.dimen.margin_small)
-        Button(onClick = onBackClick,
-            modifier = Modifier.padding(margin, margin)) {
+        Button(
+            onClick = { navController.navigateUp() },
+            modifier = modifier
+        ) {
             Column {
                 Text("Back")
             }
         }
 
-        val headerArray: Array<String> = stringArrayResource(id = headerID)
-        val dataArray: TypedArray = resources.obtainTypedArray(dataID)
-
-        Row(modifier = Modifier.padding(margin, margin)) {
-            for (header in headerArray.iterator()) {
-                Column(modifier = Modifier.padding(margin, margin)){
-                    Text(
-                        header,
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                }
-            }
-        }
-
-        LazyColumn {
-            items(dataArray.length()) { mission: Int ->
-                Row(modifier = Modifier.padding(margin, margin)) {
-                    val objectArray: TypedArray = resources.obtainTypedArray(dataArray.getResourceIdOrThrow(mission))
-                    var i = 0
-                    while(i<objectArray.length()){
-                        Column(modifier = Modifier.padding(margin, margin)){
-                            val objectResourceId = objectArray.getResourceId(i, 0)
-                            if (objectResourceId != 0) {
-                                if(resources.getResourceTypeName(objectResourceId) == "drawable") {
-                                    Image(
-                                        painter = painterResource(objectResourceId),
-                                        contentDescription = "Deployment Image",
-                                        contentScale = ContentScale.Crop
-                                    )
-                                }
-                            }
-                            else
-                            {
-                                objectArray.getString(i)?.let {
-                                    Text(
-                                        it,
-                                        style = MaterialTheme.typography.bodyMedium
-                                    )
-                                }
-                            }
-                            i++
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(1)
+        ) {
+            items(cardItems.toList()) { key ->
+                var showDetails by remember { mutableStateOf(false) }
+                if (key is String) {
+                    var onClick = {}
+                    if (data != null) {
+                        onClick = {
+                            showDetails = !showDetails
                         }
                     }
-                    objectArray.recycle()
+                    Column {
+                        Text(
+                            key,
+                            style = MaterialTheme.typography.titleLarge,
+                            modifier = modifier
+                                .clickable(true, onClick = onClick)
+                                .fillMaxWidth()
+                        )
+
+                        if (showDetails) {
+                            DataDetailScreen(
+                                data?.getHeaders(),
+                                data?.getDataValue(key),
+                                modifier
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun DataDetailScreen(headers: Array<String>?, details: Array<Any>?, modifier: Modifier = Modifier) {
+    Column {
+        Row(modifier = modifier) {
+            if (headers != null) {
+                for (header in headers) {
+                    Column(modifier = modifier) {
+                        Text(
+                            header,
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                    }
                 }
             }
         }
 
+        Row(modifier = modifier) {
+            if (details != null) {
+                for (detail in details) {
+                    Column(modifier = modifier) {
+                        if (detail is Drawable) {
+                            Image(
+                                painter = rememberDrawablePainter(detail),
+                                contentDescription = "Image",
+                                contentScale = ContentScale.Inside
+                            )
+                        } else {
+                            Text(
+                                detail.toString(),
+                                style = MaterialTheme.typography.bodyMedium,
+                                modifier = modifier.fillMaxWidth()
+                            )
+                        }
+                    }
+                }
+            }
+        }
     }
 }
