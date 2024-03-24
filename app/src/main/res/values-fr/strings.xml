@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">40kCC</string>
+    <string name="home_button">D\'accueil</string>
+    <string name="back_button">Arrière</string>
 </resources>

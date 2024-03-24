@@ -3,6 +3,7 @@ package com.example.a40kcc.ui.screen
 import android.graphics.drawable.Drawable
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,10 +18,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
+import com.example.a40kcc.R
 import com.example.a40kcc.data.`object`.DataObject
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 
@@ -37,7 +39,7 @@ fun DataScreen(
             modifier = modifier
         ) {
             Column {
-                Text("Back")
+                Text(stringResource(id = R.string.home_button))
             }
         }
 
@@ -74,25 +76,28 @@ fun DataScreen(
 
 @Composable
 fun DataDetailScreen(headers: Array<String>?, details: Array<Any>?, modifier: Modifier = Modifier) {
-    Row {
+    Row(horizontalArrangement = Arrangement.SpaceEvenly, modifier = modifier.fillMaxWidth()) {
         if (headers != null) {
             for (header in headers) {
-                Column(modifier = modifier.wrapContentHeight()) {
+                Column(modifier = modifier
+                    .alignByBaseline()
+                    .wrapContentHeight()) {
                     Text(
                         header,
                         style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier.align(Alignment.CenterHorizontally)
+                        modifier = Modifier
                     )
                 }
             }
         }
     }
 
-    Row {
+    Row(horizontalArrangement = Arrangement.SpaceEvenly, modifier = modifier.fillMaxWidth()) {
         if (details != null) {
             for (detail in details) {
-                println(detail)
-                Column(modifier = modifier.wrapContentHeight()) {
+                Column(modifier = modifier
+                    .alignByBaseline()
+                    .wrapContentHeight()) {
                     if (detail is Drawable) {
                         Image(
                             painter = rememberDrawablePainter(detail),

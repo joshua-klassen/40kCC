@@ -68,8 +68,8 @@ data class Game(
     @PrimaryKey(true) val gameID: Int,
     @ColumnInfo("player_01") val player01ID: Int,
     @ColumnInfo("player_02", defaultValue = "NULL") val player02ID: Int?,
-    @ColumnInfo("player_01_faction") val player01FactionID: Int,
-    @ColumnInfo("player_02_faction") val player02FactionID: Int,
+    @ColumnInfo("player_01_faction") val player01FactionName: String,
+    @ColumnInfo("player_02_faction") val player02FactionName: String,
     @ColumnInfo(
         "player_01_faction_detachment",
         defaultValue = "NULL"

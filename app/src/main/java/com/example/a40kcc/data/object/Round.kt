@@ -19,8 +19,8 @@ import androidx.room.PrimaryKey
 data class Round(
     @PrimaryKey(true) val roundID: Int,
     @ColumnInfo("number") val number: Int,
-    @ColumnInfo("mission") val missionID: Int,
-    @ColumnInfo("objective") val objectiveID: Int,
-    @ColumnInfo("deployment") val deploymentID: Int,
+    @ColumnInfo("primary_mission") val primaryMissionName: String,
+    @ColumnInfo("secondary_mission") val secondaryMissionName: String,
+    @ColumnInfo("deployment") val deploymentName: String,
     @ColumnInfo("tournament") val tournamentID: Int,
 )

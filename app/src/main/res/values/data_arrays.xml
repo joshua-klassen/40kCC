@@ -61,8 +61,8 @@
         <item>@array/TauEmpire</item>
         <item>@array/LeaguesOfVotann</item>
         <item>@array/Tyranids</item>
-        <item>@array/GenestealerCults</item>
-        <item>@array/Craftworlds</item>
+        <item>@array/GenestealerCult</item>
+        <item>@array/Asuryani</item>
         <item>@array/Ynnari</item>
         <item>@array/Drukhari</item>
     </array>

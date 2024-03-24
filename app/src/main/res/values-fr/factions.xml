@@ -7,13 +7,13 @@
     </array>
     <array name="Ultramarines">
         <item>Ultramarines</item>
-        <item>@drawable/icon_adeptus_astartes</item>
+        <item>@drawable/icon_ultramarines</item>
         <item>Adeptus Astartes</item>
         <item>Gladius Task Force</item>
     </array>
     <array name="ImperialFists">
         <item>Imperial Fists</item>
-        <item>@drawable/icon_adeptus_astartes</item>
+        <item>@drawable/icon_imperial_fists</item>
         <item>Adeptus Astartes</item>
         <item>Anvil Siege Force</item>
     </array>
@@ -31,13 +31,13 @@
     </array>
     <array name="Salamanders">
         <item>Salamanders</item>
-        <item>@drawable/icon_adeptus_astartes</item>
+        <item>@drawable/icon_salamanders</item>
         <item>Adeptus Astartes</item>
         <item>Firestorm Assault Force</item>
     </array>
     <array name="IronHands">
         <item>Iron Hands</item>
-        <item>@drawable/icon_adeptus_astartes</item>
+        <item>@drawable/icon_iron_hands</item>
         <item>Adeptus Astartes</item>
         <item>Ironstorm Spearhead</item>
     </array>
@@ -49,19 +49,19 @@
     </array>
     <array name="WhiteScars">
         <item>White Scars</item>
-        <item>@drawable/icon_adeptus_astartes</item>
+        <item>@drawable/icon_white_scars</item>
         <item>Adeptus Astartes</item>
         <item>Stormlance Task Force</item>
     </array>
     <array name="RavenGuard">
         <item>Raven Guard</item>
-        <item>@drawable/icon_adeptus_astartes</item>
+        <item>@drawable/icon_raven_guard</item>
         <item>Adeptus Astartes</item>
         <item>Vanguard Spearhead</item>
     </array>
     <array name="Deathwatch">
         <item>Deathwatch</item>
-        <item>@drawable/icon_adeptus_astartes</item>
+        <item>@drawable/icon_deathwatch</item>
         <item>Adeptus Astartes</item>
         <item>Black Spear Task Force</item>
     </array>
@@ -85,13 +85,13 @@
     </array>
     <array name="AdeptusCustodes">
         <item>Adeptus Custodes</item>
-        <item>@drawable/icon_adeptus_astartes</item>
+        <item>@drawable/icon_adeptus_custodes</item>
         <item>Imperium</item>
         <item>Shield Host</item>
     </array>
     <array name="AdeptusMechanicus">
         <item>Adeptus Mechanicus</item>
-        <item>@drawable/icon_adeptus_astartes</item>
+        <item>@drawable/icon_adeptus_mechanicus</item>
         <item>Imperium</item>
         <item>Cohort Cybernetica, Data-psalm Conclave, Explorator Maniple, Rad Zone Corps, Skitarii
             Hunter Cohort
@@ -117,19 +117,19 @@
     </array>
     <array name="DeathGuard">
         <item>Death Guard</item>
-        <item>@drawable/icon_chaos_space_marines</item>
+        <item>@drawable/icon_death_guard</item>
         <item>Chaos</item>
         <item>Plague Company</item>
     </array>
     <array name="ThousandSons">
         <item>Thousand Sons</item>
-        <item>@drawable/icon_chaos_space_marines</item>
+        <item>@drawable/icon_thousand_sons</item>
         <item>Chaos</item>
         <item>Cult of Magic</item>
     </array>
     <array name="WorldEaters">
         <item>World Eaters</item>
-        <item>@drawable/icon_chaos_space_marines</item>
+        <item>@drawable/icon_world_eaters</item>
         <item>Chaos</item>
         <item>Berzerker Warband</item>
     </array>
@@ -141,7 +141,7 @@
     </array>
     <array name="ChaosKnights">
         <item>Chaos Knights</item>
-        <item>@drawable/icon_chaos_space_marines</item>
+        <item>@drawable/icon_chaos_knights</item>
         <item>Chaos</item>
         <item>Traitoris Lance</item>
     </array>
@@ -167,7 +167,7 @@
     </array>
     <array name="LeaguesOfVotann">
         <item>Leagues of Votann</item>
-        <item>@drawable/icon_adeptus_astartes</item>
+        <item>@drawable/icon_votann</item>
         <item>Xenos</item>
         <item>Oathband</item>
     </array>
@@ -179,21 +179,21 @@
             Vanguard Onslaught
         </item>
     </array>
-    <array name="GenestealerCults">
-        <item>Genestealer Cults</item>
-        <item>@drawable/icon_tyranids</item>
+    <array name="GenestealerCult">
+        <item>Genestealer Cult</item>
+        <item>@drawable/icon_genestealer_cult</item>
         <item>Xenos</item>
         <item>Ascension Day</item>
     </array>
-    <array name="Craftworlds">
-        <item>Craftworlds</item>
-        <item>@drawable/icon_aeldari</item>
+    <array name="Asuryani">
+        <item>Asuryani</item>
+        <item>@drawable/icon_asuryani</item>
         <item>Aeldari</item>
         <item>Battle Host</item>
     </array>
     <array name="Ynnari">
         <item>Ynnari</item>
-        <item>@drawable/icon_aeldari</item>
+        <item>@drawable/icon_ynnari</item>
         <item>Aeldari</item>
         <item>Battle Host</item>
     </array>

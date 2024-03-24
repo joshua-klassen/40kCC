@@ -11,5 +11,5 @@ data class Player(
     @PrimaryKey(true) val playerID: Int,
     @ColumnInfo("name") val name: String,
     @ColumnInfo("nickname", defaultValue = "NULL") val nickname: String?,
-    @ColumnInfo("preferred_faction", defaultValue = "NULL") val factionID: Int?
+    @ColumnInfo("preferred_faction", defaultValue = "NULL") val factionName: String?
 )

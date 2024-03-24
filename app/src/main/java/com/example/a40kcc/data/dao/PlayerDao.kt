@@ -31,14 +31,14 @@ interface PlayerDao : BaseDao<Player> {
     fun getPlayersByNameExpanded(playerName: String): Flow<List<PlayerExpanded>>
 
     @Query(
-        "SELECT * FROM player WHERE preferred_faction = :factionId"
+        "SELECT * FROM player WHERE preferred_faction LIKE :factionName"
     )
-    fun getPlayersByFaction(factionId: Int): Flow<List<Player>>
+    fun getPlayersByFaction(factionName: String): Flow<List<Player>>
 
     @Query(
-        "SELECT * FROM player WHERE preferred_faction = :factionId"
+        "SELECT * FROM player WHERE preferred_faction LIKE :factionName"
     )
-    fun getPlayersByFactionExpanded(factionId: Int): Flow<List<PlayerExpanded>>
+    fun getPlayersByFactionExpanded(factionName: String): Flow<List<PlayerExpanded>>
 
     @Query(
         "SELECT * FROM player WHERE nickname LIKE :playerNickname LIMIT 1"

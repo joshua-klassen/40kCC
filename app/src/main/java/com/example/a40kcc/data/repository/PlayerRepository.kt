@@ -21,8 +21,8 @@ class PlayerRepository(private val playerDao: PlayerDao) {
     }
 
     @WorkerThread
-    fun getPlayersByFaction(factionId: Int): Flow<List<Player>> {
-        return playerDao.getPlayersByFaction(factionId)
+    fun getPlayersByFaction(factionName: String): Flow<List<Player>> {
+        return playerDao.getPlayersByFaction(factionName)
     }
 
     @WorkerThread
@@ -41,8 +41,8 @@ class PlayerRepository(private val playerDao: PlayerDao) {
     }
 
     @WorkerThread
-    fun getPlayersByFactionExpanded(factionId: Int): Flow<List<PlayerExpanded>> {
-        return playerDao.getPlayersByFactionExpanded(factionId)
+    fun getPlayersByFactionExpanded(factionName: String): Flow<List<PlayerExpanded>> {
+        return playerDao.getPlayersByFactionExpanded(factionName)
     }
 
     @WorkerThread

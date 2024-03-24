@@ -21,18 +21,18 @@ class RoundRepository(private val roundDao: RoundDao) {
     }
 
     @WorkerThread
-    fun getRoundByMission(missionId: Int): Flow<List<Round>> {
-        return roundDao.getRoundByMission(missionId)
+    fun getRoundByPrimaryMission(primaryMissionName: String): Flow<List<Round>> {
+        return roundDao.getRoundByPrimaryMission(primaryMissionName)
     }
 
     @WorkerThread
-    fun getRoundByObjective(objectiveId: Int): Flow<List<Round>> {
-        return roundDao.getRoundByObjective(objectiveId)
+    fun getRoundBySecondaryMission(secondaryMissionName: String): Flow<List<Round>> {
+        return roundDao.getRoundBySecondaryMission(secondaryMissionName)
     }
 
     @WorkerThread
-    fun getRoundByDeployment(deploymentId: Int): Flow<List<Round>> {
-        return roundDao.getRoundByDeployment(deploymentId)
+    fun getRoundByDeployment(deploymentName: String): Flow<List<Round>> {
+        return roundDao.getRoundByDeployment(deploymentName)
     }
 
     @WorkerThread
@@ -51,18 +51,18 @@ class RoundRepository(private val roundDao: RoundDao) {
     }
 
     @WorkerThread
-    fun getRoundByMissionExpanded(missionId: Int): Flow<List<RoundExpanded>> {
-        return roundDao.getRoundByMissionExpanded(missionId)
+    fun getRoundByPrimaryMissionExpanded(primaryMissionName: String): Flow<List<RoundExpanded>> {
+        return roundDao.getRoundByPrimaryMissionExpanded(primaryMissionName)
     }
 
     @WorkerThread
-    fun getRoundByObjectiveExpanded(objectiveId: Int): Flow<List<RoundExpanded>> {
-        return roundDao.getRoundByObjectiveExpanded(objectiveId)
+    fun getRoundBySecondaryMissionExpanded(secondaryMissionName: String): Flow<List<RoundExpanded>> {
+        return roundDao.getRoundBySecondaryMissionExpanded(secondaryMissionName)
     }
 
     @WorkerThread
-    fun getRoundByDeploymentExpanded(deploymentId: Int): Flow<List<RoundExpanded>> {
-        return roundDao.getRoundByDeploymentExpanded(deploymentId)
+    fun getRoundByDeploymentExpanded(deploymentName: String): Flow<List<RoundExpanded>> {
+        return roundDao.getRoundByDeploymentExpanded(deploymentName)
     }
 
     @WorkerThread

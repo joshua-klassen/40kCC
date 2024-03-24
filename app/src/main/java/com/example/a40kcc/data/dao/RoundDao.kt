@@ -31,34 +31,34 @@ interface RoundDao : BaseDao<Round> {
     fun getRoundByNumberExpanded(roundNumber: Int): Flow<List<RoundExpanded>>
 
     @Query(
-        "SELECT * FROM round WHERE mission = :missionId"
+        "SELECT * FROM round WHERE primary_mission LIKE :primaryMissionName"
     )
-    fun getRoundByMission(missionId: Int): Flow<List<Round>>
+    fun getRoundByPrimaryMission(primaryMissionName: String): Flow<List<Round>>
 
     @Query(
-        "SELECT * FROM round WHERE mission = :missionId"
+        "SELECT * FROM round WHERE primary_mission LIKE :primaryMissionName"
     )
-    fun getRoundByMissionExpanded(missionId: Int): Flow<List<RoundExpanded>>
+    fun getRoundByPrimaryMissionExpanded(primaryMissionName: String): Flow<List<RoundExpanded>>
 
     @Query(
-        "SELECT * FROM round WHERE objective = :objectiveId"
+        "SELECT * FROM round WHERE secondary_mission LIKE :secondaryMissionName"
     )
-    fun getRoundByObjective(objectiveId: Int): Flow<List<Round>>
+    fun getRoundBySecondaryMission(secondaryMissionName: String): Flow<List<Round>>
 
     @Query(
-        "SELECT * FROM round WHERE objective = :objectiveId"
+        "SELECT * FROM round WHERE secondary_mission LIKE :secondaryMissionName"
     )
-    fun getRoundByObjectiveExpanded(objectiveId: Int): Flow<List<RoundExpanded>>
+    fun getRoundBySecondaryMissionExpanded(secondaryMissionName: String): Flow<List<RoundExpanded>>
 
     @Query(
-        "SELECT * FROM round WHERE deployment = :deploymentId"
+        "SELECT * FROM round WHERE deployment LIKE :deploymentName"
     )
-    fun getRoundByDeployment(deploymentId: Int): Flow<List<Round>>
+    fun getRoundByDeployment(deploymentName: String): Flow<List<Round>>
 
     @Query(
-        "SELECT * FROM round WHERE deployment = :deploymentId"
+        "SELECT * FROM round WHERE deployment LIKE :deploymentName"
     )
-    fun getRoundByDeploymentExpanded(deploymentId: Int): Flow<List<RoundExpanded>>
+    fun getRoundByDeploymentExpanded(deploymentName: String): Flow<List<RoundExpanded>>
 
     @Query(
         "SELECT * FROM round WHERE tournament = :tournamentId"
