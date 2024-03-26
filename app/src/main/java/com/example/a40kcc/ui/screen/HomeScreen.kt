@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.a40kcc.R
@@ -32,8 +33,8 @@ fun HomeScreen(navController: NavHostController, modifier: Modifier = Modifier) 
     ) {
         items(MAIN_ROUTES.keys.toList()) { key ->
             HomeScreenCard(
-                MAIN_ROUTES[key]!![0],
-                painterResource(MAIN_ROUTES[key]!![1].toInt()),
+                stringResource(id = MAIN_ROUTES[key]!!["Text"]!!.toInt()),
+                painterResource(MAIN_ROUTES[key]!!["Image"]!!.toInt()),
                 { navController.navigate(key) },
                 modifier.padding(
                     start = cardSideMargin,

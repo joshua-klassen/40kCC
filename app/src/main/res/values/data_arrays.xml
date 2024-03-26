@@ -33,37 +33,37 @@
         <item>@array/VoxStatic</item>
     </array>
     <array name="Factions">
-        <item>@array/Ultramarines</item>
-        <item>@array/ImperialFists</item>
-        <item>@array/DarkAngels</item>
-        <item>@array/BloodAngels</item>
-        <item>@array/Salamanders</item>
-        <item>@array/IronHands</item>
-        <item>@array/SpaceWolves</item>
-        <item>@array/WhiteScars</item>
-        <item>@array/RavenGuard</item>
-        <item>@array/Deathwatch</item>
-        <item>@array/SpaceMarines</item>
-        <item>@array/AstraMilitarum</item>
         <item>@array/AdeptaSororitas</item>
+        <item>@array/AdeptusAstartes</item>
         <item>@array/AdeptusCustodes</item>
         <item>@array/AdeptusMechanicus</item>
-        <item>@array/GreyKnights</item>
-        <item>@array/ImperialKnights</item>
-        <item>@array/ChaosSpaceMarines</item>
-        <item>@array/DeathGuard</item>
-        <item>@array/ThousandSons</item>
-        <item>@array/WorldEaters</item>
+        <item>@array/AstraMilitarum</item>
+        <item>@array/Asuryani</item>
+        <item>@array/BloodAngels</item>
         <item>@array/ChaosDaemons</item>
         <item>@array/ChaosKnights</item>
+        <item>@array/ChaosSpaceMarines</item>
+        <item>@array/DarkAngels</item>
+        <item>@array/DeathGuard</item>
+        <item>@array/Deathwatch</item>
+        <item>@array/Drukhari</item>
+        <item>@array/GenestealerCult</item>
+        <item>@array/GreyKnights</item>
+        <item>@array/ImperialFists</item>
+        <item>@array/ImperialKnights</item>
+        <item>@array/IronHands</item>
+        <item>@array/LeaguesOfVotann</item>
         <item>@array/Necrons</item>
         <item>@array/Orks</item>
+        <item>@array/RavenGuard</item>
+        <item>@array/Salamanders</item>
+        <item>@array/SpaceWolves</item>
         <item>@array/TauEmpire</item>
-        <item>@array/LeaguesOfVotann</item>
+        <item>@array/ThousandSons</item>
         <item>@array/Tyranids</item>
-        <item>@array/GenestealerCult</item>
-        <item>@array/Asuryani</item>
+        <item>@array/Ultramarines</item>
+        <item>@array/WhiteScars</item>
+        <item>@array/WorldEaters</item>
         <item>@array/Ynnari</item>
-        <item>@array/Drukhari</item>
     </array>
 </resources>

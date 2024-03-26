@@ -5,83 +5,17 @@
         <item>Super Faction</item>
         <item>Detachments</item>
     </array>
-    <array name="Ultramarines">
-        <item>Ultramarines</item>
-        <item>@drawable/icon_ultramarines</item>
-        <item>Adeptus Astartes</item>
-        <item>Gladius Task Force</item>
-    </array>
-    <array name="ImperialFists">
-        <item>Imperial Fists</item>
-        <item>@drawable/icon_imperial_fists</item>
-        <item>Adeptus Astartes</item>
-        <item>Anvil Siege Force</item>
-    </array>
-    <array name="DarkAngels">
-        <item>Dark Angels</item>
-        <item>@drawable/icon_dark_angels</item>
-        <item>Adeptus Astartes</item>
-        <item>Unforgiven Task Force</item>
-    </array>
-    <array name="BloodAngels">
-        <item>Blood Angels</item>
-        <item>@drawable/icon_blood_angels</item>
-        <item>Adeptus Astartes</item>
-        <item>Sons of Sanguinius</item>
-    </array>
-    <array name="Salamanders">
-        <item>Salamanders</item>
-        <item>@drawable/icon_salamanders</item>
-        <item>Adeptus Astartes</item>
-        <item>Firestorm Assault Force</item>
-    </array>
-    <array name="IronHands">
-        <item>Iron Hands</item>
-        <item>@drawable/icon_iron_hands</item>
-        <item>Adeptus Astartes</item>
-        <item>Ironstorm Spearhead</item>
-    </array>
-    <array name="SpaceWolves">
-        <item>Space Wolves</item>
-        <item>@drawable/icon_space_wolves</item>
-        <item>Adeptus Astartes</item>
-        <item>Champions of Russ</item>
-    </array>
-    <array name="WhiteScars">
-        <item>White Scars</item>
-        <item>@drawable/icon_white_scars</item>
-        <item>Adeptus Astartes</item>
-        <item>Stormlance Task Force</item>
-    </array>
-    <array name="RavenGuard">
-        <item>Raven Guard</item>
-        <item>@drawable/icon_raven_guard</item>
-        <item>Adeptus Astartes</item>
-        <item>Vanguard Spearhead</item>
-    </array>
-    <array name="Deathwatch">
-        <item>Deathwatch</item>
-        <item>@drawable/icon_deathwatch</item>
-        <item>Adeptus Astartes</item>
-        <item>Black Spear Task Force</item>
-    </array>
-    <array name="SpaceMarines">
-        <item>Space Marines</item>
-        <item>@drawable/icon_adeptus_astartes</item>
-        <item>Adeptus Astartes</item>
-        <item>1st Company Task Force</item>
-    </array>
-    <array name="AstraMilitarum">
-        <item>Astra Militarum</item>
-        <item>@drawable/icon_astra_militarum</item>
-        <item>Imperium</item>
-        <item>Combined Regiment</item>
-    </array>
     <array name="AdeptaSororitas">
         <item>Adepta Sororitas</item>
         <item>@drawable/icon_adepta_sororitas</item>
         <item>Imperium</item>
         <item>Hallowed Martyrs</item>
+    </array>
+    <array name="AdeptusAstartes">
+        <item>Adeptus Astartes</item>
+        <item>@drawable/icon_adeptus_astartes</item>
+        <item>Adeptus Astartes</item>
+        <item>1st Company Task Force</item>
     </array>
     <array name="AdeptusCustodes">
         <item>Adeptus Custodes</item>
@@ -97,41 +31,23 @@
             Hunter Cohort
         </item>
     </array>
-    <array name="GreyKnights">
-        <item>Grey Knights</item>
-        <item>@drawable/icon_grey_knights</item>
+    <array name="AstraMilitarum">
+        <item>Astra Militarum</item>
+        <item>@drawable/icon_astra_militarum</item>
         <item>Imperium</item>
-        <item>Teleport Strike Force</item>
+        <item>Combined Regiment</item>
     </array>
-    <array name="ImperialKnights">
-        <item>Imperial Knights</item>
-        <item>@drawable/icon_imperial_knights</item>
-        <item>Imperium</item>
-        <item>Noble Lance</item>
+    <array name="Asuryani">
+        <item>Asuryani</item>
+        <item>@drawable/icon_asuryani</item>
+        <item>Aeldari</item>
+        <item>Battle Host</item>
     </array>
-    <array name="ChaosSpaceMarines">
-        <item>Chaos Space Marines</item>
-        <item>@drawable/icon_chaos_space_marines</item>
-        <item>Chaos</item>
-        <item>Slaves to Darkness</item>
-    </array>
-    <array name="DeathGuard">
-        <item>Death Guard</item>
-        <item>@drawable/icon_death_guard</item>
-        <item>Chaos</item>
-        <item>Plague Company</item>
-    </array>
-    <array name="ThousandSons">
-        <item>Thousand Sons</item>
-        <item>@drawable/icon_thousand_sons</item>
-        <item>Chaos</item>
-        <item>Cult of Magic</item>
-    </array>
-    <array name="WorldEaters">
-        <item>World Eaters</item>
-        <item>@drawable/icon_world_eaters</item>
-        <item>Chaos</item>
-        <item>Berzerker Warband</item>
+    <array name="BloodAngels">
+        <item>Blood Angels</item>
+        <item>@drawable/icon_blood_angels</item>
+        <item>Adeptus Astartes</item>
+        <item>Sons of Sanguinius</item>
     </array>
     <array name="ChaosDaemons">
         <item>Chaos Daemons</item>
@@ -144,6 +60,72 @@
         <item>@drawable/icon_chaos_knights</item>
         <item>Chaos</item>
         <item>Traitoris Lance</item>
+    </array>
+    <array name="ChaosSpaceMarines">
+        <item>Chaos Space Marines</item>
+        <item>@drawable/icon_chaos_space_marines</item>
+        <item>Chaos</item>
+        <item>Slaves to Darkness</item>
+    </array>
+    <array name="DarkAngels">
+        <item>Dark Angels</item>
+        <item>@drawable/icon_dark_angels</item>
+        <item>Adeptus Astartes</item>
+        <item>Unforgiven Task Force</item>
+    </array>
+    <array name="DeathGuard">
+        <item>Death Guard</item>
+        <item>@drawable/icon_death_guard</item>
+        <item>Chaos</item>
+        <item>Plague Company</item>
+    </array>
+    <array name="Deathwatch">
+        <item>Deathwatch</item>
+        <item>@drawable/icon_deathwatch</item>
+        <item>Adeptus Astartes</item>
+        <item>Black Spear Task Force</item>
+    </array>
+    <array name="Drukhari">
+        <item>Drukhari</item>
+        <item>@drawable/icon_drukhari</item>
+        <item>Aeldari</item>
+        <item>Realspace Raiders, Skysplinter Assault</item>
+    </array>
+    <array name="GenestealerCult">
+        <item>Genestealer Cult</item>
+        <item>@drawable/icon_genestealer_cult</item>
+        <item>Xenos</item>
+        <item>Ascension Day</item>
+    </array>
+    <array name="GreyKnights">
+        <item>Grey Knights</item>
+        <item>@drawable/icon_grey_knights</item>
+        <item>Imperium</item>
+        <item>Teleport Strike Force</item>
+    </array>
+    <array name="ImperialFists">
+        <item>Imperial Fists</item>
+        <item>@drawable/icon_imperial_fists</item>
+        <item>Adeptus Astartes</item>
+        <item>Anvil Siege Force</item>
+    </array>
+    <array name="ImperialKnights">
+        <item>Imperial Knights</item>
+        <item>@drawable/icon_imperial_knights</item>
+        <item>Imperium</item>
+        <item>Noble Lance</item>
+    </array>
+    <array name="IronHands">
+        <item>Iron Hands</item>
+        <item>@drawable/icon_iron_hands</item>
+        <item>Adeptus Astartes</item>
+        <item>Ironstorm Spearhead</item>
+    </array>
+    <array name="LeaguesOfVotann">
+        <item>Leagues of Votann</item>
+        <item>@drawable/icon_leagues_of_votann</item>
+        <item>Xenos</item>
+        <item>Oathband</item>
     </array>
     <array name="Necrons">
         <item>Necrons</item>
@@ -159,17 +141,35 @@
         <item>Xenos</item>
         <item>Waaagh! Tribe</item>
     </array>
+    <array name="RavenGuard">
+        <item>Raven Guard</item>
+        <item>@drawable/icon_raven_guard</item>
+        <item>Adeptus Astartes</item>
+        <item>Vanguard Spearhead</item>
+    </array>
+    <array name="Salamanders">
+        <item>Salamanders</item>
+        <item>@drawable/icon_salamanders</item>
+        <item>Adeptus Astartes</item>
+        <item>Firestorm Assault Force</item>
+    </array>
+    <array name="SpaceWolves">
+        <item>Space Wolves</item>
+        <item>@drawable/icon_space_wolves</item>
+        <item>Adeptus Astartes</item>
+        <item>Champions of Russ</item>
+    </array>
     <array name="TauEmpire">
         <item>T’au Empire</item>
         <item>@drawable/icon_tau_empire</item>
         <item>Xenos</item>
         <item>Kauyon</item>
     </array>
-    <array name="LeaguesOfVotann">
-        <item>Leagues of Votann</item>
-        <item>@drawable/icon_votann</item>
-        <item>Xenos</item>
-        <item>Oathband</item>
+    <array name="ThousandSons">
+        <item>Thousand Sons</item>
+        <item>@drawable/icon_thousand_sons</item>
+        <item>Chaos</item>
+        <item>Cult of Magic</item>
     </array>
     <array name="Tyranids">
         <item>Tyranids</item>
@@ -179,28 +179,28 @@
             Vanguard Onslaught
         </item>
     </array>
-    <array name="GenestealerCult">
-        <item>Genestealer Cult</item>
-        <item>@drawable/icon_genestealer_cult</item>
-        <item>Xenos</item>
-        <item>Ascension Day</item>
+    <array name="Ultramarines">
+        <item>Ultramarines</item>
+        <item>@drawable/icon_ultramarines</item>
+        <item>Adeptus Astartes</item>
+        <item>Gladius Task Force</item>
     </array>
-    <array name="Asuryani">
-        <item>Asuryani</item>
-        <item>@drawable/icon_asuryani</item>
-        <item>Aeldari</item>
-        <item>Battle Host</item>
+    <array name="WhiteScars">
+        <item>White Scars</item>
+        <item>@drawable/icon_white_scars</item>
+        <item>Adeptus Astartes</item>
+        <item>Stormlance Task Force</item>
+    </array>
+    <array name="WorldEaters">
+        <item>World Eaters</item>
+        <item>@drawable/icon_world_eaters</item>
+        <item>Chaos</item>
+        <item>Berzerker Warband</item>
     </array>
     <array name="Ynnari">
         <item>Ynnari</item>
         <item>@drawable/icon_ynnari</item>
         <item>Aeldari</item>
         <item>Battle Host</item>
-    </array>
-    <array name="Drukhari">
-        <item>Drukhari</item>
-        <item>@drawable/icon_drukhari</item>
-        <item>Aeldari</item>
-        <item>Realspace Raiders, Skysplinter Assault</item>
     </array>
 </resources>

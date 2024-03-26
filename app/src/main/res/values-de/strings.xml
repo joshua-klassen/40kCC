@@ -1,4 +1,15 @@
 <resources>
     <string name="home_button">Startbild</string>
     <string name="back_button">Rückbild</string>
+    <string name="deployment_text">Deployments</string>
+    <string name="faction_text">Factions</string>
+    <string name="game_text">Games</string>
+    <string name="primary_mission_text">Primary Missions</string>
+    <string name="secondary_mission_text">Secondary Missions</string>
+    <string name="outcome_text">Outcomes</string>
+    <string name="player_text">Players</string>
+    <string name="prediction_text">Predictions</string>
+    <string name="round_text">Rounds</string>
+    <string name="team_text">Teams</string>
+    <string name="tournament_text">Tournaments</string>
 </resources>

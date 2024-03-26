@@ -150,7 +150,10 @@ class MainActivity : ComponentActivity() {
                         composable("players") {
                             PlayerScreen(
                                 playerViewModel,
-                                onBackClick = { navController.navigateUp() })
+                                factionData,
+                                onBackClick = { navController.navigateUp() },
+                                modifier
+                            )
                         }
                         composable("predictions") {
                             PredictionScreen(
