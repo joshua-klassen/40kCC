@@ -45,9 +45,54 @@ abstract class Application40kCCDatabase : RoomDatabase() {
 
         override fun onCreate(db: SupportSQLiteDatabase) {
             super.onCreate(db)
-            INSTANCE?.let { _ ->
-                scope.launch {}
+            INSTANCE?.let { database ->
+                scope.launch {
+                    populatePredictions(database.predictionDao())
+                }
             }
+        }
+
+        suspend fun populatePredictions(predictionDao: PredictionDao) {
+            var prediction = Prediction(
+                name = "Guaranteed",
+                color = "Green",
+                minPoints = 16,
+                maxPoints = 20,
+                defaultOption = true
+            )
+            predictionDao.insert(prediction)
+            prediction = Prediction(
+                name = "Advantage",
+                color = "Light Green",
+                minPoints = 12,
+                maxPoints = 15,
+                defaultOption = true
+            )
+            predictionDao.insert(prediction)
+            prediction = Prediction(
+                name = "Close Game",
+                color = "Yellow",
+                minPoints = 9,
+                maxPoints = 11,
+                defaultOption = true
+            )
+            predictionDao.insert(prediction)
+            prediction = Prediction(
+                name = "Disadvantage",
+                color = "Orange",
+                minPoints = 5,
+                maxPoints = 9,
+                defaultOption = true
+            )
+            predictionDao.insert(prediction)
+            prediction = Prediction(
+                name = "Volatile/Unsure",
+                color = "Red",
+                minPoints = 0,
+                maxPoints = 4,
+                defaultOption = true
+            )
+            predictionDao.insert(prediction)
         }
     }
 

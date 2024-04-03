@@ -14,17 +14,17 @@ data class GameExpanded(
         parentColumn = "player_02",
         entityColumn = "playerID"
     )
-    val player02: Player?,
+    val player02: Player? = null,
     @Relation(
         parentColumn = "player_01_team",
         entityColumn = "teamID"
     )
-    val player01Team: Team?,
+    val player01Team: Team? = null,
     @Relation(
         parentColumn = "player_02_team",
         entityColumn = "teamID"
     )
-    val player02Team: Team?,
+    val player02Team: Team? = null,
     @Relation(
         parentColumn = "prediction",
         entityColumn = "predictionID"
@@ -39,5 +39,5 @@ data class GameExpanded(
         parentColumn = "outcome",
         entityColumn = "outcomeID"
     )
-    val outcome: Outcome?
+    val outcome: Outcome? = null
 )

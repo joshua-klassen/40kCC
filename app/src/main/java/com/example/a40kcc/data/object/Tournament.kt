@@ -7,7 +7,7 @@ import java.util.Date
 
 @Entity("tournament")
 data class Tournament(
-    @PrimaryKey(true) val tournamentID: Int,
+    @PrimaryKey(true) val tournamentID: Int = 0,
     @ColumnInfo("name") val name: String,
     @ColumnInfo("round_count") val roundCount: Int,
     @ColumnInfo("date") val date: Date

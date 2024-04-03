@@ -79,18 +79,17 @@ fun DataScreen(
 }
 
 @Composable
-fun DataDetailScreen(
+private fun DataDetailScreen(
     headers: Array<String>?,
     details: Array<Any>?,
     modifier: Modifier = Modifier,
-    imageSize: Dp = 75.dp
+    imageSize: Dp = R.dimen.icon_image_size_small.dp
 ) {
     Row(horizontalArrangement = Arrangement.SpaceEvenly, modifier = modifier.fillMaxWidth()) {
         if (headers != null) {
             for (header in headers) {
                 Column(
                     modifier = modifier
-                        .alignByBaseline()
                         .wrapContentHeight()
                 ) {
                     Text(
@@ -108,7 +107,6 @@ fun DataDetailScreen(
             for (detail in details) {
                 Column(
                     modifier = modifier
-                        .alignByBaseline()
                         .wrapContentHeight()
                 ) {
                     if (detail is Drawable) {

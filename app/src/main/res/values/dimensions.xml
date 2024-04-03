@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="margin_small">4dp</dimen>
-    <dimen name="card_side_margin">6dp</dimen>
-    <dimen name="card_bottom_margin">14dp</dimen>
+    <dimen name="card_side_margin">4dp</dimen>
+    <dimen name="card_bottom_margin">8dp</dimen>
+    <dimen name="card_minimum_size">125dp</dimen>
+    <dimen name="icon_image_size_default">200dp</dimen>
+    <dimen name="icon_image_size_small">75dp</dimen>
+    <dimen name="icon_image_size_medium">150dp</dimen>
+    <dimen name="icon_image_size_large">250dp</dimen>
 </resources>

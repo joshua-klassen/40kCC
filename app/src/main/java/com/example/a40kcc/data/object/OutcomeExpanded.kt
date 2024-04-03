@@ -14,5 +14,5 @@ data class OutcomeExpanded(
         parentColumn = "player_02",
         entityColumn = "playerID"
     )
-    val player02: Player?
+    val player02: Player? = null
 )

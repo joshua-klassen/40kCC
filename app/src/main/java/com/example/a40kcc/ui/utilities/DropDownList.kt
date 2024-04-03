@@ -1,14 +1,16 @@
 package com.example.a40kcc.ui.utilities
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
@@ -39,7 +41,6 @@ fun DropDownList(
     Row(horizontalArrangement = Arrangement.SpaceEvenly, modifier = modifier) {
         Column(
             modifier = modifier
-                .alignByBaseline()
                 .wrapContentHeight()
         ) {
             if (!preText.isNullOrBlank()) {
@@ -51,19 +52,20 @@ fun DropDownList(
         }
         Column(
             modifier = modifier
-                .alignByBaseline()
                 .wrapContentHeight()
         ) {
             Box(
-                modifier = modifier.clickable { showDropdown = true }
+                modifier = modifier
+                    .clickable { showDropdown = true }
+                    .defaultMinSize(minWidth = 30.dp)
             ) {
                 Text(
-                    text = itemList[selectedIndex], modifier = modifier,
+                    text = itemList[selectedIndex],
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
 
-            Box {
+            Box(modifier = modifier) {
                 if (showDropdown) {
                     Popup(
                         alignment = Alignment.TopCenter,
@@ -75,18 +77,18 @@ fun DropDownList(
                         onDismissRequest = { showDropdown = false }
                     ) {
                         Column(
-                            modifier = modifier
+                            modifier = Modifier
                                 .heightIn(max = 90.dp)
+                                .widthIn(max = 150.dp)
                                 .verticalScroll(state = scrollState)
-                                .border(width = 1.dp, color = MaterialTheme.colorScheme.outline)
-                                .background(MaterialTheme.colorScheme.onBackground),
+                                .background(MaterialTheme.colorScheme.background)
+                                .wrapContentWidth(),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             itemList.onEachIndexed { index, item ->
                                 if (index != 0) {
                                     HorizontalDivider(
-                                        thickness = 1.dp,
-                                        color = MaterialTheme.colorScheme.outlineVariant
+                                        thickness = 1.dp
                                     )
                                 }
                                 Box(

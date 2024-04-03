@@ -1,8 +1,9 @@
 package com.example.a40kcc.ui.screen
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -17,7 +18,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.navigation.NavHostController
 import com.example.a40kcc.R
 import com.example.a40kcc.ui.utilities.MAIN_ROUTES
@@ -28,8 +30,7 @@ fun HomeScreen(navController: NavHostController, modifier: Modifier = Modifier) 
     val cardBottomMargin = dimensionResource(id = R.dimen.card_bottom_margin)
 
     LazyVerticalGrid(
-        columns = GridCells.Adaptive(minSize = 128.dp),
-        modifier = modifier
+        columns = GridCells.Adaptive(minSize = dimensionResource(id = R.dimen.card_minimum_size))
     ) {
         items(MAIN_ROUTES.keys.toList()) { key ->
             HomeScreenCard(
@@ -52,22 +53,28 @@ fun HomeScreenCard(
     cardText: String,
     cardImage: Painter,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    imageSize: Dp = dimensionResource(id = R.dimen.icon_image_size_small)
 ) {
     ElevatedCard(
         onClick = onClick,
         modifier = modifier.wrapContentWidth()
     ) {
-        Column {
-            Image(
-                painter = cardImage,
-                contentDescription = "Open $cardText",
-                contentScale = ContentScale.Inside
-            )
-            Text(
-                cardText,
-                modifier.align(Alignment.CenterHorizontally)
-            )
-        }
+        Image(
+            painter = cardImage,
+            contentDescription = "Open $cardText",
+            contentScale = ContentScale.Inside,
+            modifier = modifier
+                .height(imageSize)
+                .width(imageSize)
+                .align(alignment = Alignment.CenterHorizontally)
+        )
+        Text(
+            cardText,
+            textAlign = TextAlign.Center,
+            modifier = modifier
+                .align(alignment = Alignment.CenterHorizontally)
+                .wrapContentWidth()
+        )
     }
 }

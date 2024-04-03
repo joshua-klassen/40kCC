@@ -26,7 +26,7 @@ import androidx.room.PrimaryKey
         )]
 )
 data class Outcome(
-    @PrimaryKey(true) val outcomeID: Int,
+    @PrimaryKey(true) val outcomeID: Int = 0,
     @ColumnInfo("player_01") val player01ID: Int,
     @ColumnInfo("player_02", defaultValue = "NULL") val player02ID: Int?,
     @ColumnInfo("player_01_points") val player01Points: Int,

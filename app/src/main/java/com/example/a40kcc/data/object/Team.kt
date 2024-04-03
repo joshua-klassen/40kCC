@@ -6,6 +6,6 @@ import androidx.room.PrimaryKey
 
 @Entity("team")
 data class Team(
-    @PrimaryKey(true) val teamID: Int,
+    @PrimaryKey(true) val teamID: Int = 0,
     @ColumnInfo("name") val name: String
 )

@@ -11,5 +11,5 @@ data class PlayerExpanded(
         entityColumn = "teamID",
         associateBy = Junction(PlayerTeamCrossRef::class)
     )
-    val team: List<Team>?
+    val team: List<Team>? = null
 )

@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
     "player"
 )
 data class Player(
-    @PrimaryKey(true) val playerID: Int,
+    @PrimaryKey(true) val playerID: Int = 0,
     @ColumnInfo("name") val name: String,
     @ColumnInfo("nickname", defaultValue = "NULL") val nickname: String?,
     @ColumnInfo("preferred_faction", defaultValue = "NULL") val factionName: String?

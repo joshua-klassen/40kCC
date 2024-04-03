@@ -18,6 +18,10 @@ class PlayerViewModel(private val playerRepository: PlayerRepository) : ViewMode
     fun insert(player: Player) = viewModelScope.launch {
         playerRepository.insert(player)
     }
+
+    fun delete(player: Player) = viewModelScope.launch {
+        playerRepository.delete(player)
+    }
 }
 
 class PlayerViewModelFactory(private val playerRepository: PlayerRepository) :
