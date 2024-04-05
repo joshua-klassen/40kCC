@@ -5,7 +5,8 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(
-    "player"
+    "player",
+    indices = [androidx.room.Index(value = ["playerID"])]
 )
 data class Player(
     @PrimaryKey(true) val playerID: Int = 0,

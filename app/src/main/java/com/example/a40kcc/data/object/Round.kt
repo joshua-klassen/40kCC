@@ -3,10 +3,12 @@ package com.example.a40kcc.data.`object`
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
 @Entity(
     "round",
+    indices = [Index(value = ["roundID"]), Index(value = ["tournament"])],
     foreignKeys = [ForeignKey(
         entity = Tournament::class,
         childColumns = ["tournament"],

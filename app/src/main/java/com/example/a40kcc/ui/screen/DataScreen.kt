@@ -32,10 +32,9 @@ import com.google.accompanist.drawablepainter.rememberDrawablePainter
 
 @Composable
 fun DataScreen(
-    cardItems: Set<Any>,
+    data: DataObject,
     navController: NavHostController,
-    modifier: Modifier = Modifier,
-    data: DataObject? = null
+    modifier: Modifier = Modifier
 ) {
     Column {
         Button(
@@ -48,30 +47,25 @@ fun DataScreen(
         }
 
         LazyColumn {
-            items(cardItems.toList()) { key ->
+            items(data.getDataKeys().toList()) { key ->
                 var showDetails by remember { mutableStateOf(false) }
-                if (key is String) {
-                    var onClick = {}
-                    if (data != null) {
-                        onClick = {
-                            showDetails = !showDetails
-                        }
-                    }
-                    Text(
-                        key,
-                        style = MaterialTheme.typography.titleLarge,
-                        modifier = modifier
-                            .clickable(true, onClick = onClick)
-                            .fillMaxWidth()
-                    )
+                val onClick = {
+                    showDetails = !showDetails
+                }
+                Text(
+                    key,
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = modifier
+                        .clickable(true, onClick = onClick)
+                        .fillMaxWidth()
+                )
 
-                    if (showDetails) {
-                        DataDetailScreen(
-                            data?.getHeaders(),
-                            data?.getDataValue(key),
-                            modifier
-                        )
-                    }
+                if (showDetails) {
+                    DataDetailScreen(
+                        data.getHeaders(),
+                        data.getDataValue(key),
+                        modifier
+                    )
                 }
             }
         }
@@ -80,24 +74,22 @@ fun DataScreen(
 
 @Composable
 private fun DataDetailScreen(
-    headers: Array<String>?,
+    headers: Array<String>,
     details: Array<Any>?,
     modifier: Modifier = Modifier,
     imageSize: Dp = R.dimen.icon_image_size_small.dp
 ) {
     Row(horizontalArrangement = Arrangement.SpaceEvenly, modifier = modifier.fillMaxWidth()) {
-        if (headers != null) {
-            for (header in headers) {
-                Column(
-                    modifier = modifier
-                        .wrapContentHeight()
-                ) {
-                    Text(
-                        header,
-                        style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier
-                    )
-                }
+        for (header in headers) {
+            Column(
+                modifier = modifier
+                    .wrapContentHeight()
+            ) {
+                Text(
+                    header,
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier
+                )
             }
         }
     }

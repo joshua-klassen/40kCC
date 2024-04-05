@@ -5,18 +5,18 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
-import com.example.a40kcc.data.model.RoundViewModel
 import com.example.a40kcc.data.`object`.Round
+import com.example.a40kcc.ui.utilities.ROUND_VIEW_MODEL
 
 @Composable
-fun RoundScreen(roundViewModel: RoundViewModel, onBackClick: () -> Unit) {
+fun RoundScreen(onBackClick: () -> Unit) {
     Column {
         Button(onClick = onBackClick) {
             Column {
                 Text("Back")
             }
         }
-        val rounds: List<Round>? = roundViewModel.allRounds.observeAsState().value
+        val rounds: List<Round>? = ROUND_VIEW_MODEL.allRounds.observeAsState().value
 
         if (rounds != null) {
             RoundScreen(rounds)

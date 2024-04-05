@@ -7,7 +7,7 @@ import androidx.lifecycle.asLiveData
 import com.example.a40kcc.data.`object`.Team
 import com.example.a40kcc.data.repository.TeamRepository
 
-class TeamViewModel(teamRepository: TeamRepository) : ViewModel() {
+class TeamViewModel(private val teamRepository: TeamRepository) : ViewModel() {
     val allTeams: LiveData<List<Team>> = teamRepository.allTeams.asLiveData()
 }
 

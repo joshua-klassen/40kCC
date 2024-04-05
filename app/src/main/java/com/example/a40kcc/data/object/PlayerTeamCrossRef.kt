@@ -2,9 +2,11 @@ package com.example.a40kcc.data.`object`
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 
 @Entity(
     "playerTeamCrossRef",
+    indices = [Index(value = ["playerID"]), Index(value = ["teamID"])],
     primaryKeys = ["playerID", "teamID"],
     foreignKeys = [ForeignKey(
         entity = Team::class,

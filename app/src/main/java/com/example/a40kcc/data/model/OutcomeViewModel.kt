@@ -7,7 +7,7 @@ import androidx.lifecycle.asLiveData
 import com.example.a40kcc.data.`object`.Outcome
 import com.example.a40kcc.data.repository.OutcomeRepository
 
-class OutcomeViewModel(outcomeRepository: OutcomeRepository) : ViewModel() {
+class OutcomeViewModel(private val outcomeRepository: OutcomeRepository) : ViewModel() {
     val allOutcomes: LiveData<List<Outcome>> = outcomeRepository.allOutcomes.asLiveData()
 }
 

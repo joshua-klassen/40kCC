@@ -7,7 +7,7 @@ import androidx.lifecycle.asLiveData
 import com.example.a40kcc.data.`object`.Tournament
 import com.example.a40kcc.data.repository.TournamentRepository
 
-class TournamentViewModel(tournamentRepository: TournamentRepository) : ViewModel() {
+class TournamentViewModel(private val tournamentRepository: TournamentRepository) : ViewModel() {
     val allTournaments: LiveData<List<Tournament>> =
         tournamentRepository.allTournaments.asLiveData()
 }

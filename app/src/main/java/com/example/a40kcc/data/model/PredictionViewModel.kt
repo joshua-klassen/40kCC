@@ -20,6 +20,10 @@ class PredictionViewModel(private val predictionRepository: PredictionRepository
     fun delete(prediction: Prediction) = viewModelScope.launch {
         predictionRepository.delete(prediction)
     }
+
+    fun getByName(predictionName: String): LiveData<Prediction> {
+        return predictionRepository.getPrediction(predictionName).asLiveData()
+    }
 }
 
 class PredictionViewModelFactory(private val predictionRepository: PredictionRepository) :

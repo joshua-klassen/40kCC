@@ -39,17 +39,15 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.Dialog
 import com.example.a40kcc.R
-import com.example.a40kcc.data.model.PlayerViewModel
-import com.example.a40kcc.data.`object`.DataObject
 import com.example.a40kcc.data.`object`.Player
 import com.example.a40kcc.data.`object`.PlayerExpanded
 import com.example.a40kcc.ui.utilities.DropDownList
+import com.example.a40kcc.ui.utilities.FACTION_DATA
+import com.example.a40kcc.ui.utilities.PLAYER_VIEW_MODEL
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 
 @Composable
 fun PlayerScreen(
-    playerViewModel: PlayerViewModel,
-    factionData: DataObject,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -65,7 +63,7 @@ fun PlayerScreen(
         }
 
         val players: List<PlayerExpanded>? =
-            playerViewModel.allPlayersExpanded.observeAsState().value
+            PLAYER_VIEW_MODEL.allPlayersExpanded.observeAsState().value
 
         Row(
             horizontalArrangement = Arrangement.SpaceEvenly,
@@ -95,8 +93,7 @@ fun PlayerScreen(
 
         if (players != null) {
             PlayerScreen(
-                players, factionData,
-                playerViewModel, modifier
+                players, modifier
             )
         }
 
@@ -110,8 +107,6 @@ fun PlayerScreen(
 
             if (addPlayer) {
                 AddPlayer(
-                    factionData,
-                    playerViewModel,
                     modifier
                 ) { addPlayer = !addPlayer }
             }
@@ -122,8 +117,6 @@ fun PlayerScreen(
 @Composable
 private fun PlayerScreen(
     players: List<PlayerExpanded>,
-    factionData: DataObject,
-    playerViewModel: PlayerViewModel,
     modifier: Modifier = Modifier
 ) {
     LazyColumn {
@@ -174,7 +167,6 @@ private fun PlayerScreen(
                             if (removePlayer) {
                                 RemovePlayer(
                                     player,
-                                    playerViewModel,
                                     modifier
                                 ) { removePlayer = !removePlayer }
                             }
@@ -186,7 +178,6 @@ private fun PlayerScreen(
             if (showDetails) {
                 PlayerDetailScreen(
                     player,
-                    factionData,
                     modifier
                 )
             }
@@ -197,11 +188,10 @@ private fun PlayerScreen(
 @Composable
 private fun PlayerDetailScreen(
     player: PlayerExpanded,
-    factionData: DataObject,
     modifier: Modifier = Modifier
 ) {
     val playerFaction =
-        if (!player.player.factionName.isNullOrBlank()) factionData.getDataValue(player.player.factionName) else null
+        if (!player.player.factionName.isNullOrBlank()) FACTION_DATA.getDataValue(player.player.factionName) else null
     Row(horizontalArrangement = Arrangement.SpaceEvenly, modifier = modifier.fillMaxWidth()) {
         Column(
             modifier = modifier.wrapContentHeight()
@@ -260,8 +250,6 @@ private fun PlayerDetailScreen(
 
 @Composable
 private fun AddPlayer(
-    factionData: DataObject,
-    playerViewModel: PlayerViewModel,
     modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit
 ) {
@@ -269,14 +257,14 @@ private fun AddPlayer(
     var playerNickname by remember { mutableStateOf("") }
     var playerFaction by remember { mutableStateOf("") }
     var selectedIndex by remember { mutableIntStateOf(0) }
-    val factionNames: List<String> = listOf("") + factionData.getDataKeys().toList()
+    val factionNames: List<String> = listOf("") + FACTION_DATA.getDataKeys().toList()
     val onConfirmation = {
         val newPlayer = Player(
             name = playerName,
             nickname = playerNickname,
             factionName = playerFaction
         )
-        playerViewModel.insert(newPlayer)
+        PLAYER_VIEW_MODEL.insert(newPlayer)
         onDismissRequest()
     }
     Dialog(onDismissRequest = { onDismissRequest() }) {
@@ -347,12 +335,11 @@ private fun AddPlayer(
 @Composable
 private fun RemovePlayer(
     player: PlayerExpanded,
-    playerViewModel: PlayerViewModel,
     modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit
 ) {
     val onConfirmation = {
-        playerViewModel.delete(player.player)
+        PLAYER_VIEW_MODEL.delete(player.player)
         onDismissRequest()
     }
     Dialog(onDismissRequest = { onDismissRequest() }) {

@@ -2,9 +2,13 @@ package com.example.a40kcc.data.`object`
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity("prediction")
+@Entity(
+    "prediction",
+    indices = [Index(value = ["predictionID"])]
+)
 data class Prediction(
     @PrimaryKey(true) val predictionID: Int = 0,
     @ColumnInfo("name") val name: String,

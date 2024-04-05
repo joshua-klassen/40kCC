@@ -1,6 +1,27 @@
 package com.example.a40kcc.ui.utilities
 
 import com.example.a40kcc.R
+import com.example.a40kcc.data.model.GameViewModel
+import com.example.a40kcc.data.model.OutcomeViewModel
+import com.example.a40kcc.data.model.PlayerViewModel
+import com.example.a40kcc.data.model.PredictionViewModel
+import com.example.a40kcc.data.model.RoundViewModel
+import com.example.a40kcc.data.model.TeamViewModel
+import com.example.a40kcc.data.model.TournamentViewModel
+import com.example.a40kcc.data.`object`.DataObject
+
+lateinit var DEPLOYMENT_DATA: DataObject
+lateinit var FACTION_DATA: DataObject
+lateinit var PRIMARY_MISSION_DATA: DataObject
+lateinit var SECONDARY_MISSION_DATA: DataObject
+
+lateinit var GAME_VIEW_MODEL: GameViewModel
+lateinit var OUTCOME_VIEW_MODEL: OutcomeViewModel
+lateinit var PLAYER_VIEW_MODEL: PlayerViewModel
+lateinit var PREDICTION_VIEW_MODEL: PredictionViewModel
+lateinit var ROUND_VIEW_MODEL: RoundViewModel
+lateinit var TEAM_VIEW_MODEL: TeamViewModel
+lateinit var TOURNAMENT_VIEW_MODEL: TournamentViewModel
 
 val MAIN_ROUTES: Map<String, Map<String, String>> = mapOf(
     "deployments" to mapOf(

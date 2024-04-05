@@ -4,13 +4,13 @@ import android.app.Activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -39,65 +39,71 @@ import com.example.a40kcc.ui.screen.RoundScreen
 import com.example.a40kcc.ui.screen.TeamScreen
 import com.example.a40kcc.ui.screen.TournamentScreen
 import com.example.a40kcc.ui.theme.Theme40kCC
+import com.example.a40kcc.ui.utilities.DEPLOYMENT_DATA
+import com.example.a40kcc.ui.utilities.FACTION_DATA
+import com.example.a40kcc.ui.utilities.GAME_VIEW_MODEL
+import com.example.a40kcc.ui.utilities.OUTCOME_VIEW_MODEL
+import com.example.a40kcc.ui.utilities.PLAYER_VIEW_MODEL
+import com.example.a40kcc.ui.utilities.PREDICTION_VIEW_MODEL
+import com.example.a40kcc.ui.utilities.PRIMARY_MISSION_DATA
+import com.example.a40kcc.ui.utilities.ROUND_VIEW_MODEL
+import com.example.a40kcc.ui.utilities.SECONDARY_MISSION_DATA
+import com.example.a40kcc.ui.utilities.TEAM_VIEW_MODEL
+import com.example.a40kcc.ui.utilities.TOURNAMENT_VIEW_MODEL
 
 class MainActivity : ComponentActivity() {
-    private lateinit var deploymentData: DataObject
-    private lateinit var factionData: DataObject
-    private lateinit var primaryMissionData: DataObject
-    private lateinit var secondaryMissionData: DataObject
-
-    private val gameViewModel: GameViewModel by viewModels {
-        GameViewModelFactory((application as Application40kCC).game)
-    }
-
-    private val outcomeViewModel: OutcomeViewModel by viewModels {
-        OutcomeViewModelFactory((application as Application40kCC).outcome)
-    }
-
-    private val playerViewModel: PlayerViewModel by viewModels {
-        PlayerViewModelFactory((application as Application40kCC).player)
-    }
-
-    private val predictionViewModel: PredictionViewModel by viewModels {
-        PredictionViewModelFactory((application as Application40kCC).prediction)
-    }
-
-    private val roundViewModel: RoundViewModel by viewModels {
-        RoundViewModelFactory((application as Application40kCC).round)
-    }
-
-    private val teamViewModel: TeamViewModel by viewModels {
-        TeamViewModelFactory((application as Application40kCC).team)
-    }
-
-    private val tournamentViewModel: TournamentViewModel by viewModels {
-        TournamentViewModelFactory((application as Application40kCC).tournament)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        GAME_VIEW_MODEL = ViewModelProvider(
+            this,
+            GameViewModelFactory((application as Application40kCC).game)
+        )[GameViewModel::class.java]
+        OUTCOME_VIEW_MODEL = ViewModelProvider(
+            this,
+            OutcomeViewModelFactory((application as Application40kCC).outcome)
+        )[OutcomeViewModel::class.java]
+        PLAYER_VIEW_MODEL = ViewModelProvider(
+            this,
+            PlayerViewModelFactory((application as Application40kCC).player)
+        )[PlayerViewModel::class.java]
+        PREDICTION_VIEW_MODEL = ViewModelProvider(
+            this,
+            PredictionViewModelFactory((application as Application40kCC).prediction)
+        )[PredictionViewModel::class.java]
+        ROUND_VIEW_MODEL = ViewModelProvider(
+            this,
+            RoundViewModelFactory((application as Application40kCC).round)
+        )[RoundViewModel::class.java]
+        TEAM_VIEW_MODEL = ViewModelProvider(
+            this,
+            TeamViewModelFactory((application as Application40kCC).team)
+        )[TeamViewModel::class.java]
+        TOURNAMENT_VIEW_MODEL = ViewModelProvider(
+            this,
+            TournamentViewModelFactory((application as Application40kCC).tournament)
+        )[TournamentViewModel::class.java]
         setContent {
             Theme40kCC {
                 val margin = dimensionResource(id = R.dimen.margin_small)
                 val modifier = Modifier.padding(margin, margin)
                 Surface(modifier = modifier.fillMaxSize()) {
                     val activity = (LocalContext.current as Activity)
-                    deploymentData = DataObject(
+                    DEPLOYMENT_DATA = DataObject(
                         activity.resources,
                         R.array.DeploymentHeader,
                         R.array.Deployments
                     )
-                    factionData = DataObject(
+                    FACTION_DATA = DataObject(
                         activity.resources,
                         R.array.FactionsHeader,
                         R.array.Factions
                     )
-                    primaryMissionData = DataObject(
+                    PRIMARY_MISSION_DATA = DataObject(
                         activity.resources,
                         R.array.PrimaryMissionHeader,
                         R.array.PrimaryMissions
                     )
-                    secondaryMissionData = DataObject(
+                    SECONDARY_MISSION_DATA = DataObject(
                         activity.resources,
                         R.array.SecondaryMissionHeader,
                         R.array.SecondaryMissions
@@ -107,72 +113,60 @@ class MainActivity : ComponentActivity() {
                         composable("home") { HomeScreen(navController, modifier) }
                         composable("deployments") {
                             DataScreen(
-                                deploymentData.getDataKeys(),
+                                DEPLOYMENT_DATA,
                                 navController,
-                                modifier,
-                                deploymentData
+                                modifier
                             )
                         }
                         composable("factions") {
                             DataScreen(
-                                factionData.getDataKeys(),
+                                FACTION_DATA,
                                 navController,
-                                modifier,
-                                factionData
+                                modifier
                             )
                         }
                         composable("games") {
                             GameScreen(
-                                gameViewModel,
                                 onBackClick = { navController.navigateUp() })
                         }
                         composable("primaryMissions") {
                             DataScreen(
-                                primaryMissionData.getDataKeys(),
+                                PRIMARY_MISSION_DATA,
                                 navController,
-                                modifier,
-                                primaryMissionData
+                                modifier
                             )
                         }
                         composable("secondaryMissions") {
                             DataScreen(
-                                secondaryMissionData.getDataKeys(),
+                                SECONDARY_MISSION_DATA,
                                 navController,
-                                modifier,
-                                secondaryMissionData
+                                modifier
                             )
                         }
                         composable("outcomes") {
                             OutcomeScreen(
-                                outcomeViewModel,
                                 onBackClick = { navController.navigateUp() })
                         }
                         composable("players") {
                             PlayerScreen(
-                                playerViewModel,
-                                factionData,
                                 onBackClick = { navController.navigateUp() },
                                 modifier
                             )
                         }
                         composable("predictions") {
                             PredictionScreen(
-                                predictionViewModel,
                                 onBackClick = { navController.navigateUp() })
                         }
                         composable("rounds") {
                             RoundScreen(
-                                roundViewModel,
                                 onBackClick = { navController.navigateUp() })
                         }
                         composable("teams") {
                             TeamScreen(
-                                teamViewModel,
                                 onBackClick = { navController.navigateUp() })
                         }
                         composable("tournaments") {
                             TournamentScreen(
-                                tournamentViewModel,
                                 onBackClick = { navController.navigateUp() })
                         }
                     }

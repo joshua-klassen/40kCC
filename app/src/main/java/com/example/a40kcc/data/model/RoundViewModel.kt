@@ -7,7 +7,7 @@ import androidx.lifecycle.asLiveData
 import com.example.a40kcc.data.`object`.Round
 import com.example.a40kcc.data.repository.RoundRepository
 
-class RoundViewModel(roundRepository: RoundRepository) : ViewModel() {
+class RoundViewModel(private val roundRepository: RoundRepository) : ViewModel() {
     val allRounds: LiveData<List<Round>> = roundRepository.allRounds.asLiveData()
 }
 

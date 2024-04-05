@@ -35,12 +35,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.window.Dialog
 import com.example.a40kcc.R
-import com.example.a40kcc.data.model.PredictionViewModel
 import com.example.a40kcc.data.`object`.Prediction
+import com.example.a40kcc.ui.utilities.PREDICTION_VIEW_MODEL
 
 @Composable
 fun PredictionScreen(
-    predictionViewModel: PredictionViewModel,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -56,7 +55,7 @@ fun PredictionScreen(
         }
 
         val predictions: List<Prediction>? =
-            predictionViewModel.allPredictions.observeAsState().value
+            PREDICTION_VIEW_MODEL.allPredictions.observeAsState().value
 
         Row(
             horizontalArrangement = Arrangement.SpaceEvenly,
@@ -85,7 +84,7 @@ fun PredictionScreen(
         }
 
         if (predictions != null) {
-            PredictionScreen(predictions, predictionViewModel, modifier)
+            PredictionScreen(predictions, modifier)
         }
 
         FloatingActionButton(
@@ -98,7 +97,6 @@ fun PredictionScreen(
 
             if (addPrediction) {
                 AddPrediction(
-                    predictionViewModel,
                     modifier
                 ) { addPrediction = !addPrediction }
             }
@@ -109,7 +107,6 @@ fun PredictionScreen(
 @Composable
 private fun PredictionScreen(
     predictions: List<Prediction>,
-    predictionViewModel: PredictionViewModel,
     modifier: Modifier = Modifier
 ) {
     LazyColumn {
@@ -158,7 +155,6 @@ private fun PredictionScreen(
                             if (removePrediction) {
                                 RemovePrediction(
                                     prediction,
-                                    predictionViewModel,
                                     modifier
                                 ) { removePrediction = !removePrediction }
                             }
@@ -212,7 +208,6 @@ private fun PredictionDetailScreen(
 
 @Composable
 private fun AddPrediction(
-    predictionViewModel: PredictionViewModel,
     modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit
 ) {
@@ -227,7 +222,7 @@ private fun AddPrediction(
             minPoints = predictionMin,
             maxPoints = predictionMax
         )
-        predictionViewModel.insert(newPrediction)
+        PREDICTION_VIEW_MODEL.insert(newPrediction)
         onDismissRequest()
     }
     Dialog(onDismissRequest = { onDismissRequest() }) {
@@ -306,12 +301,11 @@ private fun AddPrediction(
 @Composable
 private fun RemovePrediction(
     prediction: Prediction,
-    predictionViewModel: PredictionViewModel,
     modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit
 ) {
     val onConfirmation = {
-        predictionViewModel.delete(prediction)
+        PREDICTION_VIEW_MODEL.delete(prediction)
         onDismissRequest()
     }
     Dialog(onDismissRequest = { onDismissRequest() }) {
