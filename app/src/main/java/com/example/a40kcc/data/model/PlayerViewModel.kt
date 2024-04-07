@@ -22,6 +22,10 @@ class PlayerViewModel(private val playerRepository: PlayerRepository) : ViewMode
     fun delete(player: Player) = viewModelScope.launch {
         playerRepository.delete(player)
     }
+
+    fun getByName(playerName: String): LiveData<Player> {
+        return playerRepository.getPlayer(playerName).asLiveData()
+    }
 }
 
 class PlayerViewModelFactory(private val playerRepository: PlayerRepository) :

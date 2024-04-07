@@ -24,15 +24,15 @@ interface PlayerDao : BaseDao<Player> {
     fun getByIdExpanded(playerId: Int): Flow<PlayerExpanded>
 
     @Query(
-        "SELECT * FROM player WHERE name LIKE :playerName"
+        "SELECT * FROM player WHERE name LIKE :playerName LIMIT 1"
     )
-    fun getPlayersByName(playerName: String): Flow<List<Player>>
+    fun getPlayerByName(playerName: String): Flow<Player>
 
     @Transaction
     @Query(
-        "SELECT * FROM player WHERE name LIKE :playerName"
+        "SELECT * FROM player WHERE name LIKE :playerName LIMIT 1"
     )
-    fun getPlayersByNameExpanded(playerName: String): Flow<List<PlayerExpanded>>
+    fun getPlayerByNameExpanded(playerName: String): Flow<PlayerExpanded>
 
     @Query(
         "SELECT * FROM player WHERE preferred_faction LIKE :factionName"
