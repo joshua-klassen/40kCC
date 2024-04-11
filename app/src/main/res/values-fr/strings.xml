@@ -4,6 +4,7 @@
     <string name="deployment_text">Deployments</string>
     <string name="faction_text">Factions</string>
     <string name="game_text">Games</string>
+    <string name="live_round_text">Live Round</string>
     <string name="primary_mission_text">Primary Missions</string>
     <string name="secondary_mission_text">Secondary Missions</string>
     <string name="outcome_text">Outcomes</string>

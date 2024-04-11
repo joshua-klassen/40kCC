@@ -3,7 +3,7 @@ package com.example.a40kcc.data.`object`
 import androidx.room.Embedded
 import androidx.room.Relation
 
-data class OutcomeExpanded(
+data class OutcomeWithPlayers(
     @Embedded val outcome: Outcome,
     @Relation(
         parentColumn = "player_01",

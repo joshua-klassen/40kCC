@@ -34,12 +34,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.Dialog
-import androidx.core.graphics.toColorInt
 import com.example.a40kcc.R
 import com.example.a40kcc.data.`object`.Game
 import com.example.a40kcc.data.`object`.GameExpanded
 import com.example.a40kcc.ui.utilities.DropDownList
 import com.example.a40kcc.ui.utilities.FACTION_DATA
+import com.example.a40kcc.ui.utilities.GAME_EXPANDED_VIEW_MODEL
 import com.example.a40kcc.ui.utilities.GAME_VIEW_MODEL
 import com.example.a40kcc.ui.utilities.PLAYER_VIEW_MODEL
 import com.example.a40kcc.ui.utilities.PREDICTION_VIEW_MODEL
@@ -58,12 +58,12 @@ fun GameScreen(
             modifier = modifier
         ) {
             Column {
-                Text(stringResource(id = R.string.home_button))
+                Text(text = stringResource(id = R.string.home_button))
             }
         }
 
         val games: List<GameExpanded>? =
-            GAME_VIEW_MODEL.allGamesExpanded.observeAsState().value
+            GAME_EXPANDED_VIEW_MODEL.allGamesFlow.observeAsState().value
 
         Row(
             horizontalArrangement = Arrangement.SpaceEvenly,
@@ -75,7 +75,7 @@ fun GameScreen(
                     .wrapContentHeight()
             ) {
                 Text(
-                    "Player 01",
+                    text = "Player 01",
                     style = MaterialTheme.typography.titleLarge
                 )
             }
@@ -85,7 +85,7 @@ fun GameScreen(
                     .wrapContentHeight()
             ) {
                 Text(
-                    "Player 02",
+                    text = "Player 02",
                     style = MaterialTheme.typography.titleLarge
                 )
             }
@@ -95,7 +95,7 @@ fun GameScreen(
                     .wrapContentHeight()
             ) {
                 Text(
-                    "Prediction",
+                    text = "Prediction",
                     style = MaterialTheme.typography.titleLarge
                 )
             }
@@ -105,7 +105,7 @@ fun GameScreen(
                     .wrapContentHeight()
             ) {
                 Text(
-                    "Round Number",
+                    text = "Round Number",
                     style = MaterialTheme.typography.titleLarge
                 )
             }
@@ -113,7 +113,8 @@ fun GameScreen(
 
         if (games != null) {
             GameScreen(
-                games, modifier
+                games = games,
+                modifier = modifier
             )
         }
 
@@ -123,12 +124,13 @@ fun GameScreen(
             },
             modifier = modifier.align(Alignment.End)
         ) {
-            Icon(Icons.Filled.Add, "Add Game")
+            Icon(imageVector = Icons.Filled.Add, contentDescription = "Add Game")
 
             if (addGame) {
                 AddGame(
-                    modifier
-                ) { addGame = !addGame }
+                    modifier = modifier,
+                    onDismissRequest = { addGame = !addGame }
+                )
             }
         }
     }
@@ -140,7 +142,7 @@ private fun GameScreen(
     modifier: Modifier = Modifier
 ) {
     LazyColumn {
-        items(games) { game ->
+        items(items = games) { game ->
             var showDetails by remember { mutableStateOf(false) }
             var removeGame by remember { mutableStateOf(false) }
             var editGame by remember { mutableStateOf(false) }
@@ -154,10 +156,10 @@ private fun GameScreen(
                         .wrapContentHeight()
                 ) {
                     Text(
-                        game.player01.name,
+                        text = game.player01.player.name,
                         style = MaterialTheme.typography.titleLarge,
                         modifier = modifier
-                            .clickable(true, onClick = {
+                            .clickable(enabled = true, onClick = {
                                 showDetails = !showDetails
                             })
                     )
@@ -169,7 +171,7 @@ private fun GameScreen(
                 ) {
                     if (game.player02 != null) {
                         Text(
-                            text = game.player02.name,
+                            text = game.player02.player.name,
                             style = MaterialTheme.typography.titleLarge,
                             modifier = modifier
                         )
@@ -181,13 +183,13 @@ private fun GameScreen(
                         .wrapContentHeight()
                 ) {
                     Text(
-                        game.prediction.name,
+                        text = game.prediction.name,
                         style = MaterialTheme.typography.titleLarge,
                         modifier = modifier
-                            .clickable(true, onClick = {
+                            .background(Color(game.prediction.color))
+                            .clickable(enabled = true, onClick = {
                                 showDetails = !showDetails
                             })
-                            .background(Color(game.prediction.color.toColorInt()))
                     )
                 }
                 Column(
@@ -196,10 +198,10 @@ private fun GameScreen(
                         .wrapContentHeight()
                 ) {
                     Text(
-                        game.round.number.toString(),
+                        text = game.round.round.number.toString(),
                         style = MaterialTheme.typography.titleLarge,
                         modifier = modifier
-                            .clickable(true, onClick = {
+                            .clickable(enabled = true, onClick = {
                                 showDetails = !showDetails
                             })
                     )
@@ -212,13 +214,17 @@ private fun GameScreen(
                             },
                             modifier = modifier.align(Alignment.End)
                         ) {
-                            Icon(Icons.Filled.Clear, "Remove Game")
+                            Icon(
+                                imageVector = Icons.Filled.Clear,
+                                contentDescription = "Remove Game"
+                            )
 
                             if (removeGame) {
                                 RemoveGame(
-                                    game,
-                                    modifier
-                                ) { removeGame = !removeGame }
+                                    game = game,
+                                    modifier = modifier,
+                                    onDismissRequest = { removeGame = !removeGame }
+                                )
                             }
                         }
                         SmallFloatingActionButton(
@@ -227,13 +233,14 @@ private fun GameScreen(
                             },
                             modifier = modifier.align(Alignment.End)
                         ) {
-                            Icon(Icons.Filled.Build, "Edit Game")
+                            Icon(imageVector = Icons.Filled.Build, contentDescription = "Edit Game")
 
                             if (editGame) {
                                 EditGame(
-                                    game,
-                                    modifier
-                                ) { editGame = !editGame }
+                                    game = game,
+                                    modifier = modifier,
+                                    onDismissRequest = { editGame = !editGame }
+                                )
                             }
                         }
                     }
@@ -242,8 +249,8 @@ private fun GameScreen(
 
             if (showDetails) {
                 GameDetailScreen(
-                    game,
-                    modifier
+                    game = game,
+                    modifier = modifier
                 )
             }
         }
@@ -260,11 +267,11 @@ private fun GameDetailScreen(
             modifier = modifier.wrapContentHeight()
         ) {
             Text(
-                "Player 01 Faction",
+                text = "Player 01 Faction",
                 style = MaterialTheme.typography.titleMedium
             )
             Text(
-                game.game.player01FactionName,
+                text = game.game.player01FactionName,
                 style = MaterialTheme.typography.bodyMedium
             )
         }
@@ -272,12 +279,12 @@ private fun GameDetailScreen(
             modifier = modifier.wrapContentHeight()
         ) {
             Text(
-                "Player 01 Detachment",
+                text = "Player 01 Detachment",
                 style = MaterialTheme.typography.titleMedium
             )
             game.game.player01FactionDetachment?.let {
                 Text(
-                    it,
+                    text = it,
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
@@ -286,11 +293,11 @@ private fun GameDetailScreen(
             modifier = modifier.wrapContentHeight()
         ) {
             Text(
-                "Player 02 Faction",
+                text = "Player 02 Faction",
                 style = MaterialTheme.typography.titleMedium
             )
             Text(
-                game.game.player02FactionName,
+                text = game.game.player02FactionName,
                 style = MaterialTheme.typography.bodyMedium
             )
         }
@@ -298,12 +305,12 @@ private fun GameDetailScreen(
             modifier = modifier.wrapContentHeight()
         ) {
             Text(
-                "Player 02 Detachment",
+                text = "Player 02 Detachment",
                 style = MaterialTheme.typography.titleMedium
             )
             game.game.player02FactionDetachment?.let {
                 Text(
-                    it,
+                    text = it,
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
@@ -312,13 +319,14 @@ private fun GameDetailScreen(
             modifier = modifier.wrapContentHeight()
         ) {
             Text(
-                "Prediction",
+                text = "Prediction",
                 style = MaterialTheme.typography.titleMedium
             )
             Text(
-                game.prediction.name,
-                modifier = Modifier.background(Color(game.prediction.color.toColorInt())),
-                style = MaterialTheme.typography.bodyMedium
+                text = game.prediction.name,
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = modifier
+                    .background(Color(game.prediction.color))
             )
         }
         if (game.outcome != null) {
@@ -326,11 +334,11 @@ private fun GameDetailScreen(
                 modifier = modifier.wrapContentHeight()
             ) {
                 Text(
-                    "Outcome",
+                    text = "Outcome",
                     style = MaterialTheme.typography.titleMedium
                 )
                 Text(
-                    game.outcome.player01Points.toString() + " - " + game.outcome.player02Points.toString(),
+                    text = game.outcome.player01Points.toString() + " - " + game.outcome.player02Points.toString(),
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
@@ -339,11 +347,11 @@ private fun GameDetailScreen(
             modifier = modifier.wrapContentHeight()
         ) {
             Text(
-                "Primary Mission",
+                text = "Primary Mission",
                 style = MaterialTheme.typography.titleMedium
             )
             Text(
-                game.round.primaryMissionName,
+                text = game.round.round.primaryMissionName,
                 style = MaterialTheme.typography.bodyMedium
             )
         }
@@ -372,13 +380,13 @@ private fun AddGame(
     val predictionNames: MutableList<String> = mutableListOf("")
     val tournamentNames: MutableList<String> = mutableListOf("")
     var tournamentRounds: MutableMap<String, Int> = mutableMapOf(Pair("", 0))
-    PLAYER_VIEW_MODEL.allPlayers.value?.forEach {
+    PLAYER_VIEW_MODEL.allPlayers.forEach {
         playerNames += it.name
     }
-    PREDICTION_VIEW_MODEL.allPredictions.value?.forEach {
+    PREDICTION_VIEW_MODEL.allPredictions.forEach {
         predictionNames += it.name
     }
-    TOURNAMENT_VIEW_MODEL.allTournaments.value?.forEach {
+    TOURNAMENT_VIEW_MODEL.allTournaments.forEach {
         tournamentNames += it.name
     }
     val onConfirmation = {
@@ -389,7 +397,7 @@ private fun AddGame(
             predictionID = predictionID,
             roundID = roundID
         )
-        GAME_VIEW_MODEL.insert(newGame)
+        GAME_VIEW_MODEL.insert(game = newGame)
         onDismissRequest()
     }
     Dialog(onDismissRequest = { onDismissRequest() }) {
@@ -414,8 +422,7 @@ private fun AddGame(
                         preText = "Player 01:",
                         onItemClick = {
                             player01Index = it; player01ID =
-                            PLAYER_VIEW_MODEL.getByName(playerNames[player01Index]).value?.playerID
-                                ?: 0
+                            PLAYER_VIEW_MODEL.getByName(playerNames[player01Index]).playerID
                         })
                 }
                 Row {
@@ -448,8 +455,7 @@ private fun AddGame(
                         preText = "Prediction:",
                         onItemClick = {
                             predictionIndex = it; predictionID =
-                            PREDICTION_VIEW_MODEL.getByName(predictionNames[predictionIndex]).value?.predictionID
-                                ?: 0
+                            PREDICTION_VIEW_MODEL.getByName(predictionNames[predictionIndex]).predictionID
                         })
                 }
                 Row {
@@ -460,10 +466,10 @@ private fun AddGame(
                         preText = "Tournament:",
                         onItemClick = {
                             tournamentIndex = it; tournamentID =
-                            TOURNAMENT_VIEW_MODEL.getByName(tournamentNames[tournamentIndex]).value?.first()?.tournamentID
-                                ?: 0;
+                            TOURNAMENT_VIEW_MODEL.getByName(tournamentNames[tournamentIndex])
+                                .first().tournamentID
                             tournamentRounds = mutableMapOf(Pair("", 0))
-                            ROUND_VIEW_MODEL.getByTournament(tournamentID).value?.forEach { round ->
+                            ROUND_VIEW_MODEL.getByTournamentId(tournamentID).forEach { round ->
                                 tournamentRounds += mutableMapOf(
                                     Pair(
                                         round.number.toString(),
@@ -479,8 +485,7 @@ private fun AddGame(
                         preText = "Round:",
                         onItemClick = {
                             roundIndex = it; roundID =
-                            ROUND_VIEW_MODEL.getByID(tournamentRounds[tournamentRounds.keys.toList()[roundIndex]]!!).value?.roundID
-                                ?: 0
+                            ROUND_VIEW_MODEL.getById(tournamentRounds[tournamentRounds.keys.toList()[roundIndex]]!!).roundID
                         })
                 }
                 Row {
@@ -489,7 +494,7 @@ private fun AddGame(
                         modifier = modifier
                     ) {
                         Text(
-                            "Cancel",
+                            text = "Cancel",
                             style = MaterialTheme.typography.titleMedium
                         )
                     }
@@ -498,7 +503,7 @@ private fun AddGame(
                         modifier = modifier
                     ) {
                         Text(
-                            "Add",
+                            text = "Add",
                             style = MaterialTheme.typography.titleMedium
                         )
                     }
@@ -518,7 +523,7 @@ private fun EditGame(
     var player01Faction by remember { mutableStateOf(game.game.player01FactionName) }
     var player02Faction by remember { mutableStateOf(game.game.player02FactionName) }
     var predictionID by remember { mutableIntStateOf(game.game.predictionID!!) }
-    var tournamentID by remember { mutableIntStateOf(game.round.tournamentID) }
+    var tournamentID by remember { mutableIntStateOf(game.round.round.tournamentID) }
     var roundID by remember { mutableIntStateOf(game.game.roundID) }
     var player01Index by remember { mutableIntStateOf(0) }
     var player01FactionIndex by remember { mutableIntStateOf(0) }
@@ -531,7 +536,7 @@ private fun EditGame(
     val predictionNames: MutableList<String> = mutableListOf("")
     val tournamentNames: MutableList<String> = mutableListOf("")
     var tournamentRounds: MutableMap<String, Int> = mutableMapOf(Pair("", 0))
-    PLAYER_VIEW_MODEL.allPlayers.value?.forEach {
+    PLAYER_VIEW_MODEL.allPlayers.forEach {
         playerNames += it.name
         if (it.playerID == player01ID) {
             player01Index = playerNames.lastIndex
@@ -539,20 +544,20 @@ private fun EditGame(
     }
     player01FactionIndex = factionNames.indexOf(player01Faction)
     player02FactionIndex = factionNames.indexOf(player02Faction)
-    PREDICTION_VIEW_MODEL.allPredictions.value?.forEach {
+    PREDICTION_VIEW_MODEL.allPredictions.forEach {
         predictionNames += it.name
         if (it.predictionID == predictionID) {
             predictionIndex = playerNames.lastIndex
         }
     }
-    TOURNAMENT_VIEW_MODEL.allTournaments.value?.forEach {
+    TOURNAMENT_VIEW_MODEL.allTournaments.forEach {
         tournamentNames += it.name
         if (it.tournamentID == tournamentID) {
             tournamentIndex = playerNames.lastIndex
         }
     }
     if (tournamentIndex != 0) {
-        ROUND_VIEW_MODEL.getByTournament(tournamentID).value?.forEach { round ->
+        ROUND_VIEW_MODEL.getByTournamentId(tournamentID).forEach { round ->
             tournamentRounds += mutableMapOf(Pair(round.number.toString(), round.roundID))
             if (round.roundID == roundID) {
                 roundIndex = tournamentRounds.keys.toList().lastIndex
@@ -568,7 +573,7 @@ private fun EditGame(
             predictionID = predictionID,
             roundID = roundID
         )
-        GAME_VIEW_MODEL.update(updatedGame)
+        GAME_VIEW_MODEL.update(game = updatedGame)
         onDismissRequest()
     }
     Dialog(onDismissRequest = { onDismissRequest() }) {
@@ -593,8 +598,7 @@ private fun EditGame(
                         preText = "Player 01:",
                         onItemClick = {
                             player01Index = it; player01ID =
-                            PLAYER_VIEW_MODEL.getByName(playerNames[player01Index]).value?.playerID
-                                ?: 0
+                            PLAYER_VIEW_MODEL.getByName(playerNames[player01Index]).playerID
                         })
                 }
                 Row {
@@ -627,8 +631,7 @@ private fun EditGame(
                         preText = "Prediction:",
                         onItemClick = {
                             predictionIndex = it; predictionID =
-                            PREDICTION_VIEW_MODEL.getByName(predictionNames[predictionIndex]).value?.predictionID
-                                ?: 0
+                            PREDICTION_VIEW_MODEL.getByName(predictionNames[predictionIndex]).predictionID
                         })
                 }
                 Row {
@@ -639,10 +642,10 @@ private fun EditGame(
                         preText = "Tournament:",
                         onItemClick = {
                             tournamentIndex = it; tournamentID =
-                            TOURNAMENT_VIEW_MODEL.getByName(tournamentNames[tournamentIndex]).value?.first()?.tournamentID
-                                ?: 0;
+                            TOURNAMENT_VIEW_MODEL.getByName(tournamentNames[tournamentIndex])
+                                .first().tournamentID
                             tournamentRounds = mutableMapOf(Pair("", 0))
-                            ROUND_VIEW_MODEL.getByTournament(tournamentID).value?.forEach { round ->
+                            ROUND_VIEW_MODEL.getByTournamentId(tournamentID).forEach { round ->
                                 tournamentRounds += mutableMapOf(
                                     Pair(
                                         round.number.toString(),
@@ -658,8 +661,7 @@ private fun EditGame(
                         preText = "Round:",
                         onItemClick = {
                             roundIndex = it; roundID =
-                            ROUND_VIEW_MODEL.getByID(tournamentRounds[tournamentRounds.keys.toList()[roundIndex]]!!).value?.roundID
-                                ?: 0
+                            ROUND_VIEW_MODEL.getById(tournamentRounds[tournamentRounds.keys.toList()[roundIndex]]!!).roundID
                         })
                 }
                 Row {
@@ -668,7 +670,7 @@ private fun EditGame(
                         modifier = modifier
                     ) {
                         Text(
-                            "Cancel",
+                            text = "Cancel",
                             style = MaterialTheme.typography.titleMedium
                         )
                     }
@@ -677,7 +679,7 @@ private fun EditGame(
                         modifier = modifier
                     ) {
                         Text(
-                            "Add",
+                            text = "Add",
                             style = MaterialTheme.typography.titleMedium
                         )
                     }
@@ -694,7 +696,7 @@ private fun RemoveGame(
     onDismissRequest: () -> Unit
 ) {
     val onConfirmation = {
-        GAME_VIEW_MODEL.delete(game.game)
+        GAME_VIEW_MODEL.delete(game = game.game)
         onDismissRequest()
     }
     Dialog(onDismissRequest = { onDismissRequest() }) {
@@ -718,7 +720,7 @@ private fun RemoveGame(
                         modifier = modifier
                     ) {
                         Text(
-                            "Cancel",
+                            text = "Cancel",
                             style = MaterialTheme.typography.titleMedium
                         )
                     }
@@ -727,7 +729,7 @@ private fun RemoveGame(
                         modifier = modifier
                     ) {
                         Text(
-                            "Confirm",
+                            text = "Confirm",
                             style = MaterialTheme.typography.titleMedium
                         )
                     }

@@ -3,21 +3,15 @@ package com.example.a40kcc.data.repository
 import androidx.annotation.WorkerThread
 import com.example.a40kcc.data.dao.GameDao
 import com.example.a40kcc.data.`object`.Game
-import com.example.a40kcc.data.`object`.GameExpanded
 import kotlinx.coroutines.flow.Flow
 
 class GameRepository(private val gameDao: GameDao) {
-    val allGames: Flow<List<Game>> = gameDao.getAll()
-    val allGamesExpanded: Flow<List<GameExpanded>> = gameDao.getAllExpanded()
+    val allGames: List<Game> = gameDao.getAll()
+    val allGamesFlow: Flow<List<Game>> = gameDao.getAllFlow()
 
     @WorkerThread
-    fun getGame(gameId: Int): Flow<Game> {
+    fun getById(gameId: Int): Game {
         return gameDao.getById(gameId)
-    }
-
-    @WorkerThread
-    fun getGameExpanded(gameId: Int): Flow<GameExpanded> {
-        return gameDao.getByIdExpanded(gameId)
     }
 
     @WorkerThread

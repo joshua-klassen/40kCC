@@ -2,24 +2,17 @@ package com.example.a40kcc.data.dao
 
 import androidx.room.Dao
 import androidx.room.Query
-import androidx.room.Transaction
 import com.example.a40kcc.data.`object`.Game
-import com.example.a40kcc.data.`object`.GameExpanded
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface GameDao : BaseDao<Game> {
     @Query("SELECT * FROM game")
-    fun getAll(): Flow<List<Game>>
+    fun getAll(): List<Game>
 
-    @Transaction
     @Query("SELECT * FROM game")
-    fun getAllExpanded(): Flow<List<GameExpanded>>
+    fun getAllFlow(): Flow<List<Game>>
 
     @Query("SELECT * FROM game WHERE gameID = :gameId")
-    fun getById(gameId: Int): Flow<Game>
-
-    @Transaction
-    @Query("SELECT * FROM game WHERE gameID = :gameId")
-    fun getByIdExpanded(gameId: Int): Flow<GameExpanded>
+    fun getById(gameId: Int): Game
 }

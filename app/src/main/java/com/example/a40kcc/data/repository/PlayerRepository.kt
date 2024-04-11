@@ -3,51 +3,30 @@ package com.example.a40kcc.data.repository
 import androidx.annotation.WorkerThread
 import com.example.a40kcc.data.dao.PlayerDao
 import com.example.a40kcc.data.`object`.Player
-import com.example.a40kcc.data.`object`.PlayerExpanded
 import kotlinx.coroutines.flow.Flow
 
 class PlayerRepository(private val playerDao: PlayerDao) {
-    val allPlayers: Flow<List<Player>> = playerDao.getAll()
-    val allPlayersExpanded: Flow<List<PlayerExpanded>> = playerDao.getAllExpanded()
+    val allPlayers: List<Player> = playerDao.getAll()
+    val allPlayersFlow: Flow<List<Player>> = playerDao.getAllFlow()
 
     @WorkerThread
-    fun getPlayer(playerId: Int): Flow<Player> {
+    fun getById(playerId: Int): Player {
         return playerDao.getById(playerId)
     }
 
     @WorkerThread
-    fun getPlayer(playerName: String): Flow<Player> {
-        return playerDao.getPlayerByName(playerName)
+    fun getByName(playerName: String): Player {
+        return playerDao.getByName(playerName)
     }
 
     @WorkerThread
-    fun getPlayersByFaction(factionName: String): Flow<List<Player>> {
-        return playerDao.getPlayersByFaction(factionName)
+    fun getByFactionName(factionName: String): List<Player> {
+        return playerDao.getByFactionName(factionName)
     }
 
     @WorkerThread
-    fun getPlayerByNickname(playerNickname: String): Flow<Player> {
-        return playerDao.getPlayerByNickname(playerNickname)
-    }
-
-    @WorkerThread
-    fun getPlayerExpanded(playerId: Int): Flow<PlayerExpanded> {
-        return playerDao.getByIdExpanded(playerId)
-    }
-
-    @WorkerThread
-    fun getPlayerExpanded(playerName: String): Flow<PlayerExpanded> {
-        return playerDao.getPlayerByNameExpanded(playerName)
-    }
-
-    @WorkerThread
-    fun getPlayersByFactionExpanded(factionName: String): Flow<List<PlayerExpanded>> {
-        return playerDao.getPlayersByFactionExpanded(factionName)
-    }
-
-    @WorkerThread
-    fun getPlayerByNicknameExpanded(playerNickname: String): Flow<PlayerExpanded> {
-        return playerDao.getPlayerByNicknameExpanded(playerNickname)
+    fun getByNickname(playerNickname: String): Player {
+        return playerDao.getByNickname(playerNickname)
     }
 
     @WorkerThread

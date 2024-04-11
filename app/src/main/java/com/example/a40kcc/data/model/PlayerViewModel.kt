@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.example.a40kcc.data.model
 
 import androidx.lifecycle.LiveData
@@ -6,25 +8,39 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.a40kcc.data.`object`.Player
-import com.example.a40kcc.data.`object`.PlayerExpanded
 import com.example.a40kcc.data.repository.PlayerRepository
 import kotlinx.coroutines.launch
 
 class PlayerViewModel(private val playerRepository: PlayerRepository) : ViewModel() {
-    val allPlayers: LiveData<List<Player>> = playerRepository.allPlayers.asLiveData()
-    val allPlayersExpanded: LiveData<List<PlayerExpanded>> =
-        playerRepository.allPlayersExpanded.asLiveData()
+    val allPlayers: List<Player> = playerRepository.allPlayers
+    val allPlayersFlow: LiveData<List<Player>> = playerRepository.allPlayersFlow.asLiveData()
+
+    fun getById(playerId: Int): Player {
+        return playerRepository.getById(playerId)
+    }
+
+    fun getByName(playerName: String): Player {
+        return playerRepository.getByName(playerName)
+    }
+
+    fun getByFactionName(factionName: String): List<Player> {
+        return playerRepository.getByFactionName(factionName)
+    }
+
+    fun getByNickname(playerNickname: String): Player {
+        return playerRepository.getByNickname(playerNickname)
+    }
 
     fun insert(player: Player) = viewModelScope.launch {
         playerRepository.insert(player)
     }
 
-    fun delete(player: Player) = viewModelScope.launch {
-        playerRepository.delete(player)
+    fun update(player: Player) = viewModelScope.launch {
+        playerRepository.update(player)
     }
 
-    fun getByName(playerName: String): LiveData<Player> {
-        return playerRepository.getPlayer(playerName).asLiveData()
+    fun delete(player: Player) = viewModelScope.launch {
+        playerRepository.delete(player)
     }
 }
 

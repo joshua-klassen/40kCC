@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.example.a40kcc.data.model
 
 import androidx.lifecycle.LiveData
@@ -6,29 +8,47 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.a40kcc.data.`object`.Round
-import com.example.a40kcc.data.`object`.RoundExpanded
 import com.example.a40kcc.data.repository.RoundRepository
 import kotlinx.coroutines.launch
 
 class RoundViewModel(private val roundRepository: RoundRepository) : ViewModel() {
-    val allRounds: LiveData<List<Round>> = roundRepository.allRounds.asLiveData()
-    val allRoundsExpanded: LiveData<List<RoundExpanded>> =
-        roundRepository.allRoundsExpanded.asLiveData()
+    val allRounds: List<Round> = roundRepository.allRounds
+    val allRoundsFlow: LiveData<List<Round>> = roundRepository.allRoundsFlow.asLiveData()
+
+    fun getById(roundID: Int): Round {
+        return roundRepository.getById(roundID)
+    }
+
+    fun getByRoundNumber(roundNumber: Int): List<Round> {
+        return roundRepository.getByRoundNumber(roundNumber)
+    }
+
+    fun getByPrimaryMission(primaryMissionName: String): List<Round> {
+        return roundRepository.getByPrimaryMission(primaryMissionName)
+    }
+
+    fun getBySecondaryMission(secondaryMissionName: String): List<Round> {
+        return roundRepository.getBySecondaryMission(secondaryMissionName)
+    }
+
+    fun getByDeployment(deploymentName: String): List<Round> {
+        return roundRepository.getByDeployment(deploymentName)
+    }
+
+    fun getByTournamentId(tournamentID: Int): List<Round> {
+        return roundRepository.getByTournamentId(tournamentID)
+    }
 
     fun insert(round: Round) = viewModelScope.launch {
         roundRepository.insert(round)
     }
 
+    fun update(round: Round) = viewModelScope.launch {
+        roundRepository.update(round)
+    }
+
     fun delete(round: Round) = viewModelScope.launch {
         roundRepository.delete(round)
-    }
-
-    fun getByID(roundID: Int): LiveData<Round> {
-        return roundRepository.getRound(roundID).asLiveData()
-    }
-
-    fun getByTournament(tournamentID: Int): LiveData<List<Round>> {
-        return roundRepository.getRoundByTournament(tournamentID).asLiveData()
     }
 }
 

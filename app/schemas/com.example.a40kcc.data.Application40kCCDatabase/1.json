@@ -1,0 +1,745 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "92363cef95730a34619f218975e2ba9f",
+    "entities": [
+      {
+        "tableName": "game",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`gameID` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `player_01` INTEGER NOT NULL, `player_02` INTEGER DEFAULT NULL, `player_01_faction` TEXT NOT NULL, `player_02_faction` TEXT NOT NULL, `player_01_faction_detachment` TEXT DEFAULT NULL, `player_02_faction_detachment` TEXT DEFAULT NULL, `prediction` INTEGER DEFAULT NULL, `round` INTEGER NOT NULL, `outcome` INTEGER DEFAULT NULL, FOREIGN KEY(`player_01`) REFERENCES `player`(`playerID`) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED, FOREIGN KEY(`player_02`) REFERENCES `player`(`playerID`) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED, FOREIGN KEY(`prediction`) REFERENCES `prediction`(`predictionID`) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED, FOREIGN KEY(`outcome`) REFERENCES `outcome`(`outcomeID`) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED, FOREIGN KEY(`round`) REFERENCES `round`(`roundID`) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED)",
+        "fields": [
+          {
+            "fieldPath": "gameID",
+            "columnName": "gameID",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "player01ID",
+            "columnName": "player_01",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "player02ID",
+            "columnName": "player_02",
+            "affinity": "INTEGER",
+            "notNull": false,
+            "defaultValue": "NULL"
+          },
+          {
+            "fieldPath": "player01FactionName",
+            "columnName": "player_01_faction",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "player02FactionName",
+            "columnName": "player_02_faction",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "player01FactionDetachment",
+            "columnName": "player_01_faction_detachment",
+            "affinity": "TEXT",
+            "notNull": false,
+            "defaultValue": "NULL"
+          },
+          {
+            "fieldPath": "player02FactionDetachment",
+            "columnName": "player_02_faction_detachment",
+            "affinity": "TEXT",
+            "notNull": false,
+            "defaultValue": "NULL"
+          },
+          {
+            "fieldPath": "predictionID",
+            "columnName": "prediction",
+            "affinity": "INTEGER",
+            "notNull": false,
+            "defaultValue": "NULL"
+          },
+          {
+            "fieldPath": "roundID",
+            "columnName": "round",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "outcomeID",
+            "columnName": "outcome",
+            "affinity": "INTEGER",
+            "notNull": false,
+            "defaultValue": "NULL"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "gameID"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_game_gameID",
+            "unique": false,
+            "columnNames": [
+              "gameID"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_game_gameID` ON `${TABLE_NAME}` (`gameID`)"
+          },
+          {
+            "name": "index_game_player_01",
+            "unique": false,
+            "columnNames": [
+              "player_01"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_game_player_01` ON `${TABLE_NAME}` (`player_01`)"
+          },
+          {
+            "name": "index_game_player_02",
+            "unique": false,
+            "columnNames": [
+              "player_02"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_game_player_02` ON `${TABLE_NAME}` (`player_02`)"
+          },
+          {
+            "name": "index_game_prediction",
+            "unique": false,
+            "columnNames": [
+              "prediction"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_game_prediction` ON `${TABLE_NAME}` (`prediction`)"
+          },
+          {
+            "name": "index_game_outcome",
+            "unique": false,
+            "columnNames": [
+              "outcome"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_game_outcome` ON `${TABLE_NAME}` (`outcome`)"
+          },
+          {
+            "name": "index_game_round",
+            "unique": false,
+            "columnNames": [
+              "round"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_game_round` ON `${TABLE_NAME}` (`round`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "player",
+            "onDelete": "SET NULL",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "player_01"
+            ],
+            "referencedColumns": [
+              "playerID"
+            ]
+          },
+          {
+            "table": "player",
+            "onDelete": "SET NULL",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "player_02"
+            ],
+            "referencedColumns": [
+              "playerID"
+            ]
+          },
+          {
+            "table": "prediction",
+            "onDelete": "SET NULL",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "prediction"
+            ],
+            "referencedColumns": [
+              "predictionID"
+            ]
+          },
+          {
+            "table": "outcome",
+            "onDelete": "SET NULL",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "outcome"
+            ],
+            "referencedColumns": [
+              "outcomeID"
+            ]
+          },
+          {
+            "table": "round",
+            "onDelete": "SET NULL",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "round"
+            ],
+            "referencedColumns": [
+              "roundID"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "live_round",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`liveRoundID` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `game` INTEGER NOT NULL, `expected_result` INTEGER NOT NULL, FOREIGN KEY(`game`) REFERENCES `game`(`gameID`) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED, FOREIGN KEY(`expected_result`) REFERENCES `prediction`(`predictionID`) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED)",
+        "fields": [
+          {
+            "fieldPath": "liveRoundID",
+            "columnName": "liveRoundID",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "gameID",
+            "columnName": "game",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "expectedResult",
+            "columnName": "expected_result",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "liveRoundID"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_live_round_liveRoundID",
+            "unique": false,
+            "columnNames": [
+              "liveRoundID"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_live_round_liveRoundID` ON `${TABLE_NAME}` (`liveRoundID`)"
+          },
+          {
+            "name": "index_live_round_game",
+            "unique": false,
+            "columnNames": [
+              "game"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_live_round_game` ON `${TABLE_NAME}` (`game`)"
+          },
+          {
+            "name": "index_live_round_expected_result",
+            "unique": false,
+            "columnNames": [
+              "expected_result"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_live_round_expected_result` ON `${TABLE_NAME}` (`expected_result`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "game",
+            "onDelete": "SET NULL",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "game"
+            ],
+            "referencedColumns": [
+              "gameID"
+            ]
+          },
+          {
+            "table": "prediction",
+            "onDelete": "SET NULL",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "expected_result"
+            ],
+            "referencedColumns": [
+              "predictionID"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "outcome",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`outcomeID` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `player_01` INTEGER NOT NULL, `player_02` INTEGER DEFAULT NULL, `player_01_points` INTEGER NOT NULL, `player_02_points` INTEGER NOT NULL, `player_01_team_points` INTEGER NOT NULL, `player_02_team_points` INTEGER NOT NULL, `point_differential` INTEGER NOT NULL, FOREIGN KEY(`player_01`) REFERENCES `player`(`playerID`) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED, FOREIGN KEY(`player_02`) REFERENCES `player`(`playerID`) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED)",
+        "fields": [
+          {
+            "fieldPath": "outcomeID",
+            "columnName": "outcomeID",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "player01ID",
+            "columnName": "player_01",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "player02ID",
+            "columnName": "player_02",
+            "affinity": "INTEGER",
+            "notNull": false,
+            "defaultValue": "NULL"
+          },
+          {
+            "fieldPath": "player01Points",
+            "columnName": "player_01_points",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "player02Points",
+            "columnName": "player_02_points",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "player01TeamPoints",
+            "columnName": "player_01_team_points",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "player02TeamPoints",
+            "columnName": "player_02_team_points",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "pointDifferential",
+            "columnName": "point_differential",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "outcomeID"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_outcome_outcomeID",
+            "unique": false,
+            "columnNames": [
+              "outcomeID"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_outcome_outcomeID` ON `${TABLE_NAME}` (`outcomeID`)"
+          },
+          {
+            "name": "index_outcome_player_01",
+            "unique": false,
+            "columnNames": [
+              "player_01"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_outcome_player_01` ON `${TABLE_NAME}` (`player_01`)"
+          },
+          {
+            "name": "index_outcome_player_02",
+            "unique": false,
+            "columnNames": [
+              "player_02"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_outcome_player_02` ON `${TABLE_NAME}` (`player_02`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "player",
+            "onDelete": "SET NULL",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "player_01"
+            ],
+            "referencedColumns": [
+              "playerID"
+            ]
+          },
+          {
+            "table": "player",
+            "onDelete": "SET NULL",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "player_02"
+            ],
+            "referencedColumns": [
+              "playerID"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "player",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`playerID` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `nickname` TEXT DEFAULT NULL, `preferred_faction` TEXT DEFAULT NULL)",
+        "fields": [
+          {
+            "fieldPath": "playerID",
+            "columnName": "playerID",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nickname",
+            "columnName": "nickname",
+            "affinity": "TEXT",
+            "notNull": false,
+            "defaultValue": "NULL"
+          },
+          {
+            "fieldPath": "factionName",
+            "columnName": "preferred_faction",
+            "affinity": "TEXT",
+            "notNull": false,
+            "defaultValue": "NULL"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "playerID"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_player_playerID",
+            "unique": false,
+            "columnNames": [
+              "playerID"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_player_playerID` ON `${TABLE_NAME}` (`playerID`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "playerTeamCrossRef",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`playerID` INTEGER NOT NULL, `teamID` INTEGER NOT NULL, PRIMARY KEY(`playerID`, `teamID`), FOREIGN KEY(`teamID`) REFERENCES `team`(`teamID`) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED, FOREIGN KEY(`playerID`) REFERENCES `player`(`playerID`) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED)",
+        "fields": [
+          {
+            "fieldPath": "playerID",
+            "columnName": "playerID",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "teamID",
+            "columnName": "teamID",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "playerID",
+            "teamID"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_playerTeamCrossRef_playerID",
+            "unique": false,
+            "columnNames": [
+              "playerID"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_playerTeamCrossRef_playerID` ON `${TABLE_NAME}` (`playerID`)"
+          },
+          {
+            "name": "index_playerTeamCrossRef_teamID",
+            "unique": false,
+            "columnNames": [
+              "teamID"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_playerTeamCrossRef_teamID` ON `${TABLE_NAME}` (`teamID`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "team",
+            "onDelete": "SET NULL",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "teamID"
+            ],
+            "referencedColumns": [
+              "teamID"
+            ]
+          },
+          {
+            "table": "player",
+            "onDelete": "SET NULL",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "playerID"
+            ],
+            "referencedColumns": [
+              "playerID"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "prediction",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`predictionID` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `color` INTEGER NOT NULL, `minimum_points` INTEGER NOT NULL, `maximum_points` INTEGER NOT NULL, `default_option` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "predictionID",
+            "columnName": "predictionID",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "color",
+            "columnName": "color",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "minPoints",
+            "columnName": "minimum_points",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "maxPoints",
+            "columnName": "maximum_points",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "defaultOption",
+            "columnName": "default_option",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "predictionID"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_prediction_predictionID",
+            "unique": false,
+            "columnNames": [
+              "predictionID"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_prediction_predictionID` ON `${TABLE_NAME}` (`predictionID`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "round",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`roundID` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `number` INTEGER NOT NULL, `primary_mission` TEXT NOT NULL, `secondary_mission` TEXT NOT NULL, `deployment` TEXT NOT NULL, `tournament` INTEGER NOT NULL, FOREIGN KEY(`tournament`) REFERENCES `tournament`(`tournamentID`) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED)",
+        "fields": [
+          {
+            "fieldPath": "roundID",
+            "columnName": "roundID",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "number",
+            "columnName": "number",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "primaryMissionName",
+            "columnName": "primary_mission",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "secondaryMissionName",
+            "columnName": "secondary_mission",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "deploymentName",
+            "columnName": "deployment",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tournamentID",
+            "columnName": "tournament",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "roundID"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_round_roundID",
+            "unique": false,
+            "columnNames": [
+              "roundID"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_round_roundID` ON `${TABLE_NAME}` (`roundID`)"
+          },
+          {
+            "name": "index_round_tournament",
+            "unique": false,
+            "columnNames": [
+              "tournament"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_round_tournament` ON `${TABLE_NAME}` (`tournament`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "tournament",
+            "onDelete": "SET NULL",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "tournament"
+            ],
+            "referencedColumns": [
+              "tournamentID"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "team",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`teamID` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "teamID",
+            "columnName": "teamID",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "teamID"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_team_teamID",
+            "unique": false,
+            "columnNames": [
+              "teamID"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_team_teamID` ON `${TABLE_NAME}` (`teamID`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "tournament",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`tournamentID` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `round_count` INTEGER NOT NULL, `date` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "tournamentID",
+            "columnName": "tournamentID",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "roundCount",
+            "columnName": "round_count",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "date",
+            "columnName": "date",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "tournamentID"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_tournament_tournamentID",
+            "unique": false,
+            "columnNames": [
+              "tournamentID"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_tournament_tournamentID` ON `${TABLE_NAME}` (`tournamentID`)"
+          }
+        ],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '92363cef95730a34619f218975e2ba9f')"
+    ]
+  }
+}

@@ -4,12 +4,13 @@ import androidx.room.Embedded
 import androidx.room.Junction
 import androidx.room.Relation
 
-data class PlayerExpanded(
+data class PlayerWithTeams(
     @Embedded val player: Player,
     @Relation(
         parentColumn = "playerID",
         entityColumn = "teamID",
+        entity = Team::class,
         associateBy = Junction(PlayerTeamCrossRef::class)
     )
-    val team: List<Team>? = null
+    val team: List<Team> = emptyList()
 )

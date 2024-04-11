@@ -6,15 +6,16 @@ import com.example.a40kcc.data.`object`.Prediction
 import kotlinx.coroutines.flow.Flow
 
 class PredictionRepository(private val predictionDao: PredictionDao) {
-    val allPredictions: Flow<List<Prediction>> = predictionDao.getAll()
+    val allPredictions: List<Prediction> = predictionDao.getAll()
+    val allPredictionsFlow: Flow<List<Prediction>> = predictionDao.getAllFlow()
 
     @WorkerThread
-    fun getPrediction(predictionId: Int): Flow<Prediction> {
+    fun getById(predictionId: Int): Prediction {
         return predictionDao.getById(predictionId)
     }
 
     @WorkerThread
-    fun getPrediction(predictionName: String): Flow<Prediction> {
+    fun getByName(predictionName: String): Prediction {
         return predictionDao.getByName(predictionName)
     }
 

@@ -50,12 +50,12 @@ fun TournamentScreen(
             modifier = modifier
         ) {
             Column {
-                Text(stringResource(id = R.string.home_button))
+                Text(text = stringResource(id = R.string.home_button))
             }
         }
 
         val tournaments: List<Tournament>? =
-            TOURNAMENT_VIEW_MODEL.allTournaments.observeAsState().value
+            TOURNAMENT_VIEW_MODEL.allTournamentsFlow.observeAsState().value
 
         Row(
             horizontalArrangement = Arrangement.SpaceEvenly,
@@ -67,7 +67,7 @@ fun TournamentScreen(
                     .wrapContentHeight()
             ) {
                 Text(
-                    "Tournament Name",
+                    text = "Tournament Name",
                     style = MaterialTheme.typography.titleLarge
                 )
             }
@@ -77,7 +77,7 @@ fun TournamentScreen(
                     .wrapContentHeight()
             ) {
                 Text(
-                    "Tournament Rounds",
+                    text = "Tournament Rounds",
                     style = MaterialTheme.typography.titleLarge
                 )
             }
@@ -87,14 +87,14 @@ fun TournamentScreen(
                     .wrapContentHeight()
             ) {
                 Text(
-                    "Tournament Date",
+                    text = "Tournament Date",
                     style = MaterialTheme.typography.titleLarge
                 )
             }
         }
 
         if (tournaments != null) {
-            TournamentScreen(tournaments, modifier)
+            TournamentScreen(tournaments = tournaments, modifier = modifier)
         }
 
         FloatingActionButton(
@@ -103,12 +103,13 @@ fun TournamentScreen(
             },
             modifier = modifier.align(Alignment.End)
         ) {
-            Icon(Icons.Filled.Add, "Add Tournament")
+            Icon(imageVector = Icons.Filled.Add, contentDescription = "Add Tournament")
 
             if (addTournament) {
                 AddTournament(
-                    modifier
-                ) { addTournament = !addTournament }
+                    modifier = modifier,
+                    onDismissRequest = { addTournament = !addTournament }
+                )
             }
         }
     }
@@ -132,7 +133,7 @@ private fun TournamentScreen(
                         .wrapContentHeight()
                 ) {
                     Text(
-                        tournament.name,
+                        text = tournament.name,
                         style = MaterialTheme.typography.titleLarge
                     )
                 }
@@ -165,13 +166,17 @@ private fun TournamentScreen(
                         },
                         modifier = modifier.align(Alignment.End)
                     ) {
-                        Icon(Icons.Filled.Clear, "Remove Tournament")
+                        Icon(
+                            imageVector = Icons.Filled.Clear,
+                            contentDescription = "Remove Tournament"
+                        )
 
                         if (removeTournament) {
                             RemoveTournament(
-                                tournament,
-                                modifier
-                            ) { removeTournament = !removeTournament }
+                                tournament = tournament,
+                                modifier = modifier,
+                                onDismissRequest = { removeTournament = !removeTournament }
+                            )
                         }
                     }
                 }
@@ -214,7 +219,7 @@ private fun AddTournament(
                     TextField(
                         value = tournamentName,
                         onValueChange = { tournamentName = it },
-                        label = { Text("Name:") },
+                        label = { Text(text = "Name:") },
                         textStyle = MaterialTheme.typography.bodyMedium
                     )
                 }
@@ -222,7 +227,7 @@ private fun AddTournament(
                     TextField(
                         value = tournamentRounds.toString(),
                         onValueChange = { tournamentRounds = it.toInt() },
-                        label = { Text("Round Count:") },
+                        label = { Text(text = "Round Count:") },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         textStyle = MaterialTheme.typography.bodyMedium
                     )
@@ -233,7 +238,7 @@ private fun AddTournament(
                         modifier = modifier
                     ) {
                         Text(
-                            "Cancel",
+                            text = "Cancel",
                             style = MaterialTheme.typography.titleMedium
                         )
                     }
@@ -242,7 +247,7 @@ private fun AddTournament(
                         modifier = modifier
                     ) {
                         Text(
-                            "Add",
+                            text = "Add",
                             style = MaterialTheme.typography.titleMedium
                         )
                     }
@@ -289,7 +294,7 @@ private fun RemoveTournament(
                         modifier = modifier
                     ) {
                         Text(
-                            "Cancel",
+                            text = "Cancel",
                             style = MaterialTheme.typography.titleMedium
                         )
                     }
@@ -298,7 +303,7 @@ private fun RemoveTournament(
                         modifier = modifier
                     ) {
                         Text(
-                            "Confirm",
+                            text = "Confirm",
                             style = MaterialTheme.typography.titleMedium
                         )
                     }

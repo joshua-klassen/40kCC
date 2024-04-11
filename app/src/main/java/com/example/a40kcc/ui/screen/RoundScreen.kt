@@ -36,11 +36,12 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.window.Dialog
 import com.example.a40kcc.R
 import com.example.a40kcc.data.`object`.Round
-import com.example.a40kcc.data.`object`.RoundExpanded
+import com.example.a40kcc.data.`object`.RoundWithTournament
 import com.example.a40kcc.ui.utilities.DEPLOYMENT_DATA
 import com.example.a40kcc.ui.utilities.DropDownList
 import com.example.a40kcc.ui.utilities.PRIMARY_MISSION_DATA
 import com.example.a40kcc.ui.utilities.ROUND_VIEW_MODEL
+import com.example.a40kcc.ui.utilities.ROUND_WITH_TOURNAMENT_VIEW_MODEL
 import com.example.a40kcc.ui.utilities.SECONDARY_MISSION_DATA
 import com.example.a40kcc.ui.utilities.TOURNAMENT_VIEW_MODEL
 
@@ -56,12 +57,12 @@ fun RoundScreen(
             modifier = modifier
         ) {
             Column {
-                Text(stringResource(id = R.string.home_button))
+                Text(text = stringResource(id = R.string.home_button))
             }
         }
 
-        val rounds: List<RoundExpanded>? =
-            ROUND_VIEW_MODEL.allRoundsExpanded.observeAsState().value
+        val rounds: List<RoundWithTournament>? =
+            ROUND_WITH_TOURNAMENT_VIEW_MODEL.allRoundsFlow.observeAsState().value
 
         Row(
             horizontalArrangement = Arrangement.SpaceEvenly,
@@ -73,7 +74,7 @@ fun RoundScreen(
                     .wrapContentHeight()
             ) {
                 Text(
-                    "Tournament Name",
+                    text = "Tournament Name",
                     style = MaterialTheme.typography.titleLarge
                 )
             }
@@ -83,7 +84,7 @@ fun RoundScreen(
                     .wrapContentHeight()
             ) {
                 Text(
-                    "Round Number",
+                    text = "Round Number",
                     style = MaterialTheme.typography.titleLarge
                 )
             }
@@ -91,7 +92,7 @@ fun RoundScreen(
 
         if (rounds != null) {
             RoundScreen(
-                rounds, modifier
+                rounds = rounds, modifier = modifier
             )
         }
 
@@ -101,12 +102,13 @@ fun RoundScreen(
             },
             modifier = modifier.align(Alignment.End)
         ) {
-            Icon(Icons.Filled.Add, "Add Round")
+            Icon(imageVector = Icons.Filled.Add, contentDescription = "Add Round")
 
             if (addRound) {
                 AddRound(
-                    modifier
-                ) { addRound = !addRound }
+                    modifier = modifier,
+                    onDismissRequest = { addRound = !addRound }
+                )
             }
         }
     }
@@ -114,7 +116,7 @@ fun RoundScreen(
 
 @Composable
 private fun RoundScreen(
-    rounds: List<RoundExpanded>,
+    rounds: List<RoundWithTournament>,
     modifier: Modifier = Modifier
 ) {
     LazyColumn {
@@ -131,7 +133,7 @@ private fun RoundScreen(
                         .wrapContentHeight()
                 ) {
                     Text(
-                        round.tournament.name,
+                        text = round.tournament.name,
                         style = MaterialTheme.typography.titleLarge,
                         modifier = modifier
                             .clickable(true, onClick = {
@@ -158,13 +160,17 @@ private fun RoundScreen(
                             },
                             modifier = modifier.align(Alignment.End)
                         ) {
-                            Icon(Icons.Filled.Clear, "Remove Round")
+                            Icon(
+                                imageVector = Icons.Filled.Clear,
+                                contentDescription = "Remove Round"
+                            )
 
                             if (removeRound) {
                                 RemoveRound(
-                                    round,
-                                    modifier
-                                ) { removeRound = !removeRound }
+                                    round = round,
+                                    modifier = modifier,
+                                    onDismissRequest = { removeRound = !removeRound }
+                                )
                             }
                         }
                     }
@@ -173,8 +179,8 @@ private fun RoundScreen(
 
             if (showDetails) {
                 RoundDetailScreen(
-                    round,
-                    modifier
+                    round = round,
+                    modifier = modifier
                 )
             }
         }
@@ -183,7 +189,7 @@ private fun RoundScreen(
 
 @Composable
 private fun RoundDetailScreen(
-    round: RoundExpanded,
+    round: RoundWithTournament,
     modifier: Modifier = Modifier
 ) {
     Row(horizontalArrangement = Arrangement.SpaceEvenly, modifier = modifier.fillMaxWidth()) {
@@ -191,11 +197,11 @@ private fun RoundDetailScreen(
             modifier = modifier.wrapContentHeight()
         ) {
             Text(
-                "Primary Mission",
+                text = "Primary Mission",
                 style = MaterialTheme.typography.titleMedium
             )
             Text(
-                round.round.primaryMissionName,
+                text = round.round.primaryMissionName,
                 style = MaterialTheme.typography.bodyMedium
             )
         }
@@ -203,11 +209,11 @@ private fun RoundDetailScreen(
             modifier = modifier.wrapContentHeight()
         ) {
             Text(
-                "Secondary Mission",
+                text = "Secondary Mission",
                 style = MaterialTheme.typography.titleMedium
             )
             Text(
-                round.round.secondaryMissionName,
+                text = round.round.secondaryMissionName,
                 style = MaterialTheme.typography.bodyMedium
             )
         }
@@ -215,11 +221,11 @@ private fun RoundDetailScreen(
             modifier = modifier.wrapContentHeight()
         ) {
             Text(
-                "Deployment",
+                text = "Deployment",
                 style = MaterialTheme.typography.titleMedium
             )
             Text(
-                round.round.deploymentName,
+                text = round.round.deploymentName,
                 style = MaterialTheme.typography.bodyMedium
             )
         }
@@ -245,7 +251,7 @@ private fun AddRound(
         listOf("") + SECONDARY_MISSION_DATA.getDataKeys().toList()
     val deploymentNames: List<String> = listOf("") + DEPLOYMENT_DATA.getDataKeys().toList()
     val tournamentNames: MutableList<String> = mutableListOf("")
-    TOURNAMENT_VIEW_MODEL.allTournaments.value?.forEach {
+    TOURNAMENT_VIEW_MODEL.allTournaments.forEach {
         tournamentNames += it.name
     }
     val onConfirmation = {
@@ -277,7 +283,7 @@ private fun AddRound(
                     TextField(
                         value = roundNumber.toString(),
                         onValueChange = { roundNumber = it.toInt() },
-                        label = { Text("Round Count:") },
+                        label = { Text(text = "Round Count:") },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         textStyle = MaterialTheme.typography.bodyMedium
                     )
@@ -321,9 +327,10 @@ private fun AddRound(
                         modifier = modifier,
                         preText = "Preferred Faction:",
                         onItemClick = {
-                            tournamentIndex = it; tournamentID =
-                            TOURNAMENT_VIEW_MODEL.getByName(tournamentNames[tournamentIndex]).value?.first()?.tournamentID
-                                ?: 0
+                            tournamentIndex = it
+                            tournamentID =
+                                TOURNAMENT_VIEW_MODEL.getByName(tournamentNames[tournamentIndex])
+                                    .first().tournamentID
                         })
                 }
                 Row {
@@ -332,7 +339,7 @@ private fun AddRound(
                         modifier = modifier
                     ) {
                         Text(
-                            "Cancel",
+                            text = "Cancel",
                             style = MaterialTheme.typography.titleMedium
                         )
                     }
@@ -341,7 +348,7 @@ private fun AddRound(
                         modifier = modifier
                     ) {
                         Text(
-                            "Add",
+                            text = "Add",
                             style = MaterialTheme.typography.titleMedium
                         )
                     }
@@ -353,7 +360,7 @@ private fun AddRound(
 
 @Composable
 private fun RemoveRound(
-    round: RoundExpanded,
+    round: RoundWithTournament,
     modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit
 ) {
@@ -382,7 +389,7 @@ private fun RemoveRound(
                         modifier = modifier
                     ) {
                         Text(
-                            "Cancel",
+                            text = "Cancel",
                             style = MaterialTheme.typography.titleMedium
                         )
                     }
@@ -391,7 +398,7 @@ private fun RemoveRound(
                         modifier = modifier
                     ) {
                         Text(
-                            "Confirm",
+                            text = "Confirm",
                             style = MaterialTheme.typography.titleMedium
                         )
                     }

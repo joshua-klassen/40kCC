@@ -9,18 +9,21 @@ import java.sql.Date
 @Dao
 interface TournamentDao : BaseDao<Tournament> {
     @Query("SELECT * FROM tournament")
-    fun getAll(): Flow<List<Tournament>>
+    fun getAll(): List<Tournament>
+
+    @Query("SELECT * FROM tournament")
+    fun getAllFlow(): Flow<List<Tournament>>
 
     @Query("SELECT * FROM tournament WHERE tournamentID = :tournamentId")
-    fun getById(tournamentId: Int): Flow<Tournament>
+    fun getById(tournamentId: Int): Tournament
 
     @Query(
         "SELECT * FROM tournament WHERE name LIKE :tournamentName"
     )
-    fun getTournamentsByName(tournamentName: String): Flow<List<Tournament>>
+    fun getByName(tournamentName: String): List<Tournament>
 
     @Query(
         "SELECT * FROM tournament WHERE date LIKE :tournamentDate"
     )
-    fun getTournamentsByDate(tournamentDate: Date): Flow<List<Tournament>>
+    fun getByDate(tournamentDate: Date): List<Tournament>
 }

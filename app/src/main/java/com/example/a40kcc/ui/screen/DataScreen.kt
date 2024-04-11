@@ -42,29 +42,29 @@ fun DataScreen(
             modifier = modifier
         ) {
             Column {
-                Text(stringResource(id = R.string.home_button))
+                Text(text = stringResource(id = R.string.home_button))
             }
         }
 
         LazyColumn {
-            items(data.getDataKeys().toList()) { key ->
+            items(items = data.getDataKeys().toList()) { key ->
                 var showDetails by remember { mutableStateOf(false) }
                 val onClick = {
                     showDetails = !showDetails
                 }
                 Text(
-                    key,
+                    text = key,
                     style = MaterialTheme.typography.titleLarge,
                     modifier = modifier
-                        .clickable(true, onClick = onClick)
+                        .clickable(enabled = true, onClick = onClick)
                         .fillMaxWidth()
                 )
 
                 if (showDetails) {
                     DataDetailScreen(
-                        data.getHeaders(),
-                        data.getDataValue(key),
-                        modifier
+                        headers = data.getHeaders(),
+                        details = data.getDataValue(key),
+                        modifier = modifier
                     )
                 }
             }
@@ -86,7 +86,7 @@ private fun DataDetailScreen(
                     .wrapContentHeight()
             ) {
                 Text(
-                    header,
+                    text = header,
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier
                 )
@@ -112,7 +112,7 @@ private fun DataDetailScreen(
                         )
                     } else {
                         Text(
-                            detail.toString(),
+                            text = detail.toString(),
                             style = MaterialTheme.typography.bodyMedium
                         )
                     }

@@ -34,9 +34,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.Dialog
 import com.example.a40kcc.R
 import com.example.a40kcc.data.`object`.Team
+import com.example.a40kcc.data.`object`.TeamWithPlayers
 import com.example.a40kcc.ui.utilities.DropDownList
 import com.example.a40kcc.ui.utilities.PLAYER_VIEW_MODEL
 import com.example.a40kcc.ui.utilities.TEAM_VIEW_MODEL
+import com.example.a40kcc.ui.utilities.TEAM_WITH_PLAYERS_VIEW_MODEL
 
 @Composable
 fun TeamScreen(
@@ -50,12 +52,12 @@ fun TeamScreen(
             modifier = modifier
         ) {
             Column {
-                Text(stringResource(id = R.string.home_button))
+                Text(text = stringResource(id = R.string.home_button))
             }
         }
 
-        val teams: List<Team>? =
-            TEAM_VIEW_MODEL.allTeams.observeAsState().value
+        val teams: List<TeamWithPlayers>? =
+            TEAM_WITH_PLAYERS_VIEW_MODEL.allTeamsFlow.observeAsState().value
 
         Row(
             horizontalArrangement = Arrangement.SpaceEvenly,
@@ -67,7 +69,7 @@ fun TeamScreen(
                     .wrapContentHeight()
             ) {
                 Text(
-                    "Team Name",
+                    text = "Team Name",
                     style = MaterialTheme.typography.titleLarge
                 )
             }
@@ -75,7 +77,7 @@ fun TeamScreen(
 
         if (teams != null) {
             TeamScreen(
-                teams, modifier
+                teams = teams, modifier = modifier
             )
         }
 
@@ -85,12 +87,13 @@ fun TeamScreen(
             },
             modifier = modifier.align(Alignment.End)
         ) {
-            Icon(Icons.Filled.Add, "Add Team")
+            Icon(imageVector = Icons.Filled.Add, contentDescription = "Add Team")
 
             if (addTeam) {
                 AddTeam(
-                    modifier
-                ) { addTeam = !addTeam }
+                    modifier = modifier,
+                    onDismissRequest = { addTeam = !addTeam }
+                )
             }
         }
     }
@@ -98,7 +101,7 @@ fun TeamScreen(
 
 @Composable
 private fun TeamScreen(
-    teams: List<Team>,
+    teams: List<TeamWithPlayers>,
     modifier: Modifier = Modifier
 ) {
     LazyColumn {
@@ -115,7 +118,7 @@ private fun TeamScreen(
                         .wrapContentHeight()
                 ) {
                     Text(
-                        team.name,
+                        text = team.team.name,
                         style = MaterialTheme.typography.titleLarge,
                         modifier = modifier
                             .clickable(true, onClick = {
@@ -131,13 +134,17 @@ private fun TeamScreen(
                             },
                             modifier = modifier.align(Alignment.End)
                         ) {
-                            Icon(Icons.Filled.Clear, "Remove Player")
+                            Icon(
+                                imageVector = Icons.Filled.Clear,
+                                contentDescription = "Remove Player"
+                            )
 
                             if (removeTeam) {
                                 RemoveTeam(
-                                    team,
-                                    modifier
-                                ) { removeTeam = !removeTeam }
+                                    team = team.team,
+                                    modifier = modifier,
+                                    onDismissRequest = { removeTeam = !removeTeam }
+                                )
                             }
                         }
                     }
@@ -146,8 +153,8 @@ private fun TeamScreen(
 
             if (showDetails) {
                 TeamDetailScreen(
-                    team,
-                    modifier
+                    team = team,
+                    modifier = modifier
                 )
             }
         }
@@ -156,7 +163,7 @@ private fun TeamScreen(
 
 @Composable
 private fun TeamDetailScreen(
-    team: Team,
+    team: TeamWithPlayers,
     modifier: Modifier = Modifier
 ) {
     Row(horizontalArrangement = Arrangement.SpaceEvenly, modifier = modifier.fillMaxWidth()) {
@@ -164,9 +171,19 @@ private fun TeamDetailScreen(
             modifier = modifier.wrapContentHeight()
         ) {
             Text(
-                "Players",
+                text = "Players",
                 style = MaterialTheme.typography.titleMedium
             )
+        }
+        team.player.forEach {
+            Column(
+                modifier = modifier.wrapContentHeight()
+            ) {
+                Text(
+                    text = "Name: " + it.name,
+                    style = MaterialTheme.typography.titleMedium
+                )
+            }
         }
     }
 }
@@ -180,7 +197,7 @@ private fun AddTeam(
     var playerID by remember { mutableIntStateOf(0) }
     var playerIndex by remember { mutableIntStateOf(0) }
     val playerNames: MutableList<String> = mutableListOf("")
-    PLAYER_VIEW_MODEL.allPlayers.value?.forEach {
+    PLAYER_VIEW_MODEL.allPlayers.forEach {
         playerNames += it.name
     }
     val onConfirmation = {
@@ -209,7 +226,7 @@ private fun AddTeam(
                     TextField(
                         value = teamName,
                         onValueChange = { teamName = it },
-                        label = { Text("Team Name:") },
+                        label = { Text(text = "Team Name:") },
                         textStyle = MaterialTheme.typography.bodyMedium
                     )
                 }
@@ -221,8 +238,7 @@ private fun AddTeam(
                         preText = "Player:",
                         onItemClick = {
                             playerIndex = it; playerID =
-                            PLAYER_VIEW_MODEL.getByName(playerNames[playerIndex]).value?.playerID
-                                ?: 0
+                            PLAYER_VIEW_MODEL.getByName(playerNames[playerIndex]).playerID
                         })
                 }
                 Row {
@@ -231,7 +247,7 @@ private fun AddTeam(
                         modifier = modifier
                     ) {
                         Text(
-                            "Cancel",
+                            text = "Cancel",
                             style = MaterialTheme.typography.titleMedium
                         )
                     }
@@ -240,7 +256,7 @@ private fun AddTeam(
                         modifier = modifier
                     ) {
                         Text(
-                            "Add",
+                            text = "Add",
                             style = MaterialTheme.typography.titleMedium
                         )
                     }
@@ -287,7 +303,7 @@ private fun RemoveTeam(
                         modifier = modifier
                     ) {
                         Text(
-                            "Cancel",
+                            text = "Cancel",
                             style = MaterialTheme.typography.titleMedium
                         )
                     }
@@ -296,7 +312,7 @@ private fun RemoveTeam(
                         modifier = modifier
                     ) {
                         Text(
-                            "Confirm",
+                            text = "Confirm",
                             style = MaterialTheme.typography.titleMedium
                         )
                     }

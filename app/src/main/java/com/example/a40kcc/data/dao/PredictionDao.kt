@@ -8,13 +8,16 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface PredictionDao : BaseDao<Prediction> {
     @Query("SELECT * FROM prediction")
-    fun getAll(): Flow<List<Prediction>>
+    fun getAll(): List<Prediction>
+
+    @Query("SELECT * FROM prediction")
+    fun getAllFlow(): Flow<List<Prediction>>
 
     @Query("SELECT * FROM prediction WHERE predictionID = :predictionId")
-    fun getById(predictionId: Int): Flow<Prediction>
+    fun getById(predictionId: Int): Prediction
 
     @Query(
         "SELECT * FROM prediction WHERE name LIKE :predictionName"
     )
-    fun getByName(predictionName: String): Flow<Prediction>
+    fun getByName(predictionName: String): Prediction
 }

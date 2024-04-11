@@ -7,13 +7,21 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.a40kcc.data.dao.GameDao
+import com.example.a40kcc.data.dao.GameExpandedDao
+import com.example.a40kcc.data.dao.LiveRoundDao
+import com.example.a40kcc.data.dao.LiveRoundExpandedDao
 import com.example.a40kcc.data.dao.OutcomeDao
+import com.example.a40kcc.data.dao.OutcomeWithPlayersDao
 import com.example.a40kcc.data.dao.PlayerDao
+import com.example.a40kcc.data.dao.PlayerWithTeamsDao
 import com.example.a40kcc.data.dao.PredictionDao
 import com.example.a40kcc.data.dao.RoundDao
+import com.example.a40kcc.data.dao.RoundWithTournamentDao
 import com.example.a40kcc.data.dao.TeamDao
+import com.example.a40kcc.data.dao.TeamWithPlayersDao
 import com.example.a40kcc.data.dao.TournamentDao
 import com.example.a40kcc.data.`object`.Game
+import com.example.a40kcc.data.`object`.LiveRound
 import com.example.a40kcc.data.`object`.Outcome
 import com.example.a40kcc.data.`object`.Player
 import com.example.a40kcc.data.`object`.PlayerTeamCrossRef
@@ -25,18 +33,25 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Database(
-    entities = [Game::class, Outcome::class, Player::class, PlayerTeamCrossRef::class, Prediction::class, Round::class, Team::class, Tournament::class],
+    entities = [Game::class, LiveRound::class, Outcome::class, Player::class, PlayerTeamCrossRef::class, Prediction::class, Round::class, Team::class, Tournament::class],
     version = 1,
-    exportSchema = false
+    exportSchema = true
 )
 @TypeConverters(Converters::class)
 abstract class Application40kCCDatabase : RoomDatabase() {
     abstract fun gameDao(): GameDao
+    abstract fun gameExpandedDao(): GameExpandedDao
+    abstract fun liveRoundDao(): LiveRoundDao
+    abstract fun liveRoundExpandedDao(): LiveRoundExpandedDao
     abstract fun outcomeDao(): OutcomeDao
+    abstract fun outcomeWithPlayersDao(): OutcomeWithPlayersDao
     abstract fun playerDao(): PlayerDao
+    abstract fun playerWithTeamsDao(): PlayerWithTeamsDao
     abstract fun predictionDao(): PredictionDao
     abstract fun roundDao(): RoundDao
+    abstract fun roundWithTournamentDao(): RoundWithTournamentDao
     abstract fun teamDao(): TeamDao
+    abstract fun teamWithPlayersDao(): TeamWithPlayersDao
     abstract fun tournamentDao(): TournamentDao
 
     private class Application40kCCDatabaseCallback(
@@ -55,7 +70,7 @@ abstract class Application40kCCDatabase : RoomDatabase() {
         suspend fun populatePredictions(predictionDao: PredictionDao) {
             var prediction = Prediction(
                 name = "Guaranteed",
-                color = "Green",
+                color = 0xff00ff00,
                 minPoints = 16,
                 maxPoints = 20,
                 defaultOption = true
@@ -63,7 +78,7 @@ abstract class Application40kCCDatabase : RoomDatabase() {
             predictionDao.insert(prediction)
             prediction = Prediction(
                 name = "Advantage",
-                color = "Light Green",
+                color = 0xff64ff64,
                 minPoints = 12,
                 maxPoints = 15,
                 defaultOption = true
@@ -71,7 +86,7 @@ abstract class Application40kCCDatabase : RoomDatabase() {
             predictionDao.insert(prediction)
             prediction = Prediction(
                 name = "Close Game",
-                color = "Yellow",
+                color = 0xffffff00,
                 minPoints = 9,
                 maxPoints = 11,
                 defaultOption = true
@@ -79,7 +94,7 @@ abstract class Application40kCCDatabase : RoomDatabase() {
             predictionDao.insert(prediction)
             prediction = Prediction(
                 name = "Disadvantage",
-                color = "Orange",
+                color = 0xffffaa00,
                 minPoints = 5,
                 maxPoints = 9,
                 defaultOption = true
@@ -87,7 +102,7 @@ abstract class Application40kCCDatabase : RoomDatabase() {
             predictionDao.insert(prediction)
             prediction = Prediction(
                 name = "Volatile/Unsure",
-                color = "Red",
+                color = 0xffff0000,
                 minPoints = 0,
                 maxPoints = 4,
                 defaultOption = true
@@ -111,6 +126,7 @@ abstract class Application40kCCDatabase : RoomDatabase() {
                     "40kCC-database"
                 )
                     .addCallback(Application40kCCDatabaseCallback(scope))
+                    .allowMainThreadQueries() //HACK TO FIX PLAYER TEAM INSERT FOR ALPHA
                     .build()
                 INSTANCE = instance
                 instance

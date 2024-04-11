@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -40,10 +41,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.Dialog
 import com.example.a40kcc.R
 import com.example.a40kcc.data.`object`.Player
-import com.example.a40kcc.data.`object`.PlayerExpanded
+import com.example.a40kcc.data.`object`.PlayerWithTeams
 import com.example.a40kcc.ui.utilities.DropDownList
 import com.example.a40kcc.ui.utilities.FACTION_DATA
 import com.example.a40kcc.ui.utilities.PLAYER_VIEW_MODEL
+import com.example.a40kcc.ui.utilities.PLAYER_WITH_TEAMS_VIEW_MODEL
+import com.example.a40kcc.ui.utilities.TEAM_VIEW_MODEL
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 
 @Composable
@@ -58,12 +61,24 @@ fun PlayerScreen(
             modifier = modifier
         ) {
             Column {
-                Text(stringResource(id = R.string.home_button))
+                Text(text = stringResource(id = R.string.home_button))
             }
         }
 
-        val players: List<PlayerExpanded>? =
-            PLAYER_VIEW_MODEL.allPlayersExpanded.observeAsState().value
+        val players: List<PlayerWithTeams>? =
+            PLAYER_WITH_TEAMS_VIEW_MODEL.allPlayersFlow.observeAsState().value
+
+        //HACK TO MAKE THINGS WORK FOR ALPHA
+        //Add all players to the first team
+        players?.forEach {
+            if (it.team.isEmpty()) {
+                val teams = TEAM_VIEW_MODEL.allTeams
+                PLAYER_WITH_TEAMS_VIEW_MODEL.insert(
+                    playerID = it.player.playerID,
+                    teamID = teams.first().teamID
+                )
+            }
+        }
 
         Row(
             horizontalArrangement = Arrangement.SpaceEvenly,
@@ -75,7 +90,7 @@ fun PlayerScreen(
                     .wrapContentHeight()
             ) {
                 Text(
-                    "Player Name",
+                    text = "Player Name",
                     style = MaterialTheme.typography.titleLarge
                 )
             }
@@ -85,7 +100,7 @@ fun PlayerScreen(
                     .wrapContentHeight()
             ) {
                 Text(
-                    "Player Team",
+                    text = "Player Team",
                     style = MaterialTheme.typography.titleLarge
                 )
             }
@@ -93,7 +108,8 @@ fun PlayerScreen(
 
         if (players != null) {
             PlayerScreen(
-                players, modifier
+                players = players,
+                modifier = modifier
             )
         }
 
@@ -103,7 +119,7 @@ fun PlayerScreen(
             },
             modifier = modifier.align(Alignment.End)
         ) {
-            Icon(Icons.Filled.Add, "Add Player")
+            Icon(imageVector = Icons.Filled.Add, contentDescription = "Add Player")
 
             if (addPlayer) {
                 AddPlayer(
@@ -116,13 +132,14 @@ fun PlayerScreen(
 
 @Composable
 private fun PlayerScreen(
-    players: List<PlayerExpanded>,
+    players: List<PlayerWithTeams>,
     modifier: Modifier = Modifier
 ) {
     LazyColumn {
         items(players) { player ->
             var showDetails by remember { mutableStateOf(false) }
             var removePlayer by remember { mutableStateOf(false) }
+            var editPlayer by remember { mutableStateOf(false) }
             Row(
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 modifier = modifier.fillMaxWidth()
@@ -133,7 +150,7 @@ private fun PlayerScreen(
                         .wrapContentHeight()
                 ) {
                     Text(
-                        player.player.name,
+                        text = player.player.name,
                         style = MaterialTheme.typography.titleLarge,
                         modifier = modifier
                             .clickable(true, onClick = {
@@ -146,7 +163,8 @@ private fun PlayerScreen(
                         .alignByBaseline()
                         .wrapContentHeight()
                 ) {
-                    if (!player.team.isNullOrEmpty()) {
+                    println(player.team)
+                    if (player.team.isNotEmpty()) {
                         Text(
                             text = player.team[0].name,
                             style = MaterialTheme.typography.titleLarge,
@@ -162,13 +180,33 @@ private fun PlayerScreen(
                             },
                             modifier = modifier.align(Alignment.End)
                         ) {
-                            Icon(Icons.Filled.Clear, "Remove Player")
+                            Icon(
+                                imageVector = Icons.Filled.Clear,
+                                contentDescription = "Remove Player"
+                            )
 
                             if (removePlayer) {
                                 RemovePlayer(
-                                    player,
-                                    modifier
-                                ) { removePlayer = !removePlayer }
+                                    player = player,
+                                    modifier = modifier,
+                                    onDismissRequest = { removePlayer = !removePlayer }
+                                )
+                            }
+                        }
+                        SmallFloatingActionButton(
+                            onClick = {
+                                editPlayer = !editPlayer
+                            },
+                            modifier = modifier.align(Alignment.End)
+                        ) {
+                            Icon(imageVector = Icons.Filled.Build, contentDescription = "Edit Game")
+
+                            if (editPlayer) {
+                                EditPlayer(
+                                    player = player,
+                                    modifier = modifier,
+                                    onDismissRequest = { editPlayer = !editPlayer }
+                                )
                             }
                         }
                     }
@@ -177,8 +215,8 @@ private fun PlayerScreen(
 
             if (showDetails) {
                 PlayerDetailScreen(
-                    player,
-                    modifier
+                    player = player,
+                    modifier = modifier
                 )
             }
         }
@@ -187,21 +225,24 @@ private fun PlayerScreen(
 
 @Composable
 private fun PlayerDetailScreen(
-    player: PlayerExpanded,
+    player: PlayerWithTeams,
     modifier: Modifier = Modifier
 ) {
-    val playerFaction =
-        if (!player.player.factionName.isNullOrBlank()) FACTION_DATA.getDataValue(player.player.factionName) else null
+    var playerFaction: Array<Any>? = null
+    if (!player.player.factionName.isNullOrBlank()) {
+        playerFaction = FACTION_DATA.getDataValue(player.player.factionName)
+    }
+
     Row(horizontalArrangement = Arrangement.SpaceEvenly, modifier = modifier.fillMaxWidth()) {
         Column(
             modifier = modifier.wrapContentHeight()
         ) {
             Text(
-                "Nickname",
+                text = "Nickname",
                 style = MaterialTheme.typography.titleMedium
             )
             Text(
-                player.player.nickname!!,
+                text = player.player.nickname!!,
                 style = MaterialTheme.typography.bodyMedium
             )
         }
@@ -209,11 +250,11 @@ private fun PlayerDetailScreen(
             modifier = modifier.wrapContentHeight()
         ) {
             Text(
-                "Preferred Faction",
+                text = "Preferred Faction",
                 style = MaterialTheme.typography.titleMedium
             )
             Text(
-                player.player.factionName.toString(),
+                text = player.player.factionName.toString(),
                 style = MaterialTheme.typography.bodyMedium
             )
         }
@@ -221,11 +262,11 @@ private fun PlayerDetailScreen(
             modifier = modifier.wrapContentHeight()
         ) {
             Text(
-                "Super Faction",
+                text = "Super Faction",
                 style = MaterialTheme.typography.titleMedium
             )
             Text(
-                playerFaction?.get(1).toString(),
+                text = playerFaction?.get(1).toString(),
                 style = MaterialTheme.typography.bodyMedium
             )
         }
@@ -233,7 +274,7 @@ private fun PlayerDetailScreen(
             modifier = modifier.wrapContentHeight()
         ) {
             Text(
-                "Faction Icon",
+                text = "Faction Icon",
                 style = MaterialTheme.typography.titleMedium
             )
             Image(
@@ -256,8 +297,14 @@ private fun AddPlayer(
     var playerName by remember { mutableStateOf("") }
     var playerNickname by remember { mutableStateOf("") }
     var playerFaction by remember { mutableStateOf("") }
-    var selectedIndex by remember { mutableIntStateOf(0) }
+    var teamID by remember { mutableIntStateOf(0) }
+    var factionIndex by remember { mutableIntStateOf(0) }
+    var teamIndex by remember { mutableIntStateOf(0) }
     val factionNames: List<String> = listOf("") + FACTION_DATA.getDataKeys().toList()
+    val teamNames: MutableList<String> = mutableListOf("")
+    TEAM_VIEW_MODEL.allTeams.forEach {
+        teamNames += it.name
+    }
     val onConfirmation = {
         val newPlayer = Player(
             name = playerName,
@@ -285,7 +332,7 @@ private fun AddPlayer(
                     TextField(
                         value = playerName,
                         onValueChange = { playerName = it },
-                        label = { Text("Player Name:") },
+                        label = { Text(text = "Player Name:") },
                         textStyle = MaterialTheme.typography.bodyMedium
                     )
                 }
@@ -293,18 +340,29 @@ private fun AddPlayer(
                     TextField(
                         value = playerNickname,
                         onValueChange = { playerNickname = it },
-                        label = { Text("Nickname:") },
+                        label = { Text(text = "Nickname:") },
                         textStyle = MaterialTheme.typography.bodyMedium
                     )
                 }
                 Row {
                     DropDownList(
                         itemList = factionNames,
-                        selectedIndex = selectedIndex,
+                        selectedIndex = factionIndex,
                         modifier = modifier,
                         preText = "Preferred Faction:",
                         onItemClick = {
-                            selectedIndex = it; playerFaction = factionNames[selectedIndex]
+                            factionIndex = it; playerFaction = factionNames[factionIndex]
+                        })
+                }
+                Row {
+                    DropDownList(
+                        itemList = teamNames,
+                        selectedIndex = teamIndex,
+                        modifier = modifier,
+                        preText = "Team:",
+                        onItemClick = {
+                            teamIndex = it; teamID =
+                            TEAM_VIEW_MODEL.getByName(teamNames[teamIndex]).teamID
                         })
                 }
                 Row {
@@ -313,7 +371,7 @@ private fun AddPlayer(
                         modifier = modifier
                     ) {
                         Text(
-                            "Cancel",
+                            text = "Cancel",
                             style = MaterialTheme.typography.titleMedium
                         )
                     }
@@ -322,7 +380,114 @@ private fun AddPlayer(
                         modifier = modifier
                     ) {
                         Text(
-                            "Add",
+                            text = "Add",
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun EditPlayer(
+    player: PlayerWithTeams,
+    modifier: Modifier = Modifier,
+    onDismissRequest: () -> Unit
+) {
+    var playerName by remember { mutableStateOf(player.player.name) }
+    var playerNickname by remember { mutableStateOf(player.player.nickname!!) }
+    var playerFaction by remember { mutableStateOf(player.player.factionName!!) }
+    var teamID by remember { mutableIntStateOf(player.team[0].teamID) }
+    var factionIndex by remember { mutableIntStateOf(0) }
+    var teamIndex by remember { mutableIntStateOf(0) }
+    val factionNames: List<String> = listOf("") + FACTION_DATA.getDataKeys().toList()
+    val teamNames: MutableList<String> = mutableListOf("")
+    TEAM_VIEW_MODEL.allTeams.forEach {
+        teamNames += it.name
+        if (it.name == player.team[0].name) {
+            teamIndex = teamNames.lastIndex
+        }
+    }
+    factionIndex = factionNames.indexOf(playerFaction)
+    val onConfirmation = {
+        val updatedPlayer = Player(
+            playerID = player.player.playerID,
+            name = playerName,
+            nickname = playerNickname,
+            factionName = playerFaction
+        )
+        PLAYER_VIEW_MODEL.update(updatedPlayer)
+        onDismissRequest()
+    }
+    Dialog(onDismissRequest = { onDismissRequest() }) {
+        Card(
+            modifier = modifier.wrapContentSize()
+        ) {
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = modifier.fillMaxWidth()
+            ) {
+                Row {
+                    Text(
+                        text = "Edit a player"
+                    )
+                }
+                Row {
+                    TextField(
+                        value = playerName,
+                        onValueChange = { playerName = it },
+                        label = { Text(text = "Player Name:") },
+                        textStyle = MaterialTheme.typography.bodyMedium
+                    )
+                }
+                Row {
+                    TextField(
+                        value = playerNickname,
+                        onValueChange = { playerNickname = it },
+                        label = { Text(text = "Nickname:") },
+                        textStyle = MaterialTheme.typography.bodyMedium
+                    )
+                }
+                Row {
+                    DropDownList(
+                        itemList = factionNames,
+                        selectedIndex = factionIndex,
+                        modifier = modifier,
+                        preText = "Preferred Faction:",
+                        onItemClick = {
+                            factionIndex = it; playerFaction = factionNames[factionIndex]
+                        })
+                }
+                Row {
+                    DropDownList(
+                        itemList = teamNames,
+                        selectedIndex = teamIndex,
+                        modifier = modifier,
+                        preText = "Team:",
+                        onItemClick = {
+                            teamIndex = it; teamID =
+                            TEAM_VIEW_MODEL.getByName(teamNames[teamIndex]).teamID
+                        })
+                }
+                Row {
+                    TextButton(
+                        onClick = { onDismissRequest() },
+                        modifier = modifier
+                    ) {
+                        Text(
+                            text = "Cancel",
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                    }
+                    TextButton(
+                        onClick = { onConfirmation() },
+                        modifier = modifier
+                    ) {
+                        Text(
+                            text = "Add",
                             style = MaterialTheme.typography.titleMedium
                         )
                     }
@@ -334,7 +499,7 @@ private fun AddPlayer(
 
 @Composable
 private fun RemovePlayer(
-    player: PlayerExpanded,
+    player: PlayerWithTeams,
     modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit
 ) {
@@ -369,7 +534,7 @@ private fun RemovePlayer(
                         modifier = modifier
                     ) {
                         Text(
-                            "Cancel",
+                            text = "Cancel",
                             style = MaterialTheme.typography.titleMedium
                         )
                     }
@@ -378,7 +543,7 @@ private fun RemovePlayer(
                         modifier = modifier
                     ) {
                         Text(
-                            "Confirm",
+                            text = "Confirm",
                             style = MaterialTheme.typography.titleMedium
                         )
                     }

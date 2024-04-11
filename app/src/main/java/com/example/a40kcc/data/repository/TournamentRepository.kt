@@ -7,21 +7,22 @@ import kotlinx.coroutines.flow.Flow
 import java.sql.Date
 
 class TournamentRepository(private val tournamentDao: TournamentDao) {
-    val allTournaments: Flow<List<Tournament>> = tournamentDao.getAll()
+    val allTournaments: List<Tournament> = tournamentDao.getAll()
+    val allTournamentsFlow: Flow<List<Tournament>> = tournamentDao.getAllFlow()
 
     @WorkerThread
-    fun getTournament(tournamentId: Int): Flow<Tournament> {
+    fun getById(tournamentId: Int): Tournament {
         return tournamentDao.getById(tournamentId)
     }
 
     @WorkerThread
-    fun getTournaments(tournamentName: String): Flow<List<Tournament>> {
-        return tournamentDao.getTournamentsByName(tournamentName)
+    fun getByName(tournamentName: String): List<Tournament> {
+        return tournamentDao.getByName(tournamentName)
     }
 
     @WorkerThread
-    fun getTournaments(tournamentDate: Date): Flow<List<Tournament>> {
-        return tournamentDao.getTournamentsByDate(tournamentDate)
+    fun getByDate(tournamentDate: Date): List<Tournament> {
+        return tournamentDao.getByDate(tournamentDate)
     }
 
     @WorkerThread

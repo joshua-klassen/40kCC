@@ -17,8 +17,8 @@ import java.sql.Types.NULL
         entity = Player::class,
         childColumns = ["player_01"],
         parentColumns = ["playerID"],
-        onDelete = 3,
-        onUpdate = 5,
+        onDelete = ForeignKey.SET_NULL,
+        onUpdate = ForeignKey.CASCADE,
         deferred = true
     ),
         ForeignKey(

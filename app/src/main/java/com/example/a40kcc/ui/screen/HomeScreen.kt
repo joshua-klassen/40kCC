@@ -70,7 +70,7 @@ fun HomeScreenCard(
                 .align(alignment = Alignment.CenterHorizontally)
         )
         Text(
-            cardText,
+            text = cardText,
             textAlign = TextAlign.Center,
             modifier = modifier
                 .align(alignment = Alignment.CenterHorizontally)

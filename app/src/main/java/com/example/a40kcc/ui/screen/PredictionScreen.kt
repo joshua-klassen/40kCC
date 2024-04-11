@@ -1,5 +1,6 @@
 package com.example.a40kcc.ui.screen
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -26,11 +27,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.window.Dialog
@@ -50,12 +53,12 @@ fun PredictionScreen(
             modifier = modifier
         ) {
             Column {
-                Text(stringResource(id = R.string.home_button))
+                Text(text = stringResource(id = R.string.home_button))
             }
         }
 
         val predictions: List<Prediction>? =
-            PREDICTION_VIEW_MODEL.allPredictions.observeAsState().value
+            PREDICTION_VIEW_MODEL.allPredictionsFlow.observeAsState().value
 
         Row(
             horizontalArrangement = Arrangement.SpaceEvenly,
@@ -67,7 +70,7 @@ fun PredictionScreen(
                     .wrapContentHeight()
             ) {
                 Text(
-                    "Prediction Name",
+                    text = "Prediction Name",
                     style = MaterialTheme.typography.titleLarge
                 )
             }
@@ -77,14 +80,14 @@ fun PredictionScreen(
                     .wrapContentHeight()
             ) {
                 Text(
-                    "Prediction Color",
+                    text = "Prediction Color",
                     style = MaterialTheme.typography.titleLarge
                 )
             }
         }
 
         if (predictions != null) {
-            PredictionScreen(predictions, modifier)
+            PredictionScreen(predictions = predictions, modifier = modifier)
         }
 
         FloatingActionButton(
@@ -93,12 +96,13 @@ fun PredictionScreen(
             },
             modifier = modifier.align(Alignment.End)
         ) {
-            Icon(Icons.Filled.Add, "Add Prediction")
+            Icon(imageVector = Icons.Filled.Add, contentDescription = "Add Prediction")
 
             if (addPrediction) {
                 AddPrediction(
-                    modifier
-                ) { addPrediction = !addPrediction }
+                    modifier = modifier,
+                    onDismissRequest = { addPrediction = !addPrediction }
+                )
             }
         }
     }
@@ -123,7 +127,7 @@ private fun PredictionScreen(
                         .wrapContentHeight()
                 ) {
                     Text(
-                        prediction.name,
+                        text = prediction.name,
                         style = MaterialTheme.typography.titleLarge,
                         modifier = modifier
                             .clickable(true, onClick = {
@@ -137,9 +141,9 @@ private fun PredictionScreen(
                         .wrapContentHeight()
                 ) {
                     Text(
-                        text = prediction.color,
+                        text = prediction.color.toString(),
                         style = MaterialTheme.typography.titleLarge,
-                        modifier = modifier
+                        modifier = modifier.background(Color(prediction.color))
                     )
                 }
                 Column {
@@ -150,13 +154,17 @@ private fun PredictionScreen(
                             },
                             modifier = modifier.align(Alignment.End)
                         ) {
-                            Icon(Icons.Filled.Clear, "Remove Prediction")
+                            Icon(
+                                imageVector = Icons.Filled.Clear,
+                                contentDescription = "Remove Prediction"
+                            )
 
                             if (removePrediction) {
                                 RemovePrediction(
-                                    prediction,
-                                    modifier
-                                ) { removePrediction = !removePrediction }
+                                    prediction = prediction,
+                                    modifier = modifier,
+                                    onDismissRequest = { removePrediction = !removePrediction }
+                                )
                             }
                         }
                     }
@@ -165,8 +173,8 @@ private fun PredictionScreen(
 
             if (showDetails) {
                 PredictionDetailScreen(
-                    prediction,
-                    modifier
+                    prediction = prediction,
+                    modifier = modifier
                 )
             }
         }
@@ -183,11 +191,11 @@ private fun PredictionDetailScreen(
             modifier = modifier.wrapContentHeight()
         ) {
             Text(
-                "Minimum Points",
+                text = "Minimum Points",
                 style = MaterialTheme.typography.titleMedium
             )
             Text(
-                prediction.minPoints.toString(),
+                text = prediction.minPoints.toString(),
                 style = MaterialTheme.typography.bodyMedium
             )
         }
@@ -195,11 +203,11 @@ private fun PredictionDetailScreen(
             modifier = modifier.wrapContentHeight()
         ) {
             Text(
-                "Maximum Points",
+                text = "Maximum Points",
                 style = MaterialTheme.typography.titleMedium
             )
             Text(
-                prediction.maxPoints.toString(),
+                text = prediction.maxPoints.toString(),
                 style = MaterialTheme.typography.bodyMedium
             )
         }
@@ -212,7 +220,7 @@ private fun AddPrediction(
     onDismissRequest: () -> Unit
 ) {
     var predictionName by remember { mutableStateOf("") }
-    var predictionColor by remember { mutableStateOf("") }
+    var predictionColor by remember { mutableLongStateOf(0xFF000000) }
     var predictionMin by remember { mutableIntStateOf(0) }
     var predictionMax by remember { mutableIntStateOf(0) }
     val onConfirmation = {
@@ -243,15 +251,15 @@ private fun AddPrediction(
                     TextField(
                         value = predictionName,
                         onValueChange = { predictionName = it },
-                        label = { Text("Name:") },
+                        label = { Text(text = "Name:") },
                         textStyle = MaterialTheme.typography.bodyMedium
                     )
                 }
                 Row {
                     TextField(
-                        value = predictionColor,
-                        onValueChange = { predictionColor = it },
-                        label = { Text("Color:") },
+                        value = predictionColor.toString(),
+                        onValueChange = { predictionColor = it.toLong() },
+                        label = { Text(text = "Color:") },
                         textStyle = MaterialTheme.typography.bodyMedium
                     )
                 }
@@ -259,7 +267,7 @@ private fun AddPrediction(
                     TextField(
                         value = predictionMin.toString(),
                         onValueChange = { predictionMin = it.toInt() },
-                        label = { Text("Minimum Points:") },
+                        label = { Text(text = "Minimum Points:") },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         textStyle = MaterialTheme.typography.bodyMedium
                     )
@@ -268,7 +276,7 @@ private fun AddPrediction(
                     TextField(
                         value = predictionMax.toString(),
                         onValueChange = { predictionMax = it.toInt() },
-                        label = { Text("Maximum Points:") },
+                        label = { Text(text = "Maximum Points:") },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         textStyle = MaterialTheme.typography.bodyMedium
                     )
@@ -279,7 +287,7 @@ private fun AddPrediction(
                         modifier = modifier
                     ) {
                         Text(
-                            "Cancel",
+                            text = "Cancel",
                             style = MaterialTheme.typography.titleMedium
                         )
                     }
@@ -288,7 +296,7 @@ private fun AddPrediction(
                         modifier = modifier
                     ) {
                         Text(
-                            "Add",
+                            text = "Add",
                             style = MaterialTheme.typography.titleMedium
                         )
                     }
@@ -335,7 +343,7 @@ private fun RemovePrediction(
                         modifier = modifier
                     ) {
                         Text(
-                            "Cancel",
+                            text = "Cancel",
                             style = MaterialTheme.typography.titleMedium
                         )
                     }
@@ -344,7 +352,7 @@ private fun RemovePrediction(
                         modifier = modifier
                     ) {
                         Text(
-                            "Confirm",
+                            text = "Confirm",
                             style = MaterialTheme.typography.titleMedium
                         )
                     }

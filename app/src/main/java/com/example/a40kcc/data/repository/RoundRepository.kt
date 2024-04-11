@@ -3,71 +3,40 @@ package com.example.a40kcc.data.repository
 import androidx.annotation.WorkerThread
 import com.example.a40kcc.data.dao.RoundDao
 import com.example.a40kcc.data.`object`.Round
-import com.example.a40kcc.data.`object`.RoundExpanded
 import kotlinx.coroutines.flow.Flow
 
 class RoundRepository(private val roundDao: RoundDao) {
-    val allRounds: Flow<List<Round>> = roundDao.getAll()
-    val allRoundsExpanded: Flow<List<RoundExpanded>> = roundDao.getAllExpanded()
+    val allRounds: List<Round> = roundDao.getAll()
+    val allRoundsFlow: Flow<List<Round>> = roundDao.getAllFlow()
 
     @WorkerThread
-    fun getRound(roundId: Int): Flow<Round> {
+    fun getById(roundId: Int): Round {
         return roundDao.getById(roundId)
     }
 
     @WorkerThread
-    fun getRoundByNumber(roundNumber: Int): Flow<List<Round>> {
-        return roundDao.getRoundByNumber(roundNumber)
+    fun getByRoundNumber(roundNumber: Int): List<Round> {
+        return roundDao.getByRoundNumber(roundNumber)
     }
 
     @WorkerThread
-    fun getRoundByPrimaryMission(primaryMissionName: String): Flow<List<Round>> {
-        return roundDao.getRoundByPrimaryMission(primaryMissionName)
+    fun getByPrimaryMission(primaryMissionName: String): List<Round> {
+        return roundDao.getByPrimaryMission(primaryMissionName)
     }
 
     @WorkerThread
-    fun getRoundBySecondaryMission(secondaryMissionName: String): Flow<List<Round>> {
-        return roundDao.getRoundBySecondaryMission(secondaryMissionName)
+    fun getBySecondaryMission(secondaryMissionName: String): List<Round> {
+        return roundDao.getBySecondaryMission(secondaryMissionName)
     }
 
     @WorkerThread
-    fun getRoundByDeployment(deploymentName: String): Flow<List<Round>> {
-        return roundDao.getRoundByDeployment(deploymentName)
+    fun getByDeployment(deploymentName: String): List<Round> {
+        return roundDao.getByDeployment(deploymentName)
     }
 
     @WorkerThread
-    fun getRoundByTournament(tournamentId: Int): Flow<List<Round>> {
-        return roundDao.getRoundByTournament(tournamentId)
-    }
-
-    @WorkerThread
-    fun getRoundExpanded(roundId: Int): Flow<RoundExpanded> {
-        return roundDao.getByIdExpanded(roundId)
-    }
-
-    @WorkerThread
-    fun getRoundByNumberExpanded(roundNumber: Int): Flow<List<RoundExpanded>> {
-        return roundDao.getRoundByNumberExpanded(roundNumber)
-    }
-
-    @WorkerThread
-    fun getRoundByPrimaryMissionExpanded(primaryMissionName: String): Flow<List<RoundExpanded>> {
-        return roundDao.getRoundByPrimaryMissionExpanded(primaryMissionName)
-    }
-
-    @WorkerThread
-    fun getRoundBySecondaryMissionExpanded(secondaryMissionName: String): Flow<List<RoundExpanded>> {
-        return roundDao.getRoundBySecondaryMissionExpanded(secondaryMissionName)
-    }
-
-    @WorkerThread
-    fun getRoundByDeploymentExpanded(deploymentName: String): Flow<List<RoundExpanded>> {
-        return roundDao.getRoundByDeploymentExpanded(deploymentName)
-    }
-
-    @WorkerThread
-    fun getRoundByTournamentExpanded(tournamentId: Int): Flow<List<RoundExpanded>> {
-        return roundDao.getRoundByTournamentExpanded(tournamentId)
+    fun getByTournamentId(tournamentId: Int): List<Round> {
+        return roundDao.getByTournamentId(tournamentId)
     }
 
     @WorkerThread

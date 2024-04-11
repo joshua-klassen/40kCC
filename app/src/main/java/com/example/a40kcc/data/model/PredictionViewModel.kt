@@ -10,19 +10,25 @@ import com.example.a40kcc.data.repository.PredictionRepository
 import kotlinx.coroutines.launch
 
 class PredictionViewModel(private val predictionRepository: PredictionRepository) : ViewModel() {
-    val allPredictions: LiveData<List<Prediction>> =
-        predictionRepository.allPredictions.asLiveData()
+    val allPredictions: List<Prediction> =
+        predictionRepository.allPredictions
+    val allPredictionsFlow: LiveData<List<Prediction>> =
+        predictionRepository.allPredictionsFlow.asLiveData()
+
+    fun getByName(predictionName: String): Prediction {
+        return predictionRepository.getByName(predictionName)
+    }
 
     fun insert(prediction: Prediction) = viewModelScope.launch {
         predictionRepository.insert(prediction)
     }
 
-    fun delete(prediction: Prediction) = viewModelScope.launch {
-        predictionRepository.delete(prediction)
+    fun update(prediction: Prediction) = viewModelScope.launch {
+        predictionRepository.update(prediction)
     }
 
-    fun getByName(predictionName: String): LiveData<Prediction> {
-        return predictionRepository.getPrediction(predictionName).asLiveData()
+    fun delete(prediction: Prediction) = viewModelScope.launch {
+        predictionRepository.delete(prediction)
     }
 }
 

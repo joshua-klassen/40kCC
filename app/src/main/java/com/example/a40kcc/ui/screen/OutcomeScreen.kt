@@ -38,9 +38,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.example.a40kcc.R
 import com.example.a40kcc.data.`object`.Outcome
-import com.example.a40kcc.data.`object`.OutcomeExpanded
+import com.example.a40kcc.data.`object`.OutcomeWithPlayers
 import com.example.a40kcc.ui.utilities.DropDownList
 import com.example.a40kcc.ui.utilities.OUTCOME_VIEW_MODEL
+import com.example.a40kcc.ui.utilities.OUTCOME_WITH_PLAYERS_VIEW_MODEL
 import com.example.a40kcc.ui.utilities.PLAYER_VIEW_MODEL
 import kotlin.math.abs
 
@@ -56,12 +57,12 @@ fun OutcomeScreen(
             modifier = modifier
         ) {
             Column {
-                Text(stringResource(id = R.string.home_button))
+                Text(text = stringResource(id = R.string.home_button))
             }
         }
 
-        val outcomes: List<OutcomeExpanded>? =
-            OUTCOME_VIEW_MODEL.allOutcomesExpanded.observeAsState().value
+        val outcomes: List<OutcomeWithPlayers>? =
+            OUTCOME_WITH_PLAYERS_VIEW_MODEL.allOutcomesFlow.observeAsState().value
 
         Row(
             horizontalArrangement = Arrangement.SpaceEvenly,
@@ -73,7 +74,7 @@ fun OutcomeScreen(
                     .wrapContentHeight()
             ) {
                 Text(
-                    "Player 01",
+                    text = "Player 01",
                     style = MaterialTheme.typography.titleLarge
                 )
             }
@@ -83,7 +84,7 @@ fun OutcomeScreen(
                     .wrapContentHeight()
             ) {
                 Text(
-                    "Player 02",
+                    text = "Player 02",
                     style = MaterialTheme.typography.titleLarge
                 )
             }
@@ -93,7 +94,7 @@ fun OutcomeScreen(
                     .wrapContentHeight()
             ) {
                 Text(
-                    "WTC Points",
+                    text = "WTC Points",
                     style = MaterialTheme.typography.titleLarge
                 )
             }
@@ -124,7 +125,7 @@ fun OutcomeScreen(
 
 @Composable
 private fun OutcomeScreen(
-    outcomes: List<OutcomeExpanded>,
+    outcomes: List<OutcomeWithPlayers>,
     modifier: Modifier = Modifier
 ) {
     LazyColumn {
@@ -168,7 +169,7 @@ private fun OutcomeScreen(
                         .wrapContentHeight()
                 ) {
                     Text(
-                        outcome.outcome.pointDifferential.toString(),
+                        text = outcome.outcome.pointDifferential.toString(),
                         style = MaterialTheme.typography.titleLarge,
                         modifier = modifier
                     )
@@ -206,7 +207,7 @@ private fun OutcomeScreen(
 
 @Composable
 private fun OutcomeDetailScreen(
-    outcome: OutcomeExpanded,
+    outcome: OutcomeWithPlayers,
     modifier: Modifier = Modifier
 ) {
     Row(horizontalArrangement = Arrangement.SpaceEvenly, modifier = modifier.fillMaxWidth()) {
@@ -214,7 +215,7 @@ private fun OutcomeDetailScreen(
             modifier = modifier.wrapContentHeight()
         ) {
             Text(
-                "Player 01 Points",
+                text = "Player 01 Points",
                 style = MaterialTheme.typography.titleMedium
             )
             Text(
@@ -226,7 +227,7 @@ private fun OutcomeDetailScreen(
             modifier = modifier.wrapContentHeight()
         ) {
             Text(
-                "Player 01 WTC Points",
+                text = "Player 01 WTC Points",
                 style = MaterialTheme.typography.titleMedium
             )
             Text(
@@ -238,7 +239,7 @@ private fun OutcomeDetailScreen(
             modifier = modifier.wrapContentHeight()
         ) {
             Text(
-                "Player 02 Points",
+                text = "Player 02 Points",
                 style = MaterialTheme.typography.titleMedium
             )
             Text(
@@ -250,7 +251,7 @@ private fun OutcomeDetailScreen(
             modifier = modifier.wrapContentHeight()
         ) {
             Text(
-                "Player 02 WTC Points",
+                text = "Player 02 WTC Points",
                 style = MaterialTheme.typography.titleMedium
             )
             Text(
@@ -274,7 +275,7 @@ private fun AddOutcome(
     var player01TeamPoints by remember { mutableIntStateOf(10) }
     var player02TeamPoints by remember { mutableIntStateOf(10) }
     val playerNames: MutableList<String> = mutableListOf("")
-    PLAYER_VIEW_MODEL.allPlayers.value?.forEach {
+    PLAYER_VIEW_MODEL.allPlayers.forEach {
         playerNames += it.name
     }
     val onConfirmation = {
@@ -330,8 +331,7 @@ private fun AddOutcome(
                         preText = "Player 01:",
                         onItemClick = {
                             player01Index = it; player01ID =
-                            PLAYER_VIEW_MODEL.getByName(playerNames[player01Index]).value?.playerID
-                                ?: 0
+                            PLAYER_VIEW_MODEL.getByName(playerNames[player01Index]).playerID
                         })
                 }
                 Row {
@@ -340,7 +340,7 @@ private fun AddOutcome(
                         onValueChange = {
                             player01Points = it; calculatePoints()
                         },
-                        label = { Text("Player 01 Points:") },
+                        label = { Text(text = "Player 01 Points:") },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         textStyle = MaterialTheme.typography.bodyMedium
                     )
@@ -349,7 +349,7 @@ private fun AddOutcome(
                     TextField(
                         value = player02Points,
                         onValueChange = { player02Points = it; calculatePoints() },
-                        label = { Text("Player 02 Points:") },
+                        label = { Text(text = "Player 02 Points:") },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         textStyle = MaterialTheme.typography.bodyMedium
                     )
@@ -361,7 +361,7 @@ private fun AddOutcome(
                             readOnly = true,
                             enabled = false,
                             onValueChange = { },
-                            label = { Text("Point Differential:") },
+                            label = { Text(text = "Point Differential:") },
                             textStyle = MaterialTheme.typography.bodyMedium,
                             modifier = modifier
                         )
@@ -372,7 +372,7 @@ private fun AddOutcome(
                             readOnly = true,
                             enabled = false,
                             onValueChange = { },
-                            label = { Text("Player 01 WTC Points:") },
+                            label = { Text(text = "Player 01 WTC Points:") },
                             textStyle = MaterialTheme.typography.bodyMedium,
                             modifier = modifier
                         )
@@ -383,7 +383,7 @@ private fun AddOutcome(
                             readOnly = true,
                             enabled = false,
                             onValueChange = { },
-                            label = { Text("Player 02 WTC Points:") },
+                            label = { Text(text = "Player 02 WTC Points:") },
                             textStyle = MaterialTheme.typography.bodyMedium,
                             modifier = modifier
                         )
@@ -395,7 +395,7 @@ private fun AddOutcome(
                         modifier = modifier
                     ) {
                         Text(
-                            "Cancel",
+                            text = "Cancel",
                             style = MaterialTheme.typography.titleMedium
                         )
                     }
@@ -404,7 +404,7 @@ private fun AddOutcome(
                         modifier = modifier
                     ) {
                         Text(
-                            "Add",
+                            text = "Add",
                             style = MaterialTheme.typography.titleMedium
                         )
                     }
@@ -416,7 +416,7 @@ private fun AddOutcome(
 
 @Composable
 private fun EditOutcome(
-    outcome: OutcomeExpanded,
+    outcome: OutcomeWithPlayers,
     modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit
 ) {
@@ -428,7 +428,7 @@ private fun EditOutcome(
     var player01TeamPoints by remember { mutableIntStateOf(outcome.outcome.player01TeamPoints) }
     var player02TeamPoints by remember { mutableIntStateOf(outcome.outcome.player02TeamPoints) }
     val playerNames: MutableList<String> = mutableListOf("")
-    PLAYER_VIEW_MODEL.allPlayers.value?.forEach {
+    PLAYER_VIEW_MODEL.allPlayers.forEach {
         playerNames += it.name
         if (it.playerID == player01ID) {
             player01Index = playerNames.lastIndex
@@ -488,15 +488,14 @@ private fun EditOutcome(
                         preText = "Player 01:",
                         onItemClick = {
                             player01Index = it; player01ID =
-                            PLAYER_VIEW_MODEL.getByName(playerNames[player01Index]).value?.playerID
-                                ?: 0
+                            PLAYER_VIEW_MODEL.getByName(playerNames[player01Index]).playerID
                         })
                 }
                 Row {
                     TextField(
                         value = player01Points,
                         onValueChange = { player01Points = it; calculatePoints() },
-                        label = { Text("Player 01 Points:") },
+                        label = { Text(text = "Player 01 Points:") },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         textStyle = MaterialTheme.typography.bodyMedium
                     )
@@ -505,7 +504,7 @@ private fun EditOutcome(
                     TextField(
                         value = player02Points,
                         onValueChange = { player02Points = it; calculatePoints() },
-                        label = { Text("Player 02 Points:") },
+                        label = { Text(text = "Player 02 Points:") },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         textStyle = MaterialTheme.typography.bodyMedium
                     )
@@ -516,7 +515,7 @@ private fun EditOutcome(
                         readOnly = true,
                         enabled = false,
                         onValueChange = { },
-                        label = { Text("Point Differential:") },
+                        label = { Text(text = "Point Differential:") },
                         textStyle = MaterialTheme.typography.bodyMedium,
                         modifier = modifier
                     )
@@ -525,7 +524,7 @@ private fun EditOutcome(
                         readOnly = true,
                         enabled = false,
                         onValueChange = { },
-                        label = { Text("Player 01 WTC Points:") },
+                        label = { Text(text = "Player 01 WTC Points:") },
                         textStyle = MaterialTheme.typography.bodyMedium,
                         modifier = modifier
                     )
@@ -534,7 +533,7 @@ private fun EditOutcome(
                         readOnly = true,
                         enabled = false,
                         onValueChange = { },
-                        label = { Text("Player 02 WTC Points:") },
+                        label = { Text(text = "Player 02 WTC Points:") },
                         textStyle = MaterialTheme.typography.bodyMedium,
                         modifier = modifier
                     )
@@ -545,7 +544,7 @@ private fun EditOutcome(
                         modifier = modifier
                     ) {
                         Text(
-                            "Cancel",
+                            text = "Cancel",
                             style = MaterialTheme.typography.titleMedium
                         )
                     }
@@ -554,7 +553,7 @@ private fun EditOutcome(
                         modifier = modifier
                     ) {
                         Text(
-                            "Update",
+                            text = "Update",
                             style = MaterialTheme.typography.titleMedium
                         )
                     }

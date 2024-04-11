@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.example.a40kcc.data.model
 
 import androidx.lifecycle.LiveData
@@ -8,21 +10,36 @@ import androidx.lifecycle.viewModelScope
 import com.example.a40kcc.data.`object`.Tournament
 import com.example.a40kcc.data.repository.TournamentRepository
 import kotlinx.coroutines.launch
+import java.sql.Date
 
 class TournamentViewModel(private val tournamentRepository: TournamentRepository) : ViewModel() {
-    val allTournaments: LiveData<List<Tournament>> =
-        tournamentRepository.allTournaments.asLiveData()
+    val allTournaments: List<Tournament> =
+        tournamentRepository.allTournaments
+    val allTournamentsFlow: LiveData<List<Tournament>> =
+        tournamentRepository.allTournamentsFlow.asLiveData()
+
+    fun getById(tournamentId: Int): Tournament {
+        return tournamentRepository.getById(tournamentId)
+    }
+
+    fun getByName(tournamentName: String): List<Tournament> {
+        return tournamentRepository.getByName(tournamentName)
+    }
+
+    fun getByDate(tournamentDate: Date): List<Tournament> {
+        return tournamentRepository.getByDate(tournamentDate)
+    }
 
     fun insert(tournament: Tournament) = viewModelScope.launch {
         tournamentRepository.insert(tournament)
     }
 
-    fun delete(tournament: Tournament) = viewModelScope.launch {
-        tournamentRepository.delete(tournament)
+    fun update(tournament: Tournament) = viewModelScope.launch {
+        tournamentRepository.update(tournament)
     }
 
-    fun getByName(tournamentName: String): LiveData<List<Tournament>> {
-        return tournamentRepository.getTournaments(tournamentName).asLiveData()
+    fun delete(tournament: Tournament) = viewModelScope.launch {
+        tournamentRepository.delete(tournament)
     }
 }
 

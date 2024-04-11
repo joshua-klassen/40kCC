@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.example.a40kcc.data.model
 
 import androidx.lifecycle.LiveData
@@ -6,14 +8,20 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.a40kcc.data.`object`.Team
-import com.example.a40kcc.data.`object`.TeamExpanded
 import com.example.a40kcc.data.repository.TeamRepository
 import kotlinx.coroutines.launch
 
 class TeamViewModel(private val teamRepository: TeamRepository) : ViewModel() {
-    val allTeams: LiveData<List<Team>> = teamRepository.allTeams.asLiveData()
-    val allTeamsExpanded: LiveData<List<TeamExpanded>> =
-        teamRepository.allTeamsExpanded.asLiveData()
+    val allTeams: List<Team> = teamRepository.allTeams
+    val allTeamsFlow: LiveData<List<Team>> = teamRepository.allTeamsFlow.asLiveData()
+
+    fun getById(teamID: Int): Team {
+        return teamRepository.getById(teamID)
+    }
+
+    fun getByName(teamName: String): Team {
+        return teamRepository.getByName(teamName)
+    }
 
     fun insert(team: Team) = viewModelScope.launch {
         teamRepository.insert(team)
@@ -25,22 +33,6 @@ class TeamViewModel(private val teamRepository: TeamRepository) : ViewModel() {
 
     fun delete(team: Team) = viewModelScope.launch {
         teamRepository.delete(team)
-    }
-
-    fun getByName(teamName: String): LiveData<Team> {
-        return teamRepository.getTeam(teamName).asLiveData()
-    }
-
-    fun getByNameExpanded(teamName: String): LiveData<TeamExpanded> {
-        return teamRepository.getTeamExpanded(teamName).asLiveData()
-    }
-
-    fun getByID(teamID: Int): LiveData<Team> {
-        return teamRepository.getTeam(teamID).asLiveData()
-    }
-
-    fun getByIDExpanded(teamID: Int): LiveData<TeamExpanded> {
-        return teamRepository.getTeamExpanded(teamID).asLiveData()
     }
 }
 
