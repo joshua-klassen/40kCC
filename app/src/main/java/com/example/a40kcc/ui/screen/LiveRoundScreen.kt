@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
@@ -26,6 +27,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.example.a40kcc.R
 import com.example.a40kcc.data.`object`.LiveRound
@@ -36,6 +39,7 @@ import com.example.a40kcc.ui.utilities.LIVE_ROUND_EXPANDED_VIEW_MODEL
 import com.example.a40kcc.ui.utilities.LIVE_ROUND_VIEW_MODEL
 import com.example.a40kcc.ui.utilities.PREDICTION_VIEW_MODEL
 import com.example.a40kcc.ui.utilities.ROUND_VIEW_MODEL
+import com.example.a40kcc.ui.utilities.ScaledText
 import com.example.a40kcc.ui.utilities.TEAM_VIEW_MODEL
 import com.example.a40kcc.ui.utilities.TOURNAMENT_VIEW_MODEL
 
@@ -44,6 +48,8 @@ var midScore: Int = 0
 var highEndScore: Int = 0
 var lossThreshold: Int = 0
 var winThreshold: Int = 0
+
+val columnWidth: Dp = 100.dp
 
 @Composable
 fun PreLiveRoundScreen(
@@ -95,8 +101,7 @@ fun PreLiveRoundScreen(
                         DropDownList(
                             itemList = tournamentNames,
                             selectedIndex = tournamentIndex,
-                            modifier = modifier,
-                            preText = "Tournament:",
+                            preText = "Tournament: ",
                             onItemClick = {
                                 tournamentIndex = it; tournamentID =
                                 TOURNAMENT_VIEW_MODEL.getByName(tournamentNames[tournamentIndex])
@@ -111,11 +116,12 @@ fun PreLiveRoundScreen(
                                     )
                                 }
                             })
+                    }
+                    Row {
                         DropDownList(
                             itemList = tournamentRounds.keys.toList(),
                             selectedIndex = roundIndex,
-                            modifier = modifier,
-                            preText = "Round:",
+                            preText = "Round: ",
                             onItemClick = {
                                 roundIndex = it; roundID =
                                 ROUND_VIEW_MODEL.getById(tournamentRounds[tournamentRounds.keys.toList()[roundIndex]]!!).roundID
@@ -125,8 +131,7 @@ fun PreLiveRoundScreen(
                         DropDownList(
                             itemList = teamNames,
                             selectedIndex = teamIndex,
-                            modifier = modifier,
-                            preText = "Team:",
+                            preText = "Team: ",
                             onItemClick = {
                                 teamIndex = it; teamID =
                                 TEAM_VIEW_MODEL.getByName(teamNames[teamIndex]).teamID
@@ -202,41 +207,40 @@ private fun LiveRoundScreen(
             modifier = modifier.fillMaxWidth()
         ) {
             Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = modifier
+                    .width(columnWidth)
                     .alignByBaseline()
                     .wrapContentHeight()
             ) {
-                Text(
+                ScaledText(
                     text = "Player",
                     style = MaterialTheme.typography.titleLarge
                 )
             }
             Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = modifier
+                    .width(columnWidth)
                     .alignByBaseline()
                     .wrapContentHeight()
             ) {
-                Text(
-                    text = "Round",
-                    style = MaterialTheme.typography.titleLarge
-                )
-            }
-            Column(
-                modifier = modifier
-                    .alignByBaseline()
-                    .wrapContentHeight()
-            ) {
-                Text(
+                ScaledText(
                     text = "Prediction",
                     style = MaterialTheme.typography.titleLarge
                 )
             }
             Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = modifier
+                    .width(columnWidth)
                     .alignByBaseline()
                     .wrapContentHeight()
             ) {
-                Text(
+                ScaledText(
                     text = "Current State",
                     style = MaterialTheme.typography.titleLarge
                 )
@@ -273,44 +277,41 @@ private fun LiveRoundScreen(
                 modifier = modifier.fillMaxWidth()
             ) {
                 Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = modifier
+                        .width(columnWidth)
                         .alignByBaseline()
                         .wrapContentHeight()
                 ) {
-                    Text(
+                    ScaledText(
                         text = liveRound.game.player01.player.name,
-                        style = MaterialTheme.typography.titleLarge,
-                        modifier = modifier
+                        style = MaterialTheme.typography.titleLarge
                     )
                 }
                 Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = modifier
+                        .width(columnWidth)
                         .alignByBaseline()
                         .wrapContentHeight()
                 ) {
-                    Text(
-                        text = liveRound.game.round.round.number.toString(),
-                        style = MaterialTheme.typography.titleLarge,
-                        modifier = modifier
-                    )
-                }
-                Column(
-                    modifier = modifier
-                        .alignByBaseline()
-                        .wrapContentHeight()
-                ) {
-                    Text(
+                    ScaledText(
                         text = liveRound.game.prediction.name,
                         style = MaterialTheme.typography.titleLarge,
-                        modifier = modifier.background(Color(liveRound.game.prediction.color))
+                        modifier = Modifier.background(Color(liveRound.game.prediction.color))
                     )
                 }
                 Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = modifier
+                        .width(columnWidth)
                         .alignByBaseline()
                         .wrapContentHeight()
                 ) {
-                    Text(
+                    ScaledText(
                         text = liveRound.expectedResult.name,
                         style = MaterialTheme.typography.titleLarge,
                         modifier = modifier
@@ -324,9 +325,13 @@ private fun LiveRoundScreen(
                     if (editLiveRound) {
                         var predictionID by remember { mutableIntStateOf(0) }
                         var predictionIndex by remember { mutableIntStateOf(0) }
-                        val predictionNames: MutableList<String> = mutableListOf("")
+                        val predictionNames: MutableList<String> = mutableListOf()
                         PREDICTION_VIEW_MODEL.allPredictions.forEach {
                             predictionNames += it.name
+                            if(it.predictionID == liveRound.liveRound.expectedResult)
+                            {
+                                predictionIndex = predictionNames.lastIndex
+                            }
                         }
                         val onConfirmation = {
                             val updatedLiveRound = LiveRound(
@@ -350,7 +355,6 @@ private fun LiveRoundScreen(
                                         DropDownList(
                                             itemList = predictionNames,
                                             selectedIndex = predictionIndex,
-                                            modifier = modifier,
                                             preText = "Current State:",
                                             onItemClick = {
                                                 predictionIndex = it; predictionID =
@@ -359,8 +363,7 @@ private fun LiveRoundScreen(
                                     }
                                     Row {
                                         TextButton(
-                                            onClick = { onConfirmation() },
-                                            modifier = modifier
+                                            onClick = { onConfirmation() }
                                         ) {
                                             Text(
                                                 text = "Update",
@@ -394,25 +397,25 @@ private fun RoundResults(
         highEndScore += it.expectedResult.maxPoints
         midScore = (lowEndScore + highEndScore) / 2
 
-        lowEndBackground = if (lowEndScore < lossThreshold) {
+        lowEndBackground = if (lowEndScore <= lossThreshold) {
             Color(0Xffff0000)
-        } else if (lowEndScore > winThreshold) {
+        } else if (lowEndScore >= winThreshold) {
             Color(0xff00ff00)
         } else {
             Color(0xffffff00)
         }
 
-        midBackground = if (midScore < lossThreshold) {
+        midBackground = if (midScore <= lossThreshold) {
             Color(0Xffff0000)
-        } else if (midScore > winThreshold) {
+        } else if (midScore >= winThreshold) {
             Color(0xff00ff00)
         } else {
             Color(0xffffff00)
         }
 
-        highEndBackground = if (highEndScore < lossThreshold) {
+        highEndBackground = if (highEndScore <= lossThreshold) {
             Color(0Xffff0000)
-        } else if (highEndScore > winThreshold) {
+        } else if (highEndScore >= winThreshold) {
             Color(0xff00ff00)
         } else {
             Color(0xffffff00)

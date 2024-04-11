@@ -9,7 +9,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.navigation.NavHostController
 import com.example.a40kcc.R
 import com.example.a40kcc.ui.utilities.MAIN_ROUTES
+import com.example.a40kcc.ui.utilities.ScaledText
 
 @Composable
 fun HomeScreen(navController: NavHostController, modifier: Modifier = Modifier) {
@@ -69,12 +70,12 @@ fun HomeScreenCard(
                 .width(imageSize)
                 .align(alignment = Alignment.CenterHorizontally)
         )
-        Text(
+        ScaledText(
             text = cardText,
+            style = MaterialTheme.typography.titleMedium,
             textAlign = TextAlign.Center,
             modifier = modifier
                 .align(alignment = Alignment.CenterHorizontally)
-                .wrapContentWidth()
         )
     }
 }

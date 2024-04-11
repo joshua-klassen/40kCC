@@ -57,7 +57,7 @@ fun DropDownList(
             Box(
                 modifier = modifier
                     .clickable { showDropdown = true }
-                    .defaultMinSize(minWidth = 30.dp)
+                    .defaultMinSize(minWidth = 50.dp)
             ) {
                 Text(
                     text = itemList[selectedIndex],

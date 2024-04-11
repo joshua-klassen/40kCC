@@ -139,89 +139,108 @@ class MainActivity : ComponentActivity() {
                 Surface(modifier = modifier.fillMaxSize()) {
                     val activity = (LocalContext.current as Activity)
                     DEPLOYMENT_DATA = DataObject(
-                        activity.resources,
-                        R.array.DeploymentHeader,
-                        R.array.Deployments
+                        resources = activity.resources,
+                        headerID = R.array.DeploymentHeader,
+                        dataID = R.array.Deployments
                     )
                     FACTION_DATA = DataObject(
-                        activity.resources,
-                        R.array.FactionsHeader,
-                        R.array.Factions
+                        resources = activity.resources,
+                        headerID = R.array.FactionsHeader,
+                        dataID = R.array.Factions
                     )
                     PRIMARY_MISSION_DATA = DataObject(
-                        activity.resources,
-                        R.array.PrimaryMissionHeader,
-                        R.array.PrimaryMissions
+                        resources = activity.resources,
+                        headerID = R.array.PrimaryMissionHeader,
+                        dataID = R.array.PrimaryMissions
                     )
                     SECONDARY_MISSION_DATA = DataObject(
-                        activity.resources,
-                        R.array.SecondaryMissionHeader,
-                        R.array.SecondaryMissions
+                        resources = activity.resources,
+                        headerID = R.array.SecondaryMissionHeader,
+                        dataID = R.array.SecondaryMissions
                     )
                     val navController = rememberNavController()
                     NavHost(navController = navController, startDestination = "home") {
-                        composable("home") { HomeScreen(navController, modifier) }
+                        composable("home") {
+                            HomeScreen(
+                                navController = navController,
+                                modifier = modifier
+                            )
+                        }
                         composable("deployments") {
                             DataScreen(
-                                DEPLOYMENT_DATA,
-                                navController,
-                                modifier
+                                data = DEPLOYMENT_DATA,
+                                navController = navController,
+                                modifier = modifier
                             )
                         }
                         composable("factions") {
                             DataScreen(
-                                FACTION_DATA,
-                                navController,
-                                modifier
+                                data = FACTION_DATA,
+                                navController = navController,
+                                modifier = modifier
                             )
                         }
                         composable("games") {
                             GameScreen(
-                                onBackClick = { navController.navigateUp() })
+                                onBackClick = { navController.navigateUp() },
+                                modifier = modifier
+                            )
                         }
                         composable("liveRound") {
                             PreLiveRoundScreen(
-                                onBackClick = { navController.navigateUp() })
+                                onBackClick = { navController.navigateUp() },
+                                modifier = modifier
+                            )
                         }
                         composable("primaryMissions") {
                             DataScreen(
-                                PRIMARY_MISSION_DATA,
-                                navController,
-                                modifier
+                                data = PRIMARY_MISSION_DATA,
+                                navController = navController,
+                                modifier = modifier
                             )
                         }
                         composable("secondaryMissions") {
                             DataScreen(
-                                SECONDARY_MISSION_DATA,
-                                navController,
-                                modifier
+                                data = SECONDARY_MISSION_DATA,
+                                navController = navController,
+                                modifier = modifier
                             )
                         }
                         composable("outcomes") {
                             OutcomeScreen(
-                                onBackClick = { navController.navigateUp() })
+                                onBackClick = { navController.navigateUp() },
+                                modifier = modifier
+                            )
                         }
                         composable("players") {
                             PlayerScreen(
                                 onBackClick = { navController.navigateUp() },
-                                modifier
+                                modifier = modifier
                             )
                         }
                         composable("predictions") {
                             PredictionScreen(
-                                onBackClick = { navController.navigateUp() })
+                                onBackClick = { navController.navigateUp() },
+                                modifier = modifier
+                            )
                         }
                         composable("rounds") {
                             RoundScreen(
-                                onBackClick = { navController.navigateUp() })
+                                onBackClick = { navController.navigateUp() },
+                                modifier = modifier
+                            )
                         }
                         composable("teams") {
                             TeamScreen(
-                                onBackClick = { navController.navigateUp() })
+                                onBackClick = { navController.navigateUp() },
+                                modifier = modifier
+                            )
                         }
                         composable("tournaments") {
                             TournamentScreen(
-                                onBackClick = { navController.navigateUp() })
+                                onBackClick = { navController.navigateUp() },
+                                modifier = modifier
+                            )
                         }
                     }
                 }
