@@ -5,7 +5,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
@@ -19,6 +21,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -41,9 +44,12 @@ import com.example.a40kcc.ui.utilities.DropDownList
 import com.example.a40kcc.ui.utilities.FACTION_DATA
 import com.example.a40kcc.ui.utilities.GAME_EXPANDED_VIEW_MODEL
 import com.example.a40kcc.ui.utilities.GAME_VIEW_MODEL
+import com.example.a40kcc.ui.utilities.OUTCOME_VIEW_MODEL
 import com.example.a40kcc.ui.utilities.PLAYER_VIEW_MODEL
+import com.example.a40kcc.ui.utilities.PLAYER_WITH_TEAMS_VIEW_MODEL
 import com.example.a40kcc.ui.utilities.PREDICTION_VIEW_MODEL
 import com.example.a40kcc.ui.utilities.ROUND_VIEW_MODEL
+import com.example.a40kcc.ui.utilities.ScaledText
 import com.example.a40kcc.ui.utilities.TOURNAMENT_VIEW_MODEL
 
 @Composable
@@ -51,8 +57,8 @@ fun GameScreen(
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column {
-        var addGame by remember { mutableStateOf(false) }
+    var addGame by remember { mutableStateOf(false) }
+    Scaffold(topBar = {
         Button(
             onClick = onBackClick,
             modifier = modifier
@@ -61,75 +67,87 @@ fun GameScreen(
                 Text(text = stringResource(id = R.string.home_button))
             }
         }
+    },
+        bottomBar = {
+            Column(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                FloatingActionButton(
+                    onClick = {
+                        addGame = !addGame
+                    },
+                    modifier = modifier.align(Alignment.End)
+                ) {
+                    Icon(imageVector = Icons.Filled.Add, contentDescription = "Add Game")
 
-        val games: List<GameExpanded>? =
-            GAME_EXPANDED_VIEW_MODEL.allGamesFlow.observeAsState().value
-
-        Row(
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            modifier = modifier.fillMaxWidth()
-        ) {
-            Column(
-                modifier = modifier
-                    .alignByBaseline()
-                    .wrapContentHeight()
-            ) {
-                Text(
-                    text = "Player 01",
-                    style = MaterialTheme.typography.titleLarge
-                )
-            }
-            Column(
-                modifier = modifier
-                    .alignByBaseline()
-                    .wrapContentHeight()
-            ) {
-                Text(
-                    text = "Player 02",
-                    style = MaterialTheme.typography.titleLarge
-                )
-            }
-            Column(
-                modifier = modifier
-                    .alignByBaseline()
-                    .wrapContentHeight()
-            ) {
-                Text(
-                    text = "Prediction",
-                    style = MaterialTheme.typography.titleLarge
-                )
-            }
-            Column(
-                modifier = modifier
-                    .alignByBaseline()
-                    .wrapContentHeight()
-            ) {
-                Text(
-                    text = "Round Number",
-                    style = MaterialTheme.typography.titleLarge
-                )
+                    if (addGame) {
+                        AddGame(
+                            modifier = modifier,
+                            onDismissRequest = { addGame = !addGame }
+                        )
+                    }
+                }
             }
         }
-
-        if (games != null) {
-            GameScreen(
-                games = games,
-                modifier = modifier
-            )
-        }
-
-        FloatingActionButton(
-            onClick = {
-                addGame = !addGame
-            },
-            modifier = modifier.align(Alignment.End)
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(it)
+                .fillMaxSize()
         ) {
-            Icon(imageVector = Icons.Filled.Add, contentDescription = "Add Game")
+            val games: List<GameExpanded>? =
+                GAME_EXPANDED_VIEW_MODEL.allGamesFlow.observeAsState().value
 
-            if (addGame) {
-                AddGame(
-                    modifier = modifier,
-                    onDismissRequest = { addGame = !addGame }
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = modifier.fillMaxWidth()
+            ) {
+                Column(
+                    modifier = modifier
+                        .alignByBaseline()
+                        .wrapContentHeight()
+                ) {
+                    ScaledText(
+                        text = "Player 01",
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                }
+                Column(
+                    modifier = modifier
+                        .alignByBaseline()
+                        .wrapContentHeight()
+                ) {
+                    ScaledText(
+                        text = "Player 02",
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                }
+                Column(
+                    modifier = modifier
+                        .alignByBaseline()
+                        .wrapContentHeight()
+                ) {
+                    ScaledText(
+                        text = "Prediction",
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                }
+                Column(
+                    modifier = modifier
+                        .alignByBaseline()
+                        .wrapContentHeight()
+                ) {
+                    ScaledText(
+                        text = "Round Number",
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                }
+            }
+
+            if (games != null) {
+                GameScreen(
+                    games = games,
+                    modifier = modifier
                 )
             }
         }
@@ -155,7 +173,7 @@ private fun GameScreen(
                         .alignByBaseline()
                         .wrapContentHeight()
                 ) {
-                    Text(
+                    ScaledText(
                         text = game.player01.player.name,
                         style = MaterialTheme.typography.titleLarge,
                         modifier = modifier
@@ -170,7 +188,7 @@ private fun GameScreen(
                         .wrapContentHeight()
                 ) {
                     if (game.player02 != null) {
-                        Text(
+                        ScaledText(
                             text = game.player02.player.name,
                             style = MaterialTheme.typography.titleLarge,
                             modifier = modifier
@@ -182,7 +200,7 @@ private fun GameScreen(
                         .alignByBaseline()
                         .wrapContentHeight()
                 ) {
-                    Text(
+                    ScaledText(
                         text = game.prediction.name,
                         style = MaterialTheme.typography.titleLarge,
                         modifier = modifier
@@ -197,7 +215,7 @@ private fun GameScreen(
                         .alignByBaseline()
                         .wrapContentHeight()
                 ) {
-                    Text(
+                    ScaledText(
                         text = game.round.round.number.toString(),
                         style = MaterialTheme.typography.titleLarge,
                         modifier = modifier
@@ -266,11 +284,11 @@ private fun GameDetailScreen(
         Column(
             modifier = modifier.wrapContentHeight()
         ) {
-            Text(
+            ScaledText(
                 text = "Player 01 Faction",
                 style = MaterialTheme.typography.titleMedium
             )
-            Text(
+            ScaledText(
                 text = game.game.player01FactionName,
                 style = MaterialTheme.typography.bodyMedium
             )
@@ -278,12 +296,12 @@ private fun GameDetailScreen(
         Column(
             modifier = modifier.wrapContentHeight()
         ) {
-            Text(
+            ScaledText(
                 text = "Player 01 Detachment",
                 style = MaterialTheme.typography.titleMedium
             )
             game.game.player01FactionDetachment?.let {
-                Text(
+                ScaledText(
                     text = it,
                     style = MaterialTheme.typography.bodyMedium
                 )
@@ -292,11 +310,11 @@ private fun GameDetailScreen(
         Column(
             modifier = modifier.wrapContentHeight()
         ) {
-            Text(
+            ScaledText(
                 text = "Player 02 Faction",
                 style = MaterialTheme.typography.titleMedium
             )
-            Text(
+            ScaledText(
                 text = game.game.player02FactionName,
                 style = MaterialTheme.typography.bodyMedium
             )
@@ -304,12 +322,12 @@ private fun GameDetailScreen(
         Column(
             modifier = modifier.wrapContentHeight()
         ) {
-            Text(
+            ScaledText(
                 text = "Player 02 Detachment",
                 style = MaterialTheme.typography.titleMedium
             )
             game.game.player02FactionDetachment?.let {
-                Text(
+                ScaledText(
                     text = it,
                     style = MaterialTheme.typography.bodyMedium
                 )
@@ -318,11 +336,11 @@ private fun GameDetailScreen(
         Column(
             modifier = modifier.wrapContentHeight()
         ) {
-            Text(
+            ScaledText(
                 text = "Prediction",
                 style = MaterialTheme.typography.titleMedium
             )
-            Text(
+            ScaledText(
                 text = game.prediction.name,
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = modifier
@@ -333,11 +351,11 @@ private fun GameDetailScreen(
             Column(
                 modifier = modifier.wrapContentHeight()
             ) {
-                Text(
+                ScaledText(
                     text = "Outcome",
                     style = MaterialTheme.typography.titleMedium
                 )
-                Text(
+                ScaledText(
                     text = game.outcome.player01Points.toString() + " - " + game.outcome.player02Points.toString(),
                     style = MaterialTheme.typography.bodyMedium
                 )
@@ -346,11 +364,11 @@ private fun GameDetailScreen(
         Column(
             modifier = modifier.wrapContentHeight()
         ) {
-            Text(
+            ScaledText(
                 text = "Primary Mission",
                 style = MaterialTheme.typography.titleMedium
             )
-            Text(
+            ScaledText(
                 text = game.round.round.primaryMissionName,
                 style = MaterialTheme.typography.bodyMedium
             )
@@ -380,6 +398,7 @@ private fun AddGame(
     val predictionNames: MutableList<String> = mutableListOf("")
     val tournamentNames: MutableList<String> = mutableListOf("")
     var tournamentRounds: MutableMap<String, Int> = mutableMapOf(Pair("", 0))
+
     PLAYER_VIEW_MODEL.allPlayers.forEach {
         playerNames += it.name
     }
@@ -419,10 +438,17 @@ private fun AddGame(
                         itemList = playerNames,
                         selectedIndex = player01Index,
                         modifier = modifier,
-                        preText = "Player 01:",
+                        preText = "Player 01: ",
                         onItemClick = {
-                            player01Index = it; player01ID =
-                            PLAYER_VIEW_MODEL.getByName(playerNames[player01Index]).playerID
+                            player01Index = it
+                            val player =
+                                PLAYER_WITH_TEAMS_VIEW_MODEL.getByName(playerNames[player01Index])
+                            player01ID = player.player.playerID
+
+                            if (player.player.factionName != null) {
+                                player01FactionIndex =
+                                    factionNames.indexOf(player.player.factionName)
+                            }
                         })
                 }
                 Row {
@@ -430,7 +456,7 @@ private fun AddGame(
                         itemList = factionNames,
                         selectedIndex = player01FactionIndex,
                         modifier = modifier,
-                        preText = "Player 01 Faction:",
+                        preText = "Player 01 Faction: ",
                         onItemClick = {
                             player01FactionIndex = it; player01Faction =
                             factionNames[player01FactionIndex]
@@ -441,7 +467,7 @@ private fun AddGame(
                         itemList = factionNames,
                         selectedIndex = player02FactionIndex,
                         modifier = modifier,
-                        preText = "Player 02 Faction:",
+                        preText = "Player 02 Faction: ",
                         onItemClick = {
                             player02FactionIndex = it; player02Faction =
                             factionNames[player02FactionIndex]
@@ -452,7 +478,7 @@ private fun AddGame(
                         itemList = predictionNames,
                         selectedIndex = predictionIndex,
                         modifier = modifier,
-                        preText = "Prediction:",
+                        preText = "Prediction: ",
                         onItemClick = {
                             predictionIndex = it; predictionID =
                             PREDICTION_VIEW_MODEL.getByName(predictionNames[predictionIndex]).predictionID
@@ -463,7 +489,7 @@ private fun AddGame(
                         itemList = tournamentNames,
                         selectedIndex = tournamentIndex,
                         modifier = modifier,
-                        preText = "Tournament:",
+                        preText = "Tournament: ",
                         onItemClick = {
                             tournamentIndex = it; tournamentID =
                             TOURNAMENT_VIEW_MODEL.getByName(tournamentNames[tournamentIndex])
@@ -482,7 +508,7 @@ private fun AddGame(
                         itemList = tournamentRounds.keys.toList(),
                         selectedIndex = roundIndex,
                         modifier = modifier,
-                        preText = "Round:",
+                        preText = "Round: ",
                         onItemClick = {
                             roundIndex = it; roundID =
                             ROUND_VIEW_MODEL.getById(tournamentRounds[tournamentRounds.keys.toList()[roundIndex]]!!).roundID
@@ -522,18 +548,29 @@ private fun EditGame(
     var player01ID by remember { mutableIntStateOf(game.game.player01ID) }
     var player01Faction by remember { mutableStateOf(game.game.player01FactionName) }
     var player02Faction by remember { mutableStateOf(game.game.player02FactionName) }
-    var predictionID by remember { mutableIntStateOf(game.game.predictionID!!) }
+    var predictionID by remember {
+        if (game.game.predictionID != null) mutableIntStateOf(game.game.predictionID) else mutableIntStateOf(
+            0
+        )
+    }
+    var outcomeID by remember {
+        if (game.game.outcomeID != null) mutableIntStateOf(game.game.outcomeID) else mutableIntStateOf(
+            0
+        )
+    }
     var tournamentID by remember { mutableIntStateOf(game.round.round.tournamentID) }
     var roundID by remember { mutableIntStateOf(game.game.roundID) }
     var player01Index by remember { mutableIntStateOf(0) }
     var player01FactionIndex by remember { mutableIntStateOf(0) }
     var player02FactionIndex by remember { mutableIntStateOf(0) }
     var predictionIndex by remember { mutableIntStateOf(0) }
+    var outcomeIndex by remember { mutableIntStateOf(0) }
     var tournamentIndex by remember { mutableIntStateOf(0) }
     var roundIndex by remember { mutableIntStateOf(0) }
     val playerNames: MutableList<String> = mutableListOf("")
     val factionNames: List<String> = listOf("") + FACTION_DATA.getDataKeys().toList()
     val predictionNames: MutableList<String> = mutableListOf("")
+    val outcomes: MutableList<String> = mutableListOf("")
     val tournamentNames: MutableList<String> = mutableListOf("")
     var tournamentRounds: MutableMap<String, Int> = mutableMapOf(Pair("", 0))
     PLAYER_VIEW_MODEL.allPlayers.forEach {
@@ -547,13 +584,13 @@ private fun EditGame(
     PREDICTION_VIEW_MODEL.allPredictions.forEach {
         predictionNames += it.name
         if (it.predictionID == predictionID) {
-            predictionIndex = playerNames.lastIndex
+            predictionIndex = predictionNames.lastIndex
         }
     }
     TOURNAMENT_VIEW_MODEL.allTournaments.forEach {
         tournamentNames += it.name
         if (it.tournamentID == tournamentID) {
-            tournamentIndex = playerNames.lastIndex
+            tournamentIndex = tournamentNames.lastIndex
         }
     }
     if (tournamentIndex != 0) {
@@ -564,6 +601,9 @@ private fun EditGame(
             }
         }
     }
+    OUTCOME_VIEW_MODEL.getByPlayerId(player01ID).forEach { outcome ->
+        outcomes += outcome.outcomeID.toString()
+    }
     val onConfirmation = {
         val updatedGame = Game(
             gameID = game.game.gameID,
@@ -571,7 +611,8 @@ private fun EditGame(
             player01FactionName = player01Faction,
             player02FactionName = player02Faction,
             predictionID = predictionID,
-            roundID = roundID
+            roundID = roundID,
+            outcomeID = outcomeID
         )
         GAME_VIEW_MODEL.update(game = updatedGame)
         onDismissRequest()
@@ -595,10 +636,26 @@ private fun EditGame(
                         itemList = playerNames,
                         selectedIndex = player01Index,
                         modifier = modifier,
-                        preText = "Player 01:",
+                        preText = "Player 01: ",
                         onItemClick = {
-                            player01Index = it; player01ID =
-                            PLAYER_VIEW_MODEL.getByName(playerNames[player01Index]).playerID
+                            player01Index = it
+                            player01ID =
+                                PLAYER_VIEW_MODEL.getByName(playerNames[player01Index]).playerID
+
+                            OUTCOME_VIEW_MODEL.getByPlayerId(player01ID).forEach { outcome ->
+                                outcomes += outcome.outcomeID.toString()
+                            }
+                        })
+                }
+                Row {
+                    DropDownList(
+                        itemList = outcomes,
+                        selectedIndex = outcomeIndex,
+                        modifier = modifier,
+                        preText = "Outcome: ",
+                        onItemClick = {
+                            outcomeIndex = it
+                            outcomeID = outcomes[outcomeIndex].toInt()
                         })
                 }
                 Row {
@@ -606,10 +663,10 @@ private fun EditGame(
                         itemList = factionNames,
                         selectedIndex = player01FactionIndex,
                         modifier = modifier,
-                        preText = "Player 01 Faction:",
+                        preText = "Player 01 Faction: ",
                         onItemClick = {
-                            player01FactionIndex = it; player01Faction =
-                            factionNames[player01FactionIndex]
+                            player01FactionIndex = it
+                            player01Faction = factionNames[player01FactionIndex]
                         })
                 }
                 Row {
@@ -617,10 +674,10 @@ private fun EditGame(
                         itemList = factionNames,
                         selectedIndex = player02FactionIndex,
                         modifier = modifier,
-                        preText = "Player 02 Faction:",
+                        preText = "Player 02 Faction: ",
                         onItemClick = {
-                            player02FactionIndex = it; player02Faction =
-                            factionNames[player02FactionIndex]
+                            player02FactionIndex = it
+                            player02Faction = factionNames[player02FactionIndex]
                         })
                 }
                 Row {
@@ -628,10 +685,11 @@ private fun EditGame(
                         itemList = predictionNames,
                         selectedIndex = predictionIndex,
                         modifier = modifier,
-                        preText = "Prediction:",
+                        preText = "Prediction: ",
                         onItemClick = {
-                            predictionIndex = it; predictionID =
-                            PREDICTION_VIEW_MODEL.getByName(predictionNames[predictionIndex]).predictionID
+                            predictionIndex = it
+                            predictionID =
+                                PREDICTION_VIEW_MODEL.getByName(predictionNames[predictionIndex]).predictionID
                         })
                 }
                 Row {
@@ -639,11 +697,12 @@ private fun EditGame(
                         itemList = tournamentNames,
                         selectedIndex = tournamentIndex,
                         modifier = modifier,
-                        preText = "Tournament:",
+                        preText = "Tournament: ",
                         onItemClick = {
-                            tournamentIndex = it; tournamentID =
-                            TOURNAMENT_VIEW_MODEL.getByName(tournamentNames[tournamentIndex])
-                                .first().tournamentID
+                            tournamentIndex = it
+                            tournamentID =
+                                TOURNAMENT_VIEW_MODEL.getByName(tournamentNames[tournamentIndex])
+                                    .first().tournamentID
                             tournamentRounds = mutableMapOf(Pair("", 0))
                             ROUND_VIEW_MODEL.getByTournamentId(tournamentID).forEach { round ->
                                 tournamentRounds += mutableMapOf(
@@ -658,10 +717,11 @@ private fun EditGame(
                         itemList = tournamentRounds.keys.toList(),
                         selectedIndex = roundIndex,
                         modifier = modifier,
-                        preText = "Round:",
+                        preText = "Round: ",
                         onItemClick = {
-                            roundIndex = it; roundID =
-                            ROUND_VIEW_MODEL.getById(tournamentRounds[tournamentRounds.keys.toList()[roundIndex]]!!).roundID
+                            roundIndex = it
+                            roundID =
+                                ROUND_VIEW_MODEL.getById(tournamentRounds[tournamentRounds.keys.toList()[roundIndex]]!!).roundID
                         })
                 }
                 Row {

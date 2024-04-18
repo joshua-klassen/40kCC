@@ -84,6 +84,7 @@ private fun DataDetailScreen(
             Column(
                 modifier = modifier
                     .wrapContentHeight()
+                    .width(imageSize)
             ) {
                 Text(
                     text = header,
@@ -100,6 +101,7 @@ private fun DataDetailScreen(
                 Column(
                     modifier = modifier
                         .wrapContentHeight()
+                        .width(imageSize)
                 ) {
                     if (detail is Drawable) {
                         Image(

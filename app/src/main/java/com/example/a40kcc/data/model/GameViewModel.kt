@@ -19,6 +19,10 @@ class GameViewModel(private val gameRepository: GameRepository) : ViewModel() {
         return gameRepository.getById(gameId)
     }
 
+    fun getByPlayerId(playerId: Int): List<Game> {
+        return gameRepository.getByPlayerId(playerId)
+    }
+
     fun insert(game: Game) = viewModelScope.launch {
         gameRepository.insert(game)
     }

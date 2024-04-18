@@ -37,6 +37,7 @@ import com.example.a40kcc.data.`object`.Team
 import com.example.a40kcc.data.`object`.TeamWithPlayers
 import com.example.a40kcc.ui.utilities.DropDownList
 import com.example.a40kcc.ui.utilities.PLAYER_VIEW_MODEL
+import com.example.a40kcc.ui.utilities.ScaledText
 import com.example.a40kcc.ui.utilities.TEAM_VIEW_MODEL
 import com.example.a40kcc.ui.utilities.TEAM_WITH_PLAYERS_VIEW_MODEL
 
@@ -68,7 +69,7 @@ fun TeamScreen(
                     .alignByBaseline()
                     .wrapContentHeight()
             ) {
-                Text(
+                ScaledText(
                     text = "Team Name",
                     style = MaterialTheme.typography.titleLarge
                 )
@@ -117,7 +118,7 @@ private fun TeamScreen(
                         .alignByBaseline()
                         .wrapContentHeight()
                 ) {
-                    Text(
+                    ScaledText(
                         text = team.team.name,
                         style = MaterialTheme.typography.titleLarge,
                         modifier = modifier
@@ -170,7 +171,7 @@ private fun TeamDetailScreen(
         Column(
             modifier = modifier.wrapContentHeight()
         ) {
-            Text(
+            ScaledText(
                 text = "Players",
                 style = MaterialTheme.typography.titleMedium
             )
@@ -179,7 +180,7 @@ private fun TeamDetailScreen(
             Column(
                 modifier = modifier.wrapContentHeight()
             ) {
-                Text(
+                ScaledText(
                     text = "Name: " + it.name,
                     style = MaterialTheme.typography.titleMedium
                 )
@@ -218,7 +219,7 @@ private fun AddTeam(
                 modifier = modifier.fillMaxWidth()
             ) {
                 Row {
-                    Text(
+                    ScaledText(
                         text = "Add a new team"
                     )
                 }
@@ -226,7 +227,7 @@ private fun AddTeam(
                     TextField(
                         value = teamName,
                         onValueChange = { teamName = it },
-                        label = { Text(text = "Team Name:") },
+                        label = { Text(text = "Team Name: ") },
                         textStyle = MaterialTheme.typography.bodyMedium
                     )
                 }
@@ -235,7 +236,7 @@ private fun AddTeam(
                         itemList = playerNames,
                         selectedIndex = playerIndex,
                         modifier = modifier,
-                        preText = "Player:",
+                        preText = "Player: ",
                         onItemClick = {
                             playerIndex = it; playerID =
                             PLAYER_VIEW_MODEL.getByName(playerNames[playerIndex]).playerID
@@ -286,13 +287,13 @@ private fun RemoveTeam(
                 modifier = modifier.fillMaxWidth()
             ) {
                 Row {
-                    Text(
+                    ScaledText(
                         text = "Confirm remove player",
                         style = MaterialTheme.typography.titleMedium
                     )
                 }
                 Row {
-                    Text(
+                    ScaledText(
                         text = "Team Name: " + team.name,
                         style = MaterialTheme.typography.bodyMedium
                     )

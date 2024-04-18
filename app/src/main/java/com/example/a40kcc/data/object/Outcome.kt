@@ -5,7 +5,6 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import java.sql.Types.NULL
 
 
 @Entity(
@@ -33,7 +32,7 @@ import java.sql.Types.NULL
 data class Outcome(
     @PrimaryKey(true) val outcomeID: Int = 0,
     @ColumnInfo("player_01") val player01ID: Int,
-    @ColumnInfo("player_02", defaultValue = "NULL") val player02ID: Int? = NULL,
+    @ColumnInfo("player_02", defaultValue = "NULL") val player02ID: Int? = null,
     @ColumnInfo("player_01_points") val player01Points: Int,
     @ColumnInfo("player_02_points") val player02Points: Int,
     @ColumnInfo("player_01_team_points") val player01TeamPoints: Int,

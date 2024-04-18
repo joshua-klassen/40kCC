@@ -15,6 +15,11 @@ class GameRepository(private val gameDao: GameDao) {
     }
 
     @WorkerThread
+    fun getByPlayerId(playerId: Int): List<Game> {
+        return gameDao.getByPlayerId(playerId)
+    }
+
+    @WorkerThread
     suspend fun insert(game: Game) {
         gameDao.insert(game)
     }

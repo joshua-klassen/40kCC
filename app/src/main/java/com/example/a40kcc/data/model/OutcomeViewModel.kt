@@ -19,8 +19,8 @@ class OutcomeViewModel(private val outcomeRepository: OutcomeRepository) : ViewM
         return outcomeRepository.getById(gameId)
     }
 
-    fun getByPlayerId(gameId: Int): List<Outcome> {
-        return outcomeRepository.getByPlayerId(gameId)
+    fun getByPlayerId(playerId: Int): List<Outcome> {
+        return outcomeRepository.getByPlayerId(playerId)
     }
 
     fun insert(outcome: Outcome) = viewModelScope.launch {

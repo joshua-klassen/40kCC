@@ -40,6 +40,7 @@ import androidx.compose.ui.window.Dialog
 import com.example.a40kcc.R
 import com.example.a40kcc.data.`object`.Prediction
 import com.example.a40kcc.ui.utilities.PREDICTION_VIEW_MODEL
+import com.example.a40kcc.ui.utilities.ScaledText
 
 @Composable
 fun PredictionScreen(
@@ -69,7 +70,7 @@ fun PredictionScreen(
                     .alignByBaseline()
                     .wrapContentHeight()
             ) {
-                Text(
+                ScaledText(
                     text = "Prediction Name",
                     style = MaterialTheme.typography.titleLarge
                 )
@@ -79,7 +80,7 @@ fun PredictionScreen(
                     .alignByBaseline()
                     .wrapContentHeight()
             ) {
-                Text(
+                ScaledText(
                     text = "Prediction Color",
                     style = MaterialTheme.typography.titleLarge
                 )
@@ -126,7 +127,7 @@ private fun PredictionScreen(
                         .alignByBaseline()
                         .wrapContentHeight()
                 ) {
-                    Text(
+                    ScaledText(
                         text = prediction.name,
                         style = MaterialTheme.typography.titleLarge,
                         modifier = modifier
@@ -140,7 +141,7 @@ private fun PredictionScreen(
                         .alignByBaseline()
                         .wrapContentHeight()
                 ) {
-                    Text(
+                    ScaledText(
                         text = prediction.color.toString(),
                         style = MaterialTheme.typography.titleLarge,
                         modifier = modifier.background(Color(prediction.color))
@@ -190,11 +191,11 @@ private fun PredictionDetailScreen(
         Column(
             modifier = modifier.wrapContentHeight()
         ) {
-            Text(
+            ScaledText(
                 text = "Minimum Points",
                 style = MaterialTheme.typography.titleMedium
             )
-            Text(
+            ScaledText(
                 text = prediction.minPoints.toString(),
                 style = MaterialTheme.typography.bodyMedium
             )
@@ -202,11 +203,11 @@ private fun PredictionDetailScreen(
         Column(
             modifier = modifier.wrapContentHeight()
         ) {
-            Text(
+            ScaledText(
                 text = "Maximum Points",
                 style = MaterialTheme.typography.titleMedium
             )
-            Text(
+            ScaledText(
                 text = prediction.maxPoints.toString(),
                 style = MaterialTheme.typography.bodyMedium
             )
@@ -251,7 +252,7 @@ private fun AddPrediction(
                     TextField(
                         value = predictionName,
                         onValueChange = { predictionName = it },
-                        label = { Text(text = "Name:") },
+                        label = { Text(text = "Name: ") },
                         textStyle = MaterialTheme.typography.bodyMedium
                     )
                 }
@@ -259,7 +260,7 @@ private fun AddPrediction(
                     TextField(
                         value = predictionColor.toString(),
                         onValueChange = { predictionColor = it.toLong() },
-                        label = { Text(text = "Color:") },
+                        label = { Text(text = "Color: ") },
                         textStyle = MaterialTheme.typography.bodyMedium
                     )
                 }
@@ -267,7 +268,7 @@ private fun AddPrediction(
                     TextField(
                         value = predictionMin.toString(),
                         onValueChange = { predictionMin = it.toInt() },
-                        label = { Text(text = "Minimum Points:") },
+                        label = { Text(text = "Minimum Points: ") },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         textStyle = MaterialTheme.typography.bodyMedium
                     )
@@ -276,7 +277,7 @@ private fun AddPrediction(
                     TextField(
                         value = predictionMax.toString(),
                         onValueChange = { predictionMax = it.toInt() },
-                        label = { Text(text = "Maximum Points:") },
+                        label = { Text(text = "Maximum Points: ") },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         textStyle = MaterialTheme.typography.bodyMedium
                     )
@@ -326,13 +327,13 @@ private fun RemovePrediction(
                 modifier = modifier.fillMaxWidth()
             ) {
                 Row {
-                    Text(
+                    ScaledText(
                         text = "Confirm remove prediction",
                         style = MaterialTheme.typography.titleMedium
                     )
                 }
                 Row {
-                    Text(
+                    ScaledText(
                         text = "Prediction Name: " + prediction.name,
                         style = MaterialTheme.typography.bodyMedium
                     )

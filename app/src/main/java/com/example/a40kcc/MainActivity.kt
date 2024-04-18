@@ -77,65 +77,65 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         GAME_VIEW_MODEL = ViewModelProvider(
-            this,
-            GameViewModelFactory((application as Application40kCC).game)
+            owner = this,
+            factory = GameViewModelFactory((application as Application40kCC).game)
         )[GameViewModel::class.java]
         GAME_EXPANDED_VIEW_MODEL = ViewModelProvider(
-            this,
-            GameExpandedViewModelFactory((application as Application40kCC).gameExpanded)
+            owner = this,
+            factory = GameExpandedViewModelFactory((application as Application40kCC).gameExpanded)
         )[GameExpandedViewModel::class.java]
         LIVE_ROUND_VIEW_MODEL = ViewModelProvider(
-            this,
-            LiveRoundViewModelFactory((application as Application40kCC).liveRound)
+            owner = this,
+            factory = LiveRoundViewModelFactory((application as Application40kCC).liveRound)
         )[LiveRoundViewModel::class.java]
         LIVE_ROUND_EXPANDED_VIEW_MODEL = ViewModelProvider(
-            this,
+            owner = this,
             LiveRoundExpandedViewModelFactory((application as Application40kCC).liveRoundExpanded)
         )[LiveRoundExpandedViewModel::class.java]
         OUTCOME_VIEW_MODEL = ViewModelProvider(
-            this,
-            OutcomeViewModelFactory((application as Application40kCC).outcome)
+            owner = this,
+            factory = OutcomeViewModelFactory((application as Application40kCC).outcome)
         )[OutcomeViewModel::class.java]
         OUTCOME_WITH_PLAYERS_VIEW_MODEL = ViewModelProvider(
-            this,
-            OutcomeWithPlayersViewModelFactory((application as Application40kCC).outcomeWithPlayers)
+            owner = this,
+            factory = OutcomeWithPlayersViewModelFactory((application as Application40kCC).outcomeWithPlayers)
         )[OutcomeWithPlayersViewModel::class.java]
         PLAYER_VIEW_MODEL = ViewModelProvider(
-            this,
-            PlayerViewModelFactory((application as Application40kCC).player)
+            owner = this,
+            factory = PlayerViewModelFactory((application as Application40kCC).player)
         )[PlayerViewModel::class.java]
         PLAYER_WITH_TEAMS_VIEW_MODEL = ViewModelProvider(
-            this,
-            PlayerWithTeamsViewModelFactory((application as Application40kCC).playerWithTeams)
+            owner = this,
+            factory = PlayerWithTeamsViewModelFactory((application as Application40kCC).playerWithTeams)
         )[PlayerWithTeamsViewModel::class.java]
         PREDICTION_VIEW_MODEL = ViewModelProvider(
-            this,
-            PredictionViewModelFactory((application as Application40kCC).prediction)
+            owner = this,
+            factory = PredictionViewModelFactory((application as Application40kCC).prediction)
         )[PredictionViewModel::class.java]
         ROUND_VIEW_MODEL = ViewModelProvider(
-            this,
-            RoundViewModelFactory((application as Application40kCC).round)
+            owner = this,
+            factory = RoundViewModelFactory((application as Application40kCC).round)
         )[RoundViewModel::class.java]
         ROUND_WITH_TOURNAMENT_VIEW_MODEL = ViewModelProvider(
-            this,
-            RoundWithTournamentViewModelFactory((application as Application40kCC).roundWithTournament)
+            owner = this,
+            factory = RoundWithTournamentViewModelFactory((application as Application40kCC).roundWithTournament)
         )[RoundWithTournamentViewModel::class.java]
         TEAM_VIEW_MODEL = ViewModelProvider(
-            this,
-            TeamViewModelFactory((application as Application40kCC).team)
+            owner = this,
+            factory = TeamViewModelFactory((application as Application40kCC).team)
         )[TeamViewModel::class.java]
         TEAM_WITH_PLAYERS_VIEW_MODEL = ViewModelProvider(
-            this,
-            TeamWithPlayersViewModelFactory((application as Application40kCC).teamWithPlayers)
+            owner = this,
+            factory = TeamWithPlayersViewModelFactory((application as Application40kCC).teamWithPlayers)
         )[TeamWithPlayersViewModel::class.java]
         TOURNAMENT_VIEW_MODEL = ViewModelProvider(
-            this,
-            TournamentViewModelFactory((application as Application40kCC).tournament)
+            owner = this,
+            factory = TournamentViewModelFactory((application as Application40kCC).tournament)
         )[TournamentViewModel::class.java]
         setContent {
             Theme40kCC {
                 val margin = dimensionResource(id = R.dimen.margin_small)
-                val modifier = Modifier.padding(margin, margin)
+                val modifier = Modifier.padding(horizontal = margin, vertical = margin)
                 Surface(modifier = modifier.fillMaxSize()) {
                     val activity = (LocalContext.current as Activity)
                     DEPLOYMENT_DATA = DataObject(
@@ -160,83 +160,83 @@ class MainActivity : ComponentActivity() {
                     )
                     val navController = rememberNavController()
                     NavHost(navController = navController, startDestination = "home") {
-                        composable("home") {
+                        composable(route = "home") {
                             HomeScreen(
                                 navController = navController,
                                 modifier = modifier
                             )
                         }
-                        composable("deployments") {
+                        composable(route = "deployments") {
                             DataScreen(
                                 data = DEPLOYMENT_DATA,
                                 navController = navController,
                                 modifier = modifier
                             )
                         }
-                        composable("factions") {
+                        composable(route = "factions") {
                             DataScreen(
                                 data = FACTION_DATA,
                                 navController = navController,
                                 modifier = modifier
                             )
                         }
-                        composable("games") {
+                        composable(route = "games") {
                             GameScreen(
                                 onBackClick = { navController.navigateUp() },
                                 modifier = modifier
                             )
                         }
-                        composable("liveRound") {
+                        composable(route = "liveRound") {
                             PreLiveRoundScreen(
                                 onBackClick = { navController.navigateUp() },
                                 modifier = modifier
                             )
                         }
-                        composable("primaryMissions") {
+                        composable(route = "primaryMissions") {
                             DataScreen(
                                 data = PRIMARY_MISSION_DATA,
                                 navController = navController,
                                 modifier = modifier
                             )
                         }
-                        composable("secondaryMissions") {
+                        composable(route = "secondaryMissions") {
                             DataScreen(
                                 data = SECONDARY_MISSION_DATA,
                                 navController = navController,
                                 modifier = modifier
                             )
                         }
-                        composable("outcomes") {
+                        composable(route = "outcomes") {
                             OutcomeScreen(
                                 onBackClick = { navController.navigateUp() },
                                 modifier = modifier
                             )
                         }
-                        composable("players") {
+                        composable(route = "players") {
                             PlayerScreen(
                                 onBackClick = { navController.navigateUp() },
                                 modifier = modifier
                             )
                         }
-                        composable("predictions") {
+                        composable(route = "predictions") {
                             PredictionScreen(
                                 onBackClick = { navController.navigateUp() },
                                 modifier = modifier
                             )
                         }
-                        composable("rounds") {
+                        composable(route = "rounds") {
                             RoundScreen(
                                 onBackClick = { navController.navigateUp() },
                                 modifier = modifier
                             )
                         }
-                        composable("teams") {
+                        composable(route = "teams") {
                             TeamScreen(
                                 onBackClick = { navController.navigateUp() },
                                 modifier = modifier
                             )
                         }
-                        composable("tournaments") {
+                        composable(route = "tournaments") {
                             TournamentScreen(
                                 onBackClick = { navController.navigateUp() },
                                 modifier = modifier

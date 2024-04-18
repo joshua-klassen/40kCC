@@ -46,6 +46,7 @@ import com.example.a40kcc.ui.utilities.DropDownList
 import com.example.a40kcc.ui.utilities.FACTION_DATA
 import com.example.a40kcc.ui.utilities.PLAYER_VIEW_MODEL
 import com.example.a40kcc.ui.utilities.PLAYER_WITH_TEAMS_VIEW_MODEL
+import com.example.a40kcc.ui.utilities.ScaledText
 import com.example.a40kcc.ui.utilities.TEAM_VIEW_MODEL
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 
@@ -89,7 +90,7 @@ fun PlayerScreen(
                     .alignByBaseline()
                     .wrapContentHeight()
             ) {
-                Text(
+                ScaledText(
                     text = "Player Name",
                     style = MaterialTheme.typography.titleLarge
                 )
@@ -99,7 +100,7 @@ fun PlayerScreen(
                     .alignByBaseline()
                     .wrapContentHeight()
             ) {
-                Text(
+                ScaledText(
                     text = "Player Team",
                     style = MaterialTheme.typography.titleLarge
                 )
@@ -149,7 +150,7 @@ private fun PlayerScreen(
                         .alignByBaseline()
                         .wrapContentHeight()
                 ) {
-                    Text(
+                    ScaledText(
                         text = player.player.name,
                         style = MaterialTheme.typography.titleLarge,
                         modifier = modifier
@@ -165,7 +166,7 @@ private fun PlayerScreen(
                 ) {
                     println(player.team)
                     if (player.team.isNotEmpty()) {
-                        Text(
+                        ScaledText(
                             text = player.team[0].name,
                             style = MaterialTheme.typography.titleLarge,
                             modifier = modifier
@@ -237,11 +238,11 @@ private fun PlayerDetailScreen(
         Column(
             modifier = modifier.wrapContentHeight()
         ) {
-            Text(
+            ScaledText(
                 text = "Nickname",
                 style = MaterialTheme.typography.titleMedium
             )
-            Text(
+            ScaledText(
                 text = player.player.nickname!!,
                 style = MaterialTheme.typography.bodyMedium
             )
@@ -249,11 +250,11 @@ private fun PlayerDetailScreen(
         Column(
             modifier = modifier.wrapContentHeight()
         ) {
-            Text(
+            ScaledText(
                 text = "Preferred Faction",
                 style = MaterialTheme.typography.titleMedium
             )
-            Text(
+            ScaledText(
                 text = player.player.factionName.toString(),
                 style = MaterialTheme.typography.bodyMedium
             )
@@ -261,11 +262,11 @@ private fun PlayerDetailScreen(
         Column(
             modifier = modifier.wrapContentHeight()
         ) {
-            Text(
+            ScaledText(
                 text = "Super Faction",
                 style = MaterialTheme.typography.titleMedium
             )
-            Text(
+            ScaledText(
                 text = playerFaction?.get(1).toString(),
                 style = MaterialTheme.typography.bodyMedium
             )
@@ -273,7 +274,7 @@ private fun PlayerDetailScreen(
         Column(
             modifier = modifier.wrapContentHeight()
         ) {
-            Text(
+            ScaledText(
                 text = "Faction Icon",
                 style = MaterialTheme.typography.titleMedium
             )
@@ -332,7 +333,7 @@ private fun AddPlayer(
                     TextField(
                         value = playerName,
                         onValueChange = { playerName = it },
-                        label = { Text(text = "Player Name:") },
+                        label = { Text(text = "Player Name: ") },
                         textStyle = MaterialTheme.typography.bodyMedium
                     )
                 }
@@ -340,7 +341,7 @@ private fun AddPlayer(
                     TextField(
                         value = playerNickname,
                         onValueChange = { playerNickname = it },
-                        label = { Text(text = "Nickname:") },
+                        label = { Text(text = "Nickname: ") },
                         textStyle = MaterialTheme.typography.bodyMedium
                     )
                 }
@@ -349,7 +350,7 @@ private fun AddPlayer(
                         itemList = factionNames,
                         selectedIndex = factionIndex,
                         modifier = modifier,
-                        preText = "Preferred Faction:",
+                        preText = "Preferred Faction: ",
                         onItemClick = {
                             factionIndex = it; playerFaction = factionNames[factionIndex]
                         })
@@ -359,7 +360,7 @@ private fun AddPlayer(
                         itemList = teamNames,
                         selectedIndex = teamIndex,
                         modifier = modifier,
-                        preText = "Team:",
+                        preText = "Team: ",
                         onItemClick = {
                             teamIndex = it; teamID =
                             TEAM_VIEW_MODEL.getByName(teamNames[teamIndex]).teamID
@@ -439,7 +440,7 @@ private fun EditPlayer(
                     TextField(
                         value = playerName,
                         onValueChange = { playerName = it },
-                        label = { Text(text = "Player Name:") },
+                        label = { Text(text = "Player Name: ") },
                         textStyle = MaterialTheme.typography.bodyMedium
                     )
                 }
@@ -447,7 +448,7 @@ private fun EditPlayer(
                     TextField(
                         value = playerNickname,
                         onValueChange = { playerNickname = it },
-                        label = { Text(text = "Nickname:") },
+                        label = { Text(text = "Nickname: ") },
                         textStyle = MaterialTheme.typography.bodyMedium
                     )
                 }
@@ -456,7 +457,7 @@ private fun EditPlayer(
                         itemList = factionNames,
                         selectedIndex = factionIndex,
                         modifier = modifier,
-                        preText = "Preferred Faction:",
+                        preText = "Preferred Faction: ",
                         onItemClick = {
                             factionIndex = it; playerFaction = factionNames[factionIndex]
                         })
@@ -466,7 +467,7 @@ private fun EditPlayer(
                         itemList = teamNames,
                         selectedIndex = teamIndex,
                         modifier = modifier,
-                        preText = "Team:",
+                        preText = "Team: ",
                         onItemClick = {
                             teamIndex = it; teamID =
                             TEAM_VIEW_MODEL.getByName(teamNames[teamIndex]).teamID
@@ -517,13 +518,13 @@ private fun RemovePlayer(
                 modifier = modifier.fillMaxWidth()
             ) {
                 Row {
-                    Text(
+                    ScaledText(
                         text = "Confirm remove player",
                         style = MaterialTheme.typography.titleMedium
                     )
                 }
                 Row {
-                    Text(
+                    ScaledText(
                         text = "Player Name: " + player.player.name,
                         style = MaterialTheme.typography.bodyMedium
                     )

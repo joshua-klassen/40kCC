@@ -35,6 +35,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.window.Dialog
 import com.example.a40kcc.R
 import com.example.a40kcc.data.`object`.Tournament
+import com.example.a40kcc.ui.utilities.ScaledText
 import com.example.a40kcc.ui.utilities.TOURNAMENT_VIEW_MODEL
 import java.util.Date
 
@@ -66,7 +67,7 @@ fun TournamentScreen(
                     .alignByBaseline()
                     .wrapContentHeight()
             ) {
-                Text(
+                ScaledText(
                     text = "Tournament Name",
                     style = MaterialTheme.typography.titleLarge
                 )
@@ -76,7 +77,7 @@ fun TournamentScreen(
                     .alignByBaseline()
                     .wrapContentHeight()
             ) {
-                Text(
+                ScaledText(
                     text = "Tournament Rounds",
                     style = MaterialTheme.typography.titleLarge
                 )
@@ -86,7 +87,7 @@ fun TournamentScreen(
                     .alignByBaseline()
                     .wrapContentHeight()
             ) {
-                Text(
+                ScaledText(
                     text = "Tournament Date",
                     style = MaterialTheme.typography.titleLarge
                 )
@@ -132,7 +133,7 @@ private fun TournamentScreen(
                         .alignByBaseline()
                         .wrapContentHeight()
                 ) {
-                    Text(
+                    ScaledText(
                         text = tournament.name,
                         style = MaterialTheme.typography.titleLarge
                     )
@@ -142,7 +143,7 @@ private fun TournamentScreen(
                         .alignByBaseline()
                         .wrapContentHeight()
                 ) {
-                    Text(
+                    ScaledText(
                         text = tournament.roundCount.toString(),
                         style = MaterialTheme.typography.titleLarge,
                         modifier = modifier
@@ -153,7 +154,7 @@ private fun TournamentScreen(
                         .alignByBaseline()
                         .wrapContentHeight()
                 ) {
-                    Text(
+                    ScaledText(
                         text = tournament.date.toString(),
                         style = MaterialTheme.typography.titleLarge,
                         modifier = modifier
@@ -211,7 +212,7 @@ private fun AddTournament(
                 modifier = modifier.fillMaxWidth()
             ) {
                 Row {
-                    Text(
+                    ScaledText(
                         text = "Add a new tournament"
                     )
                 }
@@ -219,7 +220,7 @@ private fun AddTournament(
                     TextField(
                         value = tournamentName,
                         onValueChange = { tournamentName = it },
-                        label = { Text(text = "Name:") },
+                        label = { Text(text = "Name: ") },
                         textStyle = MaterialTheme.typography.bodyMedium
                     )
                 }
@@ -227,7 +228,7 @@ private fun AddTournament(
                     TextField(
                         value = tournamentRounds.toString(),
                         onValueChange = { tournamentRounds = it.toInt() },
-                        label = { Text(text = "Round Count:") },
+                        label = { Text(text = "Round Count: ") },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         textStyle = MaterialTheme.typography.bodyMedium
                     )
@@ -277,7 +278,7 @@ private fun RemoveTournament(
                 modifier = modifier.fillMaxWidth()
             ) {
                 Row {
-                    Text(
+                    ScaledText(
                         text = "Confirm remove tournament",
                         style = MaterialTheme.typography.titleMedium
                     )

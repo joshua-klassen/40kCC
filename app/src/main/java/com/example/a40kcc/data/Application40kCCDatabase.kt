@@ -70,7 +70,7 @@ abstract class Application40kCCDatabase : RoomDatabase() {
         suspend fun populatePredictions(predictionDao: PredictionDao) {
             var prediction = Prediction(
                 name = "Guaranteed",
-                color = 0xff00ff00,
+                color = 0xff0000ff,
                 minPoints = 16,
                 maxPoints = 20,
                 defaultOption = true
@@ -78,7 +78,7 @@ abstract class Application40kCCDatabase : RoomDatabase() {
             predictionDao.insert(prediction)
             prediction = Prediction(
                 name = "Advantage",
-                color = 0xff64ff64,
+                color = 0xff00ff00,
                 minPoints = 12,
                 maxPoints = 15,
                 defaultOption = true

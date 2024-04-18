@@ -15,4 +15,7 @@ interface GameDao : BaseDao<Game> {
 
     @Query("SELECT * FROM game WHERE gameID = :gameId")
     fun getById(gameId: Int): Game
+
+    @Query("SELECT * FROM game WHERE (player_01 = :playerId OR player_02 = :playerId)")
+    fun getByPlayerId(playerId: Int): List<Game>
 }

@@ -311,15 +311,23 @@ private fun LiveRoundScreen(
                         .alignByBaseline()
                         .wrapContentHeight()
                 ) {
-                    ScaledText(
-                        text = liveRound.expectedResult.name,
-                        style = MaterialTheme.typography.titleLarge,
-                        modifier = modifier
-                            .background(Color(liveRound.expectedResult.color))
-                            .clickable(enabled = true, onClick = {
-                                editLiveRound = !editLiveRound
-                            })
-                    )
+                    if (liveRound.game.outcome != null) {
+                        ScaledText(
+                            text = liveRound.game.outcome.player01TeamPoints.toString(),
+                            style = MaterialTheme.typography.titleLarge,
+                            modifier = modifier
+                        )
+                    } else {
+                        ScaledText(
+                            text = liveRound.expectedResult.name,
+                            style = MaterialTheme.typography.titleLarge,
+                            modifier = modifier
+                                .background(Color(liveRound.expectedResult.color))
+                                .clickable(enabled = true, onClick = {
+                                    editLiveRound = !editLiveRound
+                                })
+                        )
+                    }
                 }
                 Column {
                     if (editLiveRound) {
@@ -328,8 +336,7 @@ private fun LiveRoundScreen(
                         val predictionNames: MutableList<String> = mutableListOf()
                         PREDICTION_VIEW_MODEL.allPredictions.forEach {
                             predictionNames += it.name
-                            if(it.predictionID == liveRound.liveRound.expectedResult)
-                            {
+                            if (it.predictionID == liveRound.liveRound.expectedResult) {
                                 predictionIndex = predictionNames.lastIndex
                             }
                         }
@@ -355,10 +362,11 @@ private fun LiveRoundScreen(
                                         DropDownList(
                                             itemList = predictionNames,
                                             selectedIndex = predictionIndex,
-                                            preText = "Current State:",
+                                            preText = "Current State: ",
                                             onItemClick = {
-                                                predictionIndex = it; predictionID =
-                                                PREDICTION_VIEW_MODEL.getByName(predictionNames[predictionIndex]).predictionID
+                                                predictionIndex = it
+                                                predictionID =
+                                                    PREDICTION_VIEW_MODEL.getByName(predictionNames[predictionIndex]).predictionID
                                             })
                                     }
                                     Row {
@@ -386,6 +394,7 @@ private fun RoundResults(
     liveRounds: List<LiveRoundExpanded>,
     modifier: Modifier = Modifier
 ) {
+
     lowEndScore = 0
     var lowEndBackground = Color(0xffffff00)
     midScore = 0
@@ -393,8 +402,13 @@ private fun RoundResults(
     highEndScore = 0
     var highEndBackground = Color(0xffffff00)
     liveRounds.forEach {
-        lowEndScore += it.expectedResult.minPoints
-        highEndScore += it.expectedResult.maxPoints
+        if (it.game.outcome != null) {
+            lowEndScore += it.game.outcome.player01TeamPoints
+            highEndScore += it.game.outcome.player01TeamPoints
+        } else {
+            lowEndScore += it.expectedResult.minPoints
+            highEndScore += it.expectedResult.maxPoints
+        }
         midScore = (lowEndScore + highEndScore) / 2
 
         lowEndBackground = if (lowEndScore <= lossThreshold) {
@@ -435,12 +449,8 @@ private fun RoundResults(
                 .wrapContentHeight()
                 .background(lowEndBackground)
         ) {
-            Text(
-                text = "Low End",
-                style = MaterialTheme.typography.titleLarge
-            )
-            Text(
-                text = lowEndScore.toString(),
+            ScaledText(
+                text = "Low End: $lowEndScore",
                 style = MaterialTheme.typography.titleLarge
             )
         }
@@ -452,12 +462,8 @@ private fun RoundResults(
                 .wrapContentHeight()
                 .background(midBackground)
         ) {
-            Text(
-                text = "Mid",
-                style = MaterialTheme.typography.titleLarge
-            )
-            Text(
-                text = midScore.toString(),
+            ScaledText(
+                text = "Mid: $midScore",
                 style = MaterialTheme.typography.titleLarge
             )
         }
@@ -469,12 +475,8 @@ private fun RoundResults(
                 .wrapContentHeight()
                 .background(highEndBackground)
         ) {
-            Text(
-                text = "High End",
-                style = MaterialTheme.typography.titleLarge
-            )
-            Text(
-                text = highEndScore.toString(),
+            ScaledText(
+                text = "High End: $highEndScore",
                 style = MaterialTheme.typography.titleLarge
             )
         }

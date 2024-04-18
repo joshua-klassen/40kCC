@@ -43,6 +43,7 @@ import com.example.a40kcc.ui.utilities.PRIMARY_MISSION_DATA
 import com.example.a40kcc.ui.utilities.ROUND_VIEW_MODEL
 import com.example.a40kcc.ui.utilities.ROUND_WITH_TOURNAMENT_VIEW_MODEL
 import com.example.a40kcc.ui.utilities.SECONDARY_MISSION_DATA
+import com.example.a40kcc.ui.utilities.ScaledText
 import com.example.a40kcc.ui.utilities.TOURNAMENT_VIEW_MODEL
 
 @Composable
@@ -73,7 +74,7 @@ fun RoundScreen(
                     .alignByBaseline()
                     .wrapContentHeight()
             ) {
-                Text(
+                ScaledText(
                     text = "Tournament Name",
                     style = MaterialTheme.typography.titleLarge
                 )
@@ -83,7 +84,7 @@ fun RoundScreen(
                     .alignByBaseline()
                     .wrapContentHeight()
             ) {
-                Text(
+                ScaledText(
                     text = "Round Number",
                     style = MaterialTheme.typography.titleLarge
                 )
@@ -132,7 +133,7 @@ private fun RoundScreen(
                         .alignByBaseline()
                         .wrapContentHeight()
                 ) {
-                    Text(
+                    ScaledText(
                         text = round.tournament.name,
                         style = MaterialTheme.typography.titleLarge,
                         modifier = modifier
@@ -146,7 +147,7 @@ private fun RoundScreen(
                         .alignByBaseline()
                         .wrapContentHeight()
                 ) {
-                    Text(
+                    ScaledText(
                         text = round.round.number.toString(),
                         style = MaterialTheme.typography.titleLarge,
                         modifier = modifier
@@ -196,11 +197,11 @@ private fun RoundDetailScreen(
         Column(
             modifier = modifier.wrapContentHeight()
         ) {
-            Text(
+            ScaledText(
                 text = "Primary Mission",
                 style = MaterialTheme.typography.titleMedium
             )
-            Text(
+            ScaledText(
                 text = round.round.primaryMissionName,
                 style = MaterialTheme.typography.bodyMedium
             )
@@ -208,11 +209,11 @@ private fun RoundDetailScreen(
         Column(
             modifier = modifier.wrapContentHeight()
         ) {
-            Text(
+            ScaledText(
                 text = "Secondary Mission",
                 style = MaterialTheme.typography.titleMedium
             )
-            Text(
+            ScaledText(
                 text = round.round.secondaryMissionName,
                 style = MaterialTheme.typography.bodyMedium
             )
@@ -220,11 +221,11 @@ private fun RoundDetailScreen(
         Column(
             modifier = modifier.wrapContentHeight()
         ) {
-            Text(
+            ScaledText(
                 text = "Deployment",
                 style = MaterialTheme.typography.titleMedium
             )
-            Text(
+            ScaledText(
                 text = round.round.deploymentName,
                 style = MaterialTheme.typography.bodyMedium
             )
@@ -275,7 +276,7 @@ private fun AddRound(
                 modifier = modifier.fillMaxWidth()
             ) {
                 Row {
-                    Text(
+                    ScaledText(
                         text = "Add a new round (Only round name is required)"
                     )
                 }
@@ -283,7 +284,7 @@ private fun AddRound(
                     TextField(
                         value = roundNumber.toString(),
                         onValueChange = { roundNumber = it.toInt() },
-                        label = { Text(text = "Round Count:") },
+                        label = { Text(text = "Round Count: ") },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         textStyle = MaterialTheme.typography.bodyMedium
                     )
@@ -293,7 +294,7 @@ private fun AddRound(
                         itemList = primaryMissionNames,
                         selectedIndex = primaryMissionIndex,
                         modifier = modifier,
-                        preText = "Primary Mission:",
+                        preText = "Primary Mission: ",
                         onItemClick = {
                             primaryMissionIndex = it; primaryMissionName =
                             primaryMissionNames[primaryMissionIndex]
@@ -304,7 +305,7 @@ private fun AddRound(
                         itemList = secondaryMissionNames,
                         selectedIndex = secondaryMissionIndex,
                         modifier = modifier,
-                        preText = "Secondary Mission:",
+                        preText = "Secondary Mission: ",
                         onItemClick = {
                             secondaryMissionIndex = it; secondaryMissionName =
                             secondaryMissionNames[secondaryMissionIndex]
@@ -315,7 +316,7 @@ private fun AddRound(
                         itemList = deploymentNames,
                         selectedIndex = deploymentIndex,
                         modifier = modifier,
-                        preText = "Deployment:",
+                        preText = "Deployment: ",
                         onItemClick = {
                             deploymentIndex = it; deploymentName = deploymentNames[deploymentIndex]
                         })
@@ -325,7 +326,7 @@ private fun AddRound(
                         itemList = tournamentNames,
                         selectedIndex = tournamentIndex,
                         modifier = modifier,
-                        preText = "Preferred Faction:",
+                        preText = "Preferred Faction: ",
                         onItemClick = {
                             tournamentIndex = it
                             tournamentID =
@@ -378,7 +379,7 @@ private fun RemoveRound(
                 modifier = modifier.fillMaxWidth()
             ) {
                 Row {
-                    Text(
+                    ScaledText(
                         text = "Confirm remove round",
                         style = MaterialTheme.typography.titleMedium
                     )
