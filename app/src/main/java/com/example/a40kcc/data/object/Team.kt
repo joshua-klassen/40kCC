@@ -12,4 +12,15 @@ import androidx.room.PrimaryKey
 data class Team(
     @PrimaryKey(true) val teamID: Int = 0,
     @ColumnInfo("name") val name: String
-)
+) : CoreObject {
+    override fun getCoreColumns(): Map<String, String> {
+        return mapOf(
+            Pair("Team ID", teamID.toString()),
+            Pair("Name", name)
+        )
+    }
+
+    override fun getDetailColumns(): Map<String, String> {
+        return emptyMap()
+    }
+}

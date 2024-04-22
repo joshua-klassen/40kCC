@@ -10,4 +10,21 @@ data class RoundWithTournament(
         entityColumn = "tournamentID"
     )
     val tournament: Tournament
-)
+) : CoreObject {
+    override fun getCoreColumns(): Map<String, String> {
+        return mapOf(
+            Pair("Tournament", tournament.name),
+            Pair("Round #", round.number.toString())
+        )
+    }
+
+    override fun getDetailColumns(): Map<String, String> {
+        return mapOf(
+            Pair("Round Count", tournament.roundCount.toString()),
+            Pair("Date", tournament.date.toString()),
+            Pair("Deployment", round.deploymentName),
+            Pair("Primary Mission", round.primaryMissionName),
+            Pair("Secondary Mission", round.secondaryMissionName)
+        )
+    }
+}

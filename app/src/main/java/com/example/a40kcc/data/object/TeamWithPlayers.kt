@@ -13,4 +13,20 @@ data class TeamWithPlayers(
         associateBy = Junction(PlayerTeamCrossRef::class)
     )
     val player: List<Player> = emptyList(),
-)
+) : CoreObject {
+    override fun getCoreColumns(): Map<String, String> {
+        return mapOf(
+            Pair("Team Name", team.name)
+        )
+    }
+
+    override fun getDetailColumns(): Map<String, String> {
+        val columnMap = mutableMapOf<String, String>()
+
+        player.forEach {
+            columnMap += Pair("Player ${it.playerID}", it.name)
+        }
+
+        return columnMap
+    }
+}

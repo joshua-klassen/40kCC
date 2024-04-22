@@ -38,4 +38,22 @@ data class Outcome(
     @ColumnInfo("player_01_team_points") val player01TeamPoints: Int,
     @ColumnInfo("player_02_team_points") val player02TeamPoints: Int,
     @ColumnInfo("point_differential") val pointDifferential: Int
-)
+) : CoreObject {
+    override fun getCoreColumns(): Map<String, String> {
+        return mapOf(
+            Pair("Outcome ID", outcomeID.toString()),
+            Pair("Player 01 ID", player01ID.toString()),
+            Pair("Player 01 Points", player01Points.toString()),
+            Pair("Player 02 ID", player02ID?.toString() ?: ""),
+            Pair("Player 02 Points", player02Points.toString())
+        )
+    }
+
+    override fun getDetailColumns(): Map<String, String> {
+        return mapOf(
+            Pair("Player 01 Team Points", player01TeamPoints.toString()),
+            Pair("Player 02 Team Points", player02TeamPoints.toString()),
+            Pair("Point Differential", pointDifferential.toString())
+        )
+    }
+}

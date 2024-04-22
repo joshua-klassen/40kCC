@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
@@ -43,16 +44,17 @@ import com.example.a40kcc.data.model.TeamWithPlayersViewModelFactory
 import com.example.a40kcc.data.model.TournamentViewModel
 import com.example.a40kcc.data.model.TournamentViewModelFactory
 import com.example.a40kcc.data.`object`.DataObject
+import com.example.a40kcc.ui.coreobjects.GameObject
+import com.example.a40kcc.ui.coreobjects.OutcomeObject
+import com.example.a40kcc.ui.coreobjects.PlayerObject
+import com.example.a40kcc.ui.coreobjects.PredictionObject
+import com.example.a40kcc.ui.coreobjects.RoundObject
+import com.example.a40kcc.ui.coreobjects.TeamObject
+import com.example.a40kcc.ui.coreobjects.TournamentObject
 import com.example.a40kcc.ui.screen.DataScreen
-import com.example.a40kcc.ui.screen.GameScreen
 import com.example.a40kcc.ui.screen.HomeScreen
-import com.example.a40kcc.ui.screen.OutcomeScreen
-import com.example.a40kcc.ui.screen.PlayerScreen
+import com.example.a40kcc.ui.screen.ObjectScreen
 import com.example.a40kcc.ui.screen.PreLiveRoundScreen
-import com.example.a40kcc.ui.screen.PredictionScreen
-import com.example.a40kcc.ui.screen.RoundScreen
-import com.example.a40kcc.ui.screen.TeamScreen
-import com.example.a40kcc.ui.screen.TournamentScreen
 import com.example.a40kcc.ui.theme.Theme40kCC
 import com.example.a40kcc.ui.utilities.DEPLOYMENT_DATA
 import com.example.a40kcc.ui.utilities.FACTION_DATA
@@ -169,22 +171,26 @@ class MainActivity : ComponentActivity() {
                         composable(route = "deployments") {
                             DataScreen(
                                 data = DEPLOYMENT_DATA,
-                                navController = navController,
+                                onBackClick = { navController.navigateUp() },
                                 modifier = modifier
                             )
                         }
                         composable(route = "factions") {
                             DataScreen(
                                 data = FACTION_DATA,
-                                navController = navController,
+                                onBackClick = { navController.navigateUp() },
                                 modifier = modifier
                             )
                         }
                         composable(route = "games") {
-                            GameScreen(
-                                onBackClick = { navController.navigateUp() },
-                                modifier = modifier
-                            )
+                            GAME_EXPANDED_VIEW_MODEL.allGamesFlow.observeAsState().value?.let { games ->
+                                ObjectScreen(
+                                    objectList = games,
+                                    onBackClick = { navController.navigateUp() },
+                                    objectCompose = GameObject(),
+                                    modifier = modifier
+                                )
+                            }
                         }
                         composable(route = "liveRound") {
                             PreLiveRoundScreen(
@@ -195,52 +201,76 @@ class MainActivity : ComponentActivity() {
                         composable(route = "primaryMissions") {
                             DataScreen(
                                 data = PRIMARY_MISSION_DATA,
-                                navController = navController,
+                                onBackClick = { navController.navigateUp() },
                                 modifier = modifier
                             )
                         }
                         composable(route = "secondaryMissions") {
                             DataScreen(
                                 data = SECONDARY_MISSION_DATA,
-                                navController = navController,
+                                onBackClick = { navController.navigateUp() },
                                 modifier = modifier
                             )
                         }
                         composable(route = "outcomes") {
-                            OutcomeScreen(
-                                onBackClick = { navController.navigateUp() },
-                                modifier = modifier
-                            )
+                            OUTCOME_WITH_PLAYERS_VIEW_MODEL.allOutcomesFlow.observeAsState().value?.let { outcomes ->
+                                ObjectScreen(
+                                    objectList = outcomes,
+                                    onBackClick = { navController.navigateUp() },
+                                    objectCompose = OutcomeObject(),
+                                    modifier = modifier
+                                )
+                            }
                         }
                         composable(route = "players") {
-                            PlayerScreen(
-                                onBackClick = { navController.navigateUp() },
-                                modifier = modifier
-                            )
+                            PLAYER_WITH_TEAMS_VIEW_MODEL.allPlayersFlow.observeAsState().value?.let { players ->
+                                ObjectScreen(
+                                    objectList = players,
+                                    onBackClick = { navController.navigateUp() },
+                                    objectCompose = PlayerObject(),
+                                    modifier = modifier
+                                )
+                            }
                         }
                         composable(route = "predictions") {
-                            PredictionScreen(
-                                onBackClick = { navController.navigateUp() },
-                                modifier = modifier
-                            )
+                            PREDICTION_VIEW_MODEL.allPredictionsFlow.observeAsState().value?.let { predictions ->
+                                ObjectScreen(
+                                    objectList = predictions,
+                                    onBackClick = { navController.navigateUp() },
+                                    objectCompose = PredictionObject(),
+                                    modifier = modifier
+                                )
+                            }
                         }
                         composable(route = "rounds") {
-                            RoundScreen(
-                                onBackClick = { navController.navigateUp() },
-                                modifier = modifier
-                            )
+                            ROUND_WITH_TOURNAMENT_VIEW_MODEL.allRoundsFlow.observeAsState().value?.let { rounds ->
+                                ObjectScreen(
+                                    objectList = rounds,
+                                    onBackClick = { navController.navigateUp() },
+                                    objectCompose = RoundObject(),
+                                    modifier = modifier
+                                )
+                            }
                         }
                         composable(route = "teams") {
-                            TeamScreen(
-                                onBackClick = { navController.navigateUp() },
-                                modifier = modifier
-                            )
+                            TEAM_WITH_PLAYERS_VIEW_MODEL.allTeamsFlow.observeAsState().value?.let { teams ->
+                                ObjectScreen(
+                                    objectList = teams,
+                                    onBackClick = { navController.navigateUp() },
+                                    objectCompose = TeamObject(),
+                                    modifier = modifier
+                                )
+                            }
                         }
                         composable(route = "tournaments") {
-                            TournamentScreen(
-                                onBackClick = { navController.navigateUp() },
-                                modifier = modifier
-                            )
+                            TOURNAMENT_VIEW_MODEL.allTournamentsFlow.observeAsState().value?.let { tournaments ->
+                                ObjectScreen(
+                                    objectList = tournaments,
+                                    onBackClick = { navController.navigateUp() },
+                                    objectCompose = TournamentObject(),
+                                    modifier = modifier
+                                )
+                            }
                         }
                     }
                 }

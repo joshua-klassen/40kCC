@@ -25,4 +25,20 @@ data class Round(
     @ColumnInfo("secondary_mission") val secondaryMissionName: String,
     @ColumnInfo("deployment") val deploymentName: String,
     @ColumnInfo("tournament") val tournamentID: Int,
-)
+) : CoreObject {
+    override fun getCoreColumns(): Map<String, String> {
+        return mapOf(
+            Pair("Round ID", roundID.toString()),
+            Pair("Round Number", number.toString()),
+            Pair("Tournament ID", tournamentID.toString())
+        )
+    }
+
+    override fun getDetailColumns(): Map<String, String> {
+        return mapOf(
+            Pair("Primary Mission", primaryMissionName),
+            Pair("Secondary Mission", secondaryMissionName),
+            Pair("Deployment", deploymentName)
+        )
+    }
+}

@@ -15,4 +15,18 @@ data class Tournament(
     @ColumnInfo("name") val name: String,
     @ColumnInfo("round_count") val roundCount: Int,
     @ColumnInfo("date") val date: Date
-)
+) : CoreObject {
+    override fun getCoreColumns(): Map<String, String> {
+        return mapOf(
+            Pair("Tournament ID", tournamentID.toString()),
+            Pair("Name", name),
+            Pair("Number of Rounds", roundCount.toString())
+        )
+    }
+
+    override fun getDetailColumns(): Map<String, String> {
+        return mapOf(
+            Pair("Date", date.toString())
+        )
+    }
+}

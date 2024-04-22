@@ -72,4 +72,24 @@ data class Game(
     @ColumnInfo("prediction", defaultValue = "NULL") val predictionID: Int? = null,
     @ColumnInfo("round") val roundID: Int,
     @ColumnInfo("outcome", defaultValue = "NULL") val outcomeID: Int? = null
-)
+) : CoreObject {
+    override fun getCoreColumns(): Map<String, String> {
+        return mapOf(
+            Pair("Game ID", gameID.toString()),
+            Pair("Player 01 ID", player01ID.toString()),
+            Pair("Player 02 ID", player02ID?.toString() ?: ""),
+            Pair("Round ID", roundID.toString())
+        )
+    }
+
+    override fun getDetailColumns(): Map<String, String> {
+        return mapOf(
+            Pair("Player 01 Faction", player01FactionName),
+            Pair("Player 01 Detachment", player01FactionDetachment.toString()),
+            Pair("Player 02 Faction", player02FactionName),
+            Pair("Player 02 Detachment", player02FactionDetachment.toString()),
+            Pair("Prediction ID", predictionID.toString()),
+            Pair("Outcome ID", outcomeID.toString())
+        )
+    }
+}

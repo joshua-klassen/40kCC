@@ -34,7 +34,6 @@ import com.example.a40kcc.R
 import com.example.a40kcc.data.`object`.LiveRound
 import com.example.a40kcc.data.`object`.LiveRoundExpanded
 import com.example.a40kcc.ui.utilities.DropDownList
-import com.example.a40kcc.ui.utilities.GAME_VIEW_MODEL
 import com.example.a40kcc.ui.utilities.LIVE_ROUND_EXPANDED_VIEW_MODEL
 import com.example.a40kcc.ui.utilities.LIVE_ROUND_VIEW_MODEL
 import com.example.a40kcc.ui.utilities.PREDICTION_VIEW_MODEL
@@ -56,20 +55,6 @@ fun PreLiveRoundScreen(
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    //HACK TO MAKE THINGS WORK FOR ALPHA
-    //Add all games to the live round
-    GAME_VIEW_MODEL.allGames.forEach {
-        if (LIVE_ROUND_VIEW_MODEL.getByGameId(it.gameID) == null) {
-            println("add game ${it.gameID}")
-            LIVE_ROUND_VIEW_MODEL.insert(
-                LiveRound(
-                    gameID = it.gameID,
-                    expectedResult = it.predictionID!!
-                )
-            )
-        }
-    }
-
     var goToLiveRound by remember { mutableStateOf(false) }
     var preLiveRound by remember { mutableStateOf(true) }
     var tournamentID by remember { mutableIntStateOf(0) }
