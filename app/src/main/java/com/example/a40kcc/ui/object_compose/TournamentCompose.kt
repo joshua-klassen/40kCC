@@ -1,4 +1,4 @@
-package com.example.a40kcc.ui.coreobjects
+package com.example.a40kcc.ui.object_compose
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,6 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.window.Dialog
 import com.example.a40kcc.data.`object`.CoreObject
@@ -27,12 +28,13 @@ import com.example.a40kcc.ui.utilities.ScaledText
 import com.example.a40kcc.ui.utilities.TOURNAMENT_VIEW_MODEL
 import java.util.Date
 
-class TournamentObject : CoreObjectCompose {
+class TournamentCompose : CoreObjectCompose {
     @Composable
     override fun AddObject(
         modifier: Modifier,
         onDismissRequest: () -> Unit
     ) {
+        val localContext = LocalContext.current
         var tournamentName by remember { mutableStateOf("") }
         var tournamentRounds by remember { mutableIntStateOf(0) }
         val onConfirmation = {
@@ -41,7 +43,14 @@ class TournamentObject : CoreObjectCompose {
                 date = Date(),
                 roundCount = tournamentRounds
             )
-            TOURNAMENT_VIEW_MODEL.insert(newTournament)
+            TOURNAMENT_VIEW_MODEL.insert(
+                newTournament,
+                this.getExceptionHandler(
+                    errorMessage = "Error adding the new tournament $tournamentName",
+                    context = localContext,
+                    continueRun = true
+                )
+            )
             onDismissRequest()
         }
         Dialog(onDismissRequest = { onDismissRequest() }) {
@@ -100,7 +109,7 @@ class TournamentObject : CoreObjectCompose {
         }
     }
 
-    override fun canEdit(): Boolean {
+    override fun canEdit(coreObject: CoreObject): Boolean {
         return false
     }
 
@@ -110,9 +119,17 @@ class TournamentObject : CoreObjectCompose {
         modifier: Modifier,
         onDismissRequest: () -> Unit
     ) {
+        val localContext = LocalContext.current
         val tournament: Tournament = coreObject as Tournament
         val onConfirmation = {
-            TOURNAMENT_VIEW_MODEL.delete(tournament)
+            TOURNAMENT_VIEW_MODEL.delete(
+                tournament,
+                this.getExceptionHandler(
+                    errorMessage = "Error removing the tournament ${tournament.name}",
+                    context = localContext,
+                    continueRun = true
+                )
+            )
             onDismissRequest()
         }
         Dialog(onDismissRequest = { onDismissRequest() }) {

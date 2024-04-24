@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "92363cef95730a34619f218975e2ba9f",
+    "identityHash": "1194c350a7ff53c31fa75b67d9e5d9f4",
     "entities": [
       {
         "tableName": "game",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`gameID` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `player_01` INTEGER NOT NULL, `player_02` INTEGER DEFAULT NULL, `player_01_faction` TEXT NOT NULL, `player_02_faction` TEXT NOT NULL, `player_01_faction_detachment` TEXT DEFAULT NULL, `player_02_faction_detachment` TEXT DEFAULT NULL, `prediction` INTEGER DEFAULT NULL, `round` INTEGER NOT NULL, `outcome` INTEGER DEFAULT NULL, FOREIGN KEY(`player_01`) REFERENCES `player`(`playerID`) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED, FOREIGN KEY(`player_02`) REFERENCES `player`(`playerID`) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED, FOREIGN KEY(`prediction`) REFERENCES `prediction`(`predictionID`) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED, FOREIGN KEY(`outcome`) REFERENCES `outcome`(`outcomeID`) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED, FOREIGN KEY(`round`) REFERENCES `round`(`roundID`) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`gameID` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `player_01` INTEGER NOT NULL, `player_02` INTEGER DEFAULT NULL, `player_01_faction` TEXT NOT NULL, `player_02_faction` TEXT NOT NULL, `player_01_faction_detachment` TEXT DEFAULT NULL, `player_02_faction_detachment` TEXT DEFAULT NULL, `prediction` INTEGER DEFAULT NULL, `round` INTEGER NOT NULL, `outcome` INTEGER DEFAULT NULL, FOREIGN KEY(`player_01`) REFERENCES `player`(`playerID`) ON UPDATE CASCADE ON DELETE RESTRICT DEFERRABLE INITIALLY DEFERRED, FOREIGN KEY(`player_02`) REFERENCES `player`(`playerID`) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED, FOREIGN KEY(`prediction`) REFERENCES `prediction`(`predictionID`) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED, FOREIGN KEY(`outcome`) REFERENCES `outcome`(`outcomeID`) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED, FOREIGN KEY(`round`) REFERENCES `round`(`roundID`) ON UPDATE CASCADE ON DELETE RESTRICT DEFERRABLE INITIALLY DEFERRED)",
         "fields": [
           {
             "fieldPath": "gameID",
@@ -139,7 +139,7 @@
         "foreignKeys": [
           {
             "table": "player",
-            "onDelete": "SET NULL",
+            "onDelete": "RESTRICT",
             "onUpdate": "CASCADE",
             "columns": [
               "player_01"
@@ -183,7 +183,7 @@
           },
           {
             "table": "round",
-            "onDelete": "SET NULL",
+            "onDelete": "RESTRICT",
             "onUpdate": "CASCADE",
             "columns": [
               "round"
@@ -196,7 +196,7 @@
       },
       {
         "tableName": "live_round",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`liveRoundID` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `game` INTEGER NOT NULL, `expected_result` INTEGER NOT NULL, FOREIGN KEY(`game`) REFERENCES `game`(`gameID`) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED, FOREIGN KEY(`expected_result`) REFERENCES `prediction`(`predictionID`) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`liveRoundID` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `game` INTEGER NOT NULL, `expected_result` INTEGER NOT NULL, FOREIGN KEY(`game`) REFERENCES `game`(`gameID`) ON UPDATE CASCADE ON DELETE RESTRICT DEFERRABLE INITIALLY DEFERRED, FOREIGN KEY(`expected_result`) REFERENCES `prediction`(`predictionID`) ON UPDATE CASCADE ON DELETE RESTRICT DEFERRABLE INITIALLY DEFERRED)",
         "fields": [
           {
             "fieldPath": "liveRoundID",
@@ -255,7 +255,7 @@
         "foreignKeys": [
           {
             "table": "game",
-            "onDelete": "SET NULL",
+            "onDelete": "RESTRICT",
             "onUpdate": "CASCADE",
             "columns": [
               "game"
@@ -266,7 +266,7 @@
           },
           {
             "table": "prediction",
-            "onDelete": "SET NULL",
+            "onDelete": "RESTRICT",
             "onUpdate": "CASCADE",
             "columns": [
               "expected_result"
@@ -279,7 +279,7 @@
       },
       {
         "tableName": "outcome",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`outcomeID` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `player_01` INTEGER NOT NULL, `player_02` INTEGER DEFAULT NULL, `player_01_points` INTEGER NOT NULL, `player_02_points` INTEGER NOT NULL, `player_01_team_points` INTEGER NOT NULL, `player_02_team_points` INTEGER NOT NULL, `point_differential` INTEGER NOT NULL, FOREIGN KEY(`player_01`) REFERENCES `player`(`playerID`) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED, FOREIGN KEY(`player_02`) REFERENCES `player`(`playerID`) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`outcomeID` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `player_01` INTEGER NOT NULL, `player_02` INTEGER DEFAULT NULL, `player_01_points` INTEGER NOT NULL, `player_02_points` INTEGER NOT NULL, `player_01_team_points` INTEGER NOT NULL, `player_02_team_points` INTEGER NOT NULL, `point_differential` INTEGER NOT NULL, FOREIGN KEY(`player_01`) REFERENCES `player`(`playerID`) ON UPDATE CASCADE ON DELETE RESTRICT DEFERRABLE INITIALLY DEFERRED, FOREIGN KEY(`player_02`) REFERENCES `player`(`playerID`) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED)",
         "fields": [
           {
             "fieldPath": "outcomeID",
@@ -369,7 +369,7 @@
         "foreignKeys": [
           {
             "table": "player",
-            "onDelete": "SET NULL",
+            "onDelete": "RESTRICT",
             "onUpdate": "CASCADE",
             "columns": [
               "player_01"
@@ -443,7 +443,7 @@
       },
       {
         "tableName": "playerTeamCrossRef",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`playerID` INTEGER NOT NULL, `teamID` INTEGER NOT NULL, PRIMARY KEY(`playerID`, `teamID`), FOREIGN KEY(`teamID`) REFERENCES `team`(`teamID`) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED, FOREIGN KEY(`playerID`) REFERENCES `player`(`playerID`) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`playerID` INTEGER NOT NULL, `teamID` INTEGER NOT NULL, PRIMARY KEY(`playerID`, `teamID`), FOREIGN KEY(`teamID`) REFERENCES `team`(`teamID`) ON UPDATE CASCADE ON DELETE RESTRICT DEFERRABLE INITIALLY DEFERRED, FOREIGN KEY(`playerID`) REFERENCES `player`(`playerID`) ON UPDATE CASCADE ON DELETE RESTRICT DEFERRABLE INITIALLY DEFERRED)",
         "fields": [
           {
             "fieldPath": "playerID",
@@ -488,7 +488,7 @@
         "foreignKeys": [
           {
             "table": "team",
-            "onDelete": "SET NULL",
+            "onDelete": "RESTRICT",
             "onUpdate": "CASCADE",
             "columns": [
               "teamID"
@@ -499,7 +499,7 @@
           },
           {
             "table": "player",
-            "onDelete": "SET NULL",
+            "onDelete": "RESTRICT",
             "onUpdate": "CASCADE",
             "columns": [
               "playerID"
@@ -572,7 +572,7 @@
       },
       {
         "tableName": "round",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`roundID` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `number` INTEGER NOT NULL, `primary_mission` TEXT NOT NULL, `secondary_mission` TEXT NOT NULL, `deployment` TEXT NOT NULL, `tournament` INTEGER NOT NULL, FOREIGN KEY(`tournament`) REFERENCES `tournament`(`tournamentID`) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`roundID` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `number` INTEGER NOT NULL, `primary_mission` TEXT NOT NULL, `secondary_mission` TEXT NOT NULL, `deployment` TEXT NOT NULL, `tournament` INTEGER NOT NULL, FOREIGN KEY(`tournament`) REFERENCES `tournament`(`tournamentID`) ON UPDATE CASCADE ON DELETE RESTRICT DEFERRABLE INITIALLY DEFERRED)",
         "fields": [
           {
             "fieldPath": "roundID",
@@ -640,7 +640,7 @@
         "foreignKeys": [
           {
             "table": "tournament",
-            "onDelete": "SET NULL",
+            "onDelete": "RESTRICT",
             "onUpdate": "CASCADE",
             "columns": [
               "tournament"
@@ -739,7 +739,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '92363cef95730a34619f218975e2ba9f')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1194c350a7ff53c31fa75b67d9e5d9f4')"
     ]
   }
 }

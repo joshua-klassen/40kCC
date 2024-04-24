@@ -7,6 +7,7 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.a40kcc.data.`object`.Prediction
 import com.example.a40kcc.data.repository.PredictionRepository
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 
 class PredictionViewModel(private val predictionRepository: PredictionRepository) : ViewModel() {
@@ -19,16 +20,22 @@ class PredictionViewModel(private val predictionRepository: PredictionRepository
         return predictionRepository.getByName(predictionName)
     }
 
-    fun insert(prediction: Prediction) = viewModelScope.launch {
-        predictionRepository.insert(prediction)
+    fun insert(prediction: Prediction, exceptionHandler: CoroutineExceptionHandler) {
+        viewModelScope.launch(exceptionHandler) {
+            predictionRepository.insert(prediction)
+        }
     }
 
-    fun update(prediction: Prediction) = viewModelScope.launch {
-        predictionRepository.update(prediction)
+    fun update(prediction: Prediction, exceptionHandler: CoroutineExceptionHandler) {
+        viewModelScope.launch(exceptionHandler) {
+            predictionRepository.update(prediction)
+        }
     }
 
-    fun delete(prediction: Prediction) = viewModelScope.launch {
-        predictionRepository.delete(prediction)
+    fun delete(prediction: Prediction, exceptionHandler: CoroutineExceptionHandler) {
+        viewModelScope.launch(exceptionHandler) {
+            predictionRepository.delete(prediction)
+        }
     }
 }
 

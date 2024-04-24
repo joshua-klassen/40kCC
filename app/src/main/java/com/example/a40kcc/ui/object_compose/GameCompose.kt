@@ -1,4 +1,4 @@
-package com.example.a40kcc.ui.coreobjects
+package com.example.a40kcc.ui.object_compose
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,6 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.window.Dialog
 import com.example.a40kcc.data.`object`.CoreObject
 import com.example.a40kcc.data.`object`.Game
@@ -31,12 +32,13 @@ import com.example.a40kcc.ui.utilities.PREDICTION_VIEW_MODEL
 import com.example.a40kcc.ui.utilities.ROUND_VIEW_MODEL
 import com.example.a40kcc.ui.utilities.TOURNAMENT_VIEW_MODEL
 
-class GameObject : CoreObjectCompose {
+class GameCompose : CoreObjectCompose {
     @Composable
     override fun AddObject(
         modifier: Modifier,
         onDismissRequest: () -> Unit
     ) {
+        val localContext = LocalContext.current
         var player01ID by remember { mutableIntStateOf(0) }
         var player01Faction by remember { mutableStateOf("") }
         var player02Faction by remember { mutableStateOf("") }
@@ -72,7 +74,14 @@ class GameObject : CoreObjectCompose {
                 predictionID = predictionID,
                 roundID = roundID
             )
-            GAME_VIEW_MODEL.insert(game = newGame)
+            GAME_VIEW_MODEL.insert(
+                game = newGame,
+                this.getExceptionHandler(
+                    errorMessage = "Error adding the new game",
+                    context = localContext,
+                    continueRun = true
+                )
+            )
             onDismissRequest()
         }
         Dialog(onDismissRequest = { onDismissRequest() }) {
@@ -201,6 +210,7 @@ class GameObject : CoreObjectCompose {
         modifier: Modifier,
         onDismissRequest: () -> Unit
     ) {
+        val localContext = LocalContext.current
         val game: GameExpanded = coreObject as GameExpanded
         var player01ID by remember { mutableIntStateOf(game.game.player01ID) }
         var player01Faction by remember { mutableStateOf(game.game.player01FactionName) }
@@ -271,7 +281,14 @@ class GameObject : CoreObjectCompose {
                 roundID = roundID,
                 outcomeID = outcomeID
             )
-            GAME_VIEW_MODEL.update(game = updatedGame)
+            GAME_VIEW_MODEL.update(
+                game = updatedGame,
+                this.getExceptionHandler(
+                    errorMessage = "Error updating the game",
+                    context = localContext,
+                    continueRun = true
+                )
+            )
             onDismissRequest()
         }
         Dialog(onDismissRequest = { onDismissRequest() }) {
@@ -412,9 +429,17 @@ class GameObject : CoreObjectCompose {
         modifier: Modifier,
         onDismissRequest: () -> Unit
     ) {
+        val localContext = LocalContext.current
         val game: GameExpanded = coreObject as GameExpanded
         val onConfirmation = {
-            GAME_VIEW_MODEL.delete(game = game.game)
+            GAME_VIEW_MODEL.delete(
+                game = game.game,
+                this.getExceptionHandler(
+                    errorMessage = "Error removing the game",
+                    context = localContext,
+                    continueRun = true
+                )
+            )
             onDismissRequest()
         }
         Dialog(onDismissRequest = { onDismissRequest() }) {

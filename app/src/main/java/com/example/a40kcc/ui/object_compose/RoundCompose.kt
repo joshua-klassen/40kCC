@@ -1,4 +1,4 @@
-package com.example.a40kcc.ui.coreobjects
+package com.example.a40kcc.ui.object_compose
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,6 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.window.Dialog
 import com.example.a40kcc.data.`object`.CoreObject
@@ -32,12 +33,13 @@ import com.example.a40kcc.ui.utilities.SECONDARY_MISSION_DATA
 import com.example.a40kcc.ui.utilities.ScaledText
 import com.example.a40kcc.ui.utilities.TOURNAMENT_VIEW_MODEL
 
-class RoundObject : CoreObjectCompose {
+class RoundCompose : CoreObjectCompose {
     @Composable
     override fun AddObject(
         modifier: Modifier,
         onDismissRequest: () -> Unit
     ) {
+        val localContext = LocalContext.current
         var roundNumber by remember { mutableIntStateOf(0) }
         var primaryMissionName by remember { mutableStateOf("") }
         var secondaryMissionName by remember { mutableStateOf("") }
@@ -64,7 +66,14 @@ class RoundObject : CoreObjectCompose {
                 deploymentName = deploymentName,
                 tournamentID = tournamentID
             )
-            ROUND_VIEW_MODEL.insert(newRound)
+            ROUND_VIEW_MODEL.insert(
+                newRound,
+                this.getExceptionHandler(
+                    errorMessage = "Error adding the new round",
+                    context = localContext,
+                    continueRun = true
+                )
+            )
             onDismissRequest()
         }
         Dialog(onDismissRequest = { onDismissRequest() }) {
@@ -161,7 +170,7 @@ class RoundObject : CoreObjectCompose {
         }
     }
 
-    override fun canEdit(): Boolean {
+    override fun canEdit(coreObject: CoreObject): Boolean {
         return false
     }
 
@@ -171,9 +180,17 @@ class RoundObject : CoreObjectCompose {
         modifier: Modifier,
         onDismissRequest: () -> Unit
     ) {
+        val localContext = LocalContext.current
         val round: RoundWithTournament = coreObject as RoundWithTournament
         val onConfirmation = {
-            ROUND_VIEW_MODEL.delete(round.round)
+            ROUND_VIEW_MODEL.delete(
+                round.round,
+                this.getExceptionHandler(
+                    errorMessage = "Error removing the round",
+                    context = localContext,
+                    continueRun = true
+                )
+            )
             onDismissRequest()
         }
         Dialog(onDismissRequest = { onDismissRequest() }) {

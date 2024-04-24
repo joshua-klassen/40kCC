@@ -27,7 +27,7 @@
         <item>Adeptus Mechanicus</item>
         <item>@drawable/icon_adeptus_mechanicus</item>
         <item>Imperium</item>
-        <item>Cohort Cybernetica, Data-psalm Conclave, Explorator Maniple, Rad Zone Corps, Skitarii
+        <item>Cohort Cybernetica|Data-psalm Conclave|Explorator Maniple|Rad Zone Corps|Skitarii
             Hunter Cohort
         </item>
     </array>
@@ -89,7 +89,7 @@
         <item>Drukhari</item>
         <item>@drawable/icon_drukhari</item>
         <item>Aeldari</item>
-        <item>Realspace Raiders, Skysplinter Assault</item>
+        <item>Realspace Raiders|Skysplinter Assault</item>
     </array>
     <array name="GenestealerCult">
         <item>Genestealer Cult</item>
@@ -131,7 +131,7 @@
         <item>Necrons</item>
         <item>@drawable/icon_necrons</item>
         <item>Xenos</item>
-        <item>Annihilation Legion, Awakened Dynasty, Canoptek Court, Hypercrypt Legion, Obeisance
+        <item>Annihilation Legion|Awakened Dynasty|Canoptek Court|Hypercrypt Legion|Obeisance
             Phalanx
         </item>
     </array>
@@ -175,7 +175,7 @@
         <item>Tyranids</item>
         <item>@drawable/icon_tyranids</item>
         <item>Xenos</item>
-        <item>Assimilation Swarm, Crusher Stampede, Invasion Fleet, Synaptic Nexus, Unending Swarm,
+        <item>Assimilation Swarm|Crusher Stampede|Invasion Fleet|Synaptic Nexus|Unending Swarm,
             Vanguard Onslaught
         </item>
     </array>

@@ -2,11 +2,12 @@ package com.example.a40kcc.data.`object`
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
 @Entity(
     "player",
-    indices = [androidx.room.Index(value = ["playerID"])]
+    indices = [Index(value = ["playerID"])]
 )
 data class Player(
     @PrimaryKey(true) val playerID: Int = 0,

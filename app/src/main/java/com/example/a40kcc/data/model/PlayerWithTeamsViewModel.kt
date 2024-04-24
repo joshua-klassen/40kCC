@@ -9,6 +9,7 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.a40kcc.data.`object`.PlayerWithTeams
 import com.example.a40kcc.data.repository.PlayerWithTeamsRepository
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 
 class PlayerWithTeamsViewModel(private val playerRepository: PlayerWithTeamsRepository) :
@@ -34,8 +35,10 @@ class PlayerWithTeamsViewModel(private val playerRepository: PlayerWithTeamsRepo
         return playerRepository.getByNickname(playerNickname)
     }
 
-    fun insert(playerID: Int, teamID: Int) = viewModelScope.launch {
-        playerRepository.insert(playerID, teamID)
+    fun insert(playerID: Int, teamID: Int, exceptionHandler: CoroutineExceptionHandler) {
+        viewModelScope.launch(exceptionHandler) {
+            playerRepository.insert(playerID, teamID)
+        }
     }
 }
 

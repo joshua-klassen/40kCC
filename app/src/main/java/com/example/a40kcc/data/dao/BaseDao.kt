@@ -1,7 +1,9 @@
 package com.example.a40kcc.data.dao
 
+import android.database.sqlite.SQLiteException
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Update
 
 interface BaseDao<T> {
@@ -10,7 +12,8 @@ interface BaseDao<T> {
      *
      * @param obj the object to be inserted.
      */
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    @Throws(SQLiteException::class)
     suspend fun insert(obj: T): Long
 
     /**
@@ -18,7 +21,8 @@ interface BaseDao<T> {
      *
      * @param obj the objects to be inserted.
      */
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    @Throws(SQLiteException::class)
     suspend fun insert(vararg obj: T): Array<Long>
 
     /**
@@ -26,7 +30,8 @@ interface BaseDao<T> {
      *
      * @param obj the object to be updated
      */
-    @Update
+    @Update(onConflict = OnConflictStrategy.ABORT)
+    @Throws(SQLiteException::class)
     suspend fun update(obj: T): Int
 
     /**
@@ -34,7 +39,8 @@ interface BaseDao<T> {
      *
      * @param obj the objects to be updated
      */
-    @Update
+    @Update(onConflict = OnConflictStrategy.ABORT)
+    @Throws(SQLiteException::class)
     suspend fun update(vararg obj: T): Int
 
     /**
@@ -43,6 +49,7 @@ interface BaseDao<T> {
      * @param obj the object to be deleted
      */
     @Delete
+    @Throws(SQLiteException::class)
     suspend fun delete(obj: T): Int
 
     /**
@@ -51,5 +58,6 @@ interface BaseDao<T> {
      * @param obj the objects to be deleted
      */
     @Delete
+    @Throws(SQLiteException::class)
     suspend fun delete(vararg obj: T): Int
 }

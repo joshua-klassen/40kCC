@@ -8,15 +8,20 @@ import androidx.room.PrimaryKey
 
 @Entity(
     "round",
-    indices = [Index(value = ["roundID"]), Index(value = ["tournament"])],
-    foreignKeys = [ForeignKey(
-        entity = Tournament::class,
-        childColumns = ["tournament"],
-        parentColumns = ["tournamentID"],
-        onDelete = ForeignKey.SET_NULL,
-        onUpdate = ForeignKey.CASCADE,
-        deferred = true
-    )]
+    indices = [
+        Index(value = ["roundID"]),
+        Index(value = ["tournament"])
+    ],
+    foreignKeys = [
+        ForeignKey(
+            entity = Tournament::class,
+            childColumns = ["tournament"],
+            parentColumns = ["tournamentID"],
+            onDelete = ForeignKey.RESTRICT,
+            onUpdate = ForeignKey.CASCADE,
+            deferred = true
+        )
+    ]
 )
 data class Round(
     @PrimaryKey(true) val roundID: Int = 0,

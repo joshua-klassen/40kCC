@@ -35,7 +35,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.a40kcc.R
 import com.example.a40kcc.data.`object`.CoreObject
-import com.example.a40kcc.ui.coreobjects.CoreObjectCompose
+import com.example.a40kcc.ui.object_compose.CoreObjectCompose
 import com.example.a40kcc.ui.utilities.ScaledText
 
 @Composable
@@ -145,7 +145,7 @@ fun ObjectScreen(
                             columnWidth = columnWidth
                         )
 
-                        if (objectCompose.canEdit()) {
+                        if (objectCompose.canEdit(coreObject = coreObject)) {
                             Column(
                                 modifier = modifier
                                     .wrapContentHeight()
@@ -173,7 +173,7 @@ fun ObjectScreen(
                             }
                         }
 
-                        if (objectCompose.canRemove()) {
+                        if (objectCompose.canRemove(coreObject = coreObject)) {
                             Column(
                                 modifier = modifier
                                     .wrapContentHeight()

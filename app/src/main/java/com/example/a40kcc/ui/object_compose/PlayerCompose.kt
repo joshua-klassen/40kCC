@@ -1,4 +1,4 @@
-package com.example.a40kcc.ui.coreobjects
+package com.example.a40kcc.ui.object_compose
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.window.Dialog
 import com.example.a40kcc.data.`object`.CoreObject
 import com.example.a40kcc.data.`object`.Player
@@ -28,12 +29,13 @@ import com.example.a40kcc.ui.utilities.PLAYER_VIEW_MODEL
 import com.example.a40kcc.ui.utilities.ScaledText
 import com.example.a40kcc.ui.utilities.TEAM_VIEW_MODEL
 
-class PlayerObject : CoreObjectCompose {
+class PlayerCompose : CoreObjectCompose {
     @Composable
     override fun AddObject(
         modifier: Modifier,
         onDismissRequest: () -> Unit
     ) {
+        val localContext = LocalContext.current
         var playerName by remember { mutableStateOf("") }
         var playerNickname by remember { mutableStateOf("") }
         var playerFaction by remember { mutableStateOf("") }
@@ -51,7 +53,14 @@ class PlayerObject : CoreObjectCompose {
                 nickname = playerNickname,
                 factionName = playerFaction
             )
-            PLAYER_VIEW_MODEL.insert(newPlayer)
+            PLAYER_VIEW_MODEL.insert(
+                newPlayer,
+                this.getExceptionHandler(
+                    errorMessage = "Error adding the new player $playerName",
+                    context = localContext,
+                    continueRun = true
+                )
+            )
             onDismissRequest()
         }
         Dialog(onDismissRequest = { onDismissRequest() }) {
@@ -136,6 +145,7 @@ class PlayerObject : CoreObjectCompose {
         modifier: Modifier,
         onDismissRequest: () -> Unit
     ) {
+        val localContext = LocalContext.current
         val player: PlayerWithTeams = coreObject as PlayerWithTeams
         var playerName by remember { mutableStateOf(player.player.name) }
         var playerNickname by remember { mutableStateOf(player.player.nickname!!) }
@@ -159,7 +169,14 @@ class PlayerObject : CoreObjectCompose {
                 nickname = playerNickname,
                 factionName = playerFaction
             )
-            PLAYER_VIEW_MODEL.update(updatedPlayer)
+            PLAYER_VIEW_MODEL.update(
+                updatedPlayer,
+                this.getExceptionHandler(
+                    errorMessage = "Error updating the player ${player.player.name}",
+                    context = localContext,
+                    continueRun = true
+                )
+            )
             onDismissRequest()
         }
         Dialog(onDismissRequest = { onDismissRequest() }) {
@@ -244,9 +261,17 @@ class PlayerObject : CoreObjectCompose {
         modifier: Modifier,
         onDismissRequest: () -> Unit
     ) {
+        val localContext = LocalContext.current
         val player: PlayerWithTeams = coreObject as PlayerWithTeams
         val onConfirmation = {
-            PLAYER_VIEW_MODEL.delete(player.player)
+            PLAYER_VIEW_MODEL.delete(
+                player.player,
+                this.getExceptionHandler(
+                    errorMessage = "Error removing the player ${player.player.name}",
+                    context = localContext,
+                    continueRun = true
+                )
+            )
             onDismissRequest()
         }
         Dialog(onDismissRequest = { onDismissRequest() }) {

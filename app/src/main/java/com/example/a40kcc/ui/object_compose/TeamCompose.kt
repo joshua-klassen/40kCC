@@ -1,12 +1,10 @@
-package com.example.a40kcc.ui.coreobjects
+package com.example.a40kcc.ui.object_compose
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -15,40 +13,49 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.window.Dialog
 import com.example.a40kcc.data.`object`.CoreObject
-import com.example.a40kcc.data.`object`.Prediction
-import com.example.a40kcc.ui.utilities.PREDICTION_VIEW_MODEL
+import com.example.a40kcc.data.`object`.Team
+import com.example.a40kcc.ui.utilities.DropDownList
+import com.example.a40kcc.ui.utilities.PLAYER_VIEW_MODEL
 import com.example.a40kcc.ui.utilities.ScaledText
+import com.example.a40kcc.ui.utilities.TEAM_VIEW_MODEL
 
-class PredictionObject : CoreObjectCompose {
+class TeamCompose : CoreObjectCompose {
     @Composable
     override fun AddObject(
         modifier: Modifier,
         onDismissRequest: () -> Unit
     ) {
-        var predictionName by remember { mutableStateOf("") }
-        var predictionColor by remember { mutableLongStateOf(0xFF000000) }
-        var predictionMin by remember { mutableIntStateOf(0) }
-        var predictionMax by remember { mutableIntStateOf(0) }
+        val localContext = LocalContext.current
+        var teamName by remember { mutableStateOf("") }
+        var playerID by remember { mutableIntStateOf(0) }
+        var playerIndex by remember { mutableIntStateOf(0) }
+        val playerNames: MutableList<String> = mutableListOf("")
+        PLAYER_VIEW_MODEL.allPlayers.forEach {
+            playerNames += it.name
+        }
         val onConfirmation = {
-            val newPrediction = Prediction(
-                name = predictionName,
-                color = predictionColor,
-                minPoints = predictionMin,
-                maxPoints = predictionMax
+            val newTeam = Team(
+                name = teamName
             )
-            PREDICTION_VIEW_MODEL.insert(newPrediction)
+            TEAM_VIEW_MODEL.insert(
+                newTeam,
+                this.getExceptionHandler(
+                    errorMessage = "Error adding the new team $teamName",
+                    context = localContext,
+                    continueRun = true
+                )
+            )
             onDismissRequest()
         }
+
         Dialog(onDismissRequest = { onDismissRequest() }) {
             Card(
                 modifier = modifier.wrapContentSize()
@@ -59,43 +66,28 @@ class PredictionObject : CoreObjectCompose {
                     modifier = modifier.fillMaxWidth()
                 ) {
                     Row {
-                        Text(
-                            text = "Add a new prediction"
+                        ScaledText(
+                            text = "Add a new team"
                         )
                     }
                     Row {
                         TextField(
-                            value = predictionName,
-                            onValueChange = { predictionName = it },
-                            label = { Text(text = "Name: ") },
+                            value = teamName,
+                            onValueChange = { teamName = it },
+                            label = { Text(text = "Team Name: ") },
                             textStyle = MaterialTheme.typography.bodyMedium
                         )
                     }
                     Row {
-                        TextField(
-                            value = predictionColor.toString(),
-                            onValueChange = { predictionColor = it.toLong() },
-                            label = { Text(text = "Color: ") },
-                            textStyle = MaterialTheme.typography.bodyMedium
-                        )
-                    }
-                    Row {
-                        TextField(
-                            value = predictionMin.toString(),
-                            onValueChange = { predictionMin = it.toInt() },
-                            label = { Text(text = "Minimum Points: ") },
-                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                            textStyle = MaterialTheme.typography.bodyMedium
-                        )
-                    }
-                    Row {
-                        TextField(
-                            value = predictionMax.toString(),
-                            onValueChange = { predictionMax = it.toInt() },
-                            label = { Text(text = "Maximum Points: ") },
-                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                            textStyle = MaterialTheme.typography.bodyMedium
-                        )
+                        DropDownList(
+                            itemList = playerNames,
+                            selectedIndex = playerIndex,
+                            modifier = modifier,
+                            preText = "Player: ",
+                            onItemClick = {
+                                playerIndex = it; playerID =
+                                PLAYER_VIEW_MODEL.getByName(playerNames[playerIndex]).playerID
+                            })
                     }
                     Row {
                         TextButton(
@@ -122,7 +114,7 @@ class PredictionObject : CoreObjectCompose {
         }
     }
 
-    override fun canEdit(): Boolean {
+    override fun canEdit(coreObject: CoreObject): Boolean {
         return false
     }
 
@@ -132,19 +124,17 @@ class PredictionObject : CoreObjectCompose {
         modifier: Modifier,
         onDismissRequest: () -> Unit
     ) {
-        val prediction: Prediction = coreObject as Prediction
-
-        if (prediction.defaultOption) {
-            Toast.makeText(
-                LocalContext.current,
-                "Default Predictions cannot be removed",
-                Toast.LENGTH_SHORT
-            ).show()
-            onDismissRequest()
-        }
-
+        val localContext = LocalContext.current
+        val team: Team = coreObject as Team
         val onConfirmation = {
-            PREDICTION_VIEW_MODEL.delete(prediction)
+            TEAM_VIEW_MODEL.delete(
+                team,
+                this.getExceptionHandler(
+                    errorMessage = "Error removing the team ${team.name}",
+                    context = localContext,
+                    continueRun = true
+                )
+            )
             onDismissRequest()
         }
         Dialog(onDismissRequest = { onDismissRequest() }) {
@@ -158,13 +148,13 @@ class PredictionObject : CoreObjectCompose {
                 ) {
                     Row {
                         ScaledText(
-                            text = "Confirm remove prediction",
+                            text = "Confirm remove player",
                             style = MaterialTheme.typography.titleMedium
                         )
                     }
                     Row {
                         ScaledText(
-                            text = "Prediction Name: " + prediction.name,
+                            text = "Team Name: " + team.name,
                             style = MaterialTheme.typography.bodyMedium
                         )
                     }

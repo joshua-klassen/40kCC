@@ -9,6 +9,7 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.a40kcc.data.`object`.Round
 import com.example.a40kcc.data.repository.RoundRepository
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 
 class RoundViewModel(private val roundRepository: RoundRepository) : ViewModel() {
@@ -39,16 +40,22 @@ class RoundViewModel(private val roundRepository: RoundRepository) : ViewModel()
         return roundRepository.getByTournamentId(tournamentID)
     }
 
-    fun insert(round: Round) = viewModelScope.launch {
-        roundRepository.insert(round)
+    fun insert(round: Round, exceptionHandler: CoroutineExceptionHandler) {
+        viewModelScope.launch(exceptionHandler) {
+            roundRepository.insert(round)
+        }
     }
 
-    fun update(round: Round) = viewModelScope.launch {
-        roundRepository.update(round)
+    fun update(round: Round, exceptionHandler: CoroutineExceptionHandler) {
+        viewModelScope.launch(exceptionHandler) {
+            roundRepository.update(round)
+        }
     }
 
-    fun delete(round: Round) = viewModelScope.launch {
-        roundRepository.delete(round)
+    fun delete(round: Round, exceptionHandler: CoroutineExceptionHandler) {
+        viewModelScope.launch(exceptionHandler) {
+            roundRepository.delete(round)
+        }
     }
 }
 

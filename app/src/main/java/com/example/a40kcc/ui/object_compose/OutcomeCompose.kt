@@ -1,4 +1,4 @@
-package com.example.a40kcc.ui.coreobjects
+package com.example.a40kcc.ui.object_compose
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -32,12 +33,13 @@ import com.example.a40kcc.ui.utilities.PLAYER_VIEW_MODEL
 import com.example.a40kcc.ui.utilities.ScaledText
 import kotlin.math.abs
 
-class OutcomeObject : CoreObjectCompose {
+class OutcomeCompose : CoreObjectCompose {
     @Composable
     override fun AddObject(
         modifier: Modifier,
         onDismissRequest: () -> Unit
     ) {
+        val localContext = LocalContext.current
         var player01ID by remember { mutableIntStateOf(0) }
         var player01Index by remember { mutableIntStateOf(0) }
         var player01Points by remember { mutableStateOf("0") }
@@ -58,7 +60,14 @@ class OutcomeObject : CoreObjectCompose {
                 player02TeamPoints = player02TeamPoints,
                 pointDifferential = pointDifferential
             )
-            OUTCOME_VIEW_MODEL.insert(newOutcome)
+            OUTCOME_VIEW_MODEL.insert(
+                newOutcome,
+                this.getExceptionHandler(
+                    errorMessage = "Error adding the new outcome",
+                    context = localContext,
+                    continueRun = true
+                )
+            )
             onDismissRequest()
         }
 
@@ -185,6 +194,7 @@ class OutcomeObject : CoreObjectCompose {
         modifier: Modifier,
         onDismissRequest: () -> Unit
     ) {
+        val localContext = LocalContext.current
         val outcome: OutcomeWithPlayers = coreObject as OutcomeWithPlayers
         var player01ID by remember { mutableIntStateOf(outcome.outcome.player01ID) }
         var player01Index by remember { mutableIntStateOf(0) }
@@ -210,7 +220,14 @@ class OutcomeObject : CoreObjectCompose {
                 player02TeamPoints = pointDifferential,
                 pointDifferential = pointDifferential
             )
-            OUTCOME_VIEW_MODEL.update(newOutcome)
+            OUTCOME_VIEW_MODEL.update(
+                newOutcome,
+                this.getExceptionHandler(
+                    errorMessage = "Error updating the outcome",
+                    context = localContext,
+                    continueRun = true
+                )
+            )
             onDismissRequest()
         }
 
@@ -329,7 +346,7 @@ class OutcomeObject : CoreObjectCompose {
         }
     }
 
-    override fun canRemove(): Boolean {
+    override fun canRemove(coreObject: CoreObject): Boolean {
         return false
     }
 }

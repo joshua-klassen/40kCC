@@ -1,6 +1,5 @@
 <resources>
     <string name="home_button">Startbild</string>
-    <string name="back_button">Rückbild</string>
     <string name="deployment_text">Deployments</string>
     <string name="faction_text">Factions</string>
     <string name="game_text">Games</string>

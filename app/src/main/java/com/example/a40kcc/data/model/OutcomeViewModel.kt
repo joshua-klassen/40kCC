@@ -9,6 +9,7 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.a40kcc.data.`object`.Outcome
 import com.example.a40kcc.data.repository.OutcomeRepository
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 
 class OutcomeViewModel(private val outcomeRepository: OutcomeRepository) : ViewModel() {
@@ -23,12 +24,16 @@ class OutcomeViewModel(private val outcomeRepository: OutcomeRepository) : ViewM
         return outcomeRepository.getByPlayerId(playerId)
     }
 
-    fun insert(outcome: Outcome) = viewModelScope.launch {
-        outcomeRepository.insert(outcome)
+    fun insert(outcome: Outcome, exceptionHandler: CoroutineExceptionHandler) {
+        viewModelScope.launch(exceptionHandler) {
+            outcomeRepository.insert(outcome)
+        }
     }
 
-    fun update(outcome: Outcome) = viewModelScope.launch {
-        outcomeRepository.update(outcome)
+    fun update(outcome: Outcome, exceptionHandler: CoroutineExceptionHandler) {
+        viewModelScope.launch(exceptionHandler) {
+            outcomeRepository.update(outcome)
+        }
     }
 }
 

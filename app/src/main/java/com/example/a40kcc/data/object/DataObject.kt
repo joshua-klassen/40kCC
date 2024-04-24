@@ -32,7 +32,7 @@ class DataObject(resources: Resources, headerID: Int, dataID: Int) {
                     }
                 } else {
                     objectArray.getString(objectArrayIterator)?.let {
-                        mapData += it
+                        mapData += it.replace(oldValue = "|", newValue = "\n")
                     }
                 }
                 objectArrayIterator++

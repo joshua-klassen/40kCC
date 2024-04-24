@@ -8,20 +8,23 @@ import androidx.room.PrimaryKey
 
 @Entity(
     "game",
-    indices = [Index(value = ["gameID"]),
+    indices = [
+        Index(value = ["gameID"]),
         Index(value = ["player_01"]),
         Index(value = ["player_02"]),
         Index(value = ["prediction"]),
         Index(value = ["outcome"]),
-        Index(value = ["round"])],
-    foreignKeys = [ForeignKey(
-        entity = Player::class,
-        childColumns = ["player_01"],
-        parentColumns = ["playerID"],
-        onDelete = ForeignKey.SET_NULL,
-        onUpdate = ForeignKey.CASCADE,
-        deferred = true
-    ),
+        Index(value = ["round"])
+    ],
+    foreignKeys = [
+        ForeignKey(
+            entity = Player::class,
+            childColumns = ["player_01"],
+            parentColumns = ["playerID"],
+            onDelete = ForeignKey.RESTRICT,
+            onUpdate = ForeignKey.CASCADE,
+            deferred = true
+        ),
         ForeignKey(
             entity = Player::class,
             childColumns = ["player_02"],
@@ -50,10 +53,11 @@ import androidx.room.PrimaryKey
             entity = Round::class,
             childColumns = ["round"],
             parentColumns = ["roundID"],
-            onDelete = ForeignKey.SET_NULL,
+            onDelete = ForeignKey.RESTRICT,
             onUpdate = ForeignKey.CASCADE,
             deferred = true
-        )]
+        )
+    ]
 )
 data class Game(
     @PrimaryKey(true) val gameID: Int = 0,

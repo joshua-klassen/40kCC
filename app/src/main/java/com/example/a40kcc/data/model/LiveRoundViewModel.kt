@@ -9,6 +9,7 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.a40kcc.data.`object`.LiveRound
 import com.example.a40kcc.data.repository.LiveRoundRepository
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 
 class LiveRoundViewModel(private val liveRoundRepository: LiveRoundRepository) : ViewModel() {
@@ -28,16 +29,22 @@ class LiveRoundViewModel(private val liveRoundRepository: LiveRoundRepository) :
         return liveRoundRepository.getByExpectedResultId(predictionId)
     }
 
-    fun insert(liveRound: LiveRound) = viewModelScope.launch {
-        liveRoundRepository.insert(liveRound)
+    fun insert(liveRound: LiveRound, exceptionHandler: CoroutineExceptionHandler) {
+        viewModelScope.launch(exceptionHandler) {
+            liveRoundRepository.insert(liveRound)
+        }
     }
 
-    fun update(liveRound: LiveRound) = viewModelScope.launch {
-        liveRoundRepository.update(liveRound)
+    fun update(liveRound: LiveRound, exceptionHandler: CoroutineExceptionHandler) {
+        viewModelScope.launch(exceptionHandler) {
+            liveRoundRepository.update(liveRound)
+        }
     }
 
-    fun delete(liveRound: LiveRound) = viewModelScope.launch {
-        liveRoundRepository.delete(liveRound)
+    fun delete(liveRound: LiveRound, exceptionHandler: CoroutineExceptionHandler) {
+        viewModelScope.launch(exceptionHandler) {
+            liveRoundRepository.delete(liveRound)
+        }
     }
 }
 

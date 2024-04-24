@@ -44,13 +44,13 @@ import com.example.a40kcc.data.model.TeamWithPlayersViewModelFactory
 import com.example.a40kcc.data.model.TournamentViewModel
 import com.example.a40kcc.data.model.TournamentViewModelFactory
 import com.example.a40kcc.data.`object`.DataObject
-import com.example.a40kcc.ui.coreobjects.GameObject
-import com.example.a40kcc.ui.coreobjects.OutcomeObject
-import com.example.a40kcc.ui.coreobjects.PlayerObject
-import com.example.a40kcc.ui.coreobjects.PredictionObject
-import com.example.a40kcc.ui.coreobjects.RoundObject
-import com.example.a40kcc.ui.coreobjects.TeamObject
-import com.example.a40kcc.ui.coreobjects.TournamentObject
+import com.example.a40kcc.ui.object_compose.GameCompose
+import com.example.a40kcc.ui.object_compose.OutcomeCompose
+import com.example.a40kcc.ui.object_compose.PlayerCompose
+import com.example.a40kcc.ui.object_compose.PredictionCompose
+import com.example.a40kcc.ui.object_compose.RoundCompose
+import com.example.a40kcc.ui.object_compose.TeamCompose
+import com.example.a40kcc.ui.object_compose.TournamentCompose
 import com.example.a40kcc.ui.screen.DataScreen
 import com.example.a40kcc.ui.screen.HomeScreen
 import com.example.a40kcc.ui.screen.ObjectScreen
@@ -187,7 +187,7 @@ class MainActivity : ComponentActivity() {
                                 ObjectScreen(
                                     objectList = games,
                                     onBackClick = { navController.navigateUp() },
-                                    objectCompose = GameObject(),
+                                    objectCompose = GameCompose(),
                                     modifier = modifier
                                 )
                             }
@@ -217,7 +217,7 @@ class MainActivity : ComponentActivity() {
                                 ObjectScreen(
                                     objectList = outcomes,
                                     onBackClick = { navController.navigateUp() },
-                                    objectCompose = OutcomeObject(),
+                                    objectCompose = OutcomeCompose(),
                                     modifier = modifier
                                 )
                             }
@@ -227,7 +227,7 @@ class MainActivity : ComponentActivity() {
                                 ObjectScreen(
                                     objectList = players,
                                     onBackClick = { navController.navigateUp() },
-                                    objectCompose = PlayerObject(),
+                                    objectCompose = PlayerCompose(),
                                     modifier = modifier
                                 )
                             }
@@ -237,7 +237,7 @@ class MainActivity : ComponentActivity() {
                                 ObjectScreen(
                                     objectList = predictions,
                                     onBackClick = { navController.navigateUp() },
-                                    objectCompose = PredictionObject(),
+                                    objectCompose = PredictionCompose(),
                                     modifier = modifier
                                 )
                             }
@@ -247,7 +247,7 @@ class MainActivity : ComponentActivity() {
                                 ObjectScreen(
                                     objectList = rounds,
                                     onBackClick = { navController.navigateUp() },
-                                    objectCompose = RoundObject(),
+                                    objectCompose = RoundCompose(),
                                     modifier = modifier
                                 )
                             }
@@ -257,7 +257,7 @@ class MainActivity : ComponentActivity() {
                                 ObjectScreen(
                                     objectList = teams,
                                     onBackClick = { navController.navigateUp() },
-                                    objectCompose = TeamObject(),
+                                    objectCompose = TeamCompose(),
                                     modifier = modifier
                                 )
                             }
@@ -267,7 +267,7 @@ class MainActivity : ComponentActivity() {
                                 ObjectScreen(
                                     objectList = tournaments,
                                     onBackClick = { navController.navigateUp() },
-                                    objectCompose = TournamentObject(),
+                                    objectCompose = TournamentCompose(),
                                     modifier = modifier
                                 )
                             }

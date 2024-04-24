@@ -6,23 +6,29 @@ import androidx.room.Index
 
 @Entity(
     "playerTeamCrossRef",
-    indices = [Index(value = ["playerID"]), Index(value = ["teamID"])],
+    indices = [
+        Index(value = ["playerID"]),
+        Index(value = ["teamID"])
+    ],
     primaryKeys = ["playerID", "teamID"],
-    foreignKeys = [ForeignKey(
-        entity = Team::class,
-        childColumns = ["teamID"],
-        parentColumns = ["teamID"],
-        onDelete = ForeignKey.SET_NULL,
-        onUpdate = ForeignKey.CASCADE,
-        deferred = true
-    ), ForeignKey(
-        entity = Player::class,
-        childColumns = ["playerID"],
-        parentColumns = ["playerID"],
-        onDelete = ForeignKey.SET_NULL,
-        onUpdate = ForeignKey.CASCADE,
-        deferred = true
-    )]
+    foreignKeys = [
+        ForeignKey(
+            entity = Team::class,
+            childColumns = ["teamID"],
+            parentColumns = ["teamID"],
+            onDelete = ForeignKey.RESTRICT,
+            onUpdate = ForeignKey.CASCADE,
+            deferred = true
+        ),
+        ForeignKey(
+            entity = Player::class,
+            childColumns = ["playerID"],
+            parentColumns = ["playerID"],
+            onDelete = ForeignKey.RESTRICT,
+            onUpdate = ForeignKey.CASCADE,
+            deferred = true
+        )
+    ]
 )
 data class PlayerTeamCrossRef(
     val playerID: Int,

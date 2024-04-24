@@ -8,25 +8,29 @@ import androidx.room.PrimaryKey
 
 @Entity(
     "live_round",
-    indices = [Index(value = ["liveRoundID"]),
+    indices = [
+        Index(value = ["liveRoundID"]),
         Index(value = ["game"]),
-        Index(value = ["expected_result"])],
-    foreignKeys = [ForeignKey(
-        entity = Game::class,
-        childColumns = ["game"],
-        parentColumns = ["gameID"],
-        onDelete = ForeignKey.SET_NULL,
-        onUpdate = ForeignKey.CASCADE,
-        deferred = true
-    ),
+        Index(value = ["expected_result"])
+    ],
+    foreignKeys = [
+        ForeignKey(
+            entity = Game::class,
+            childColumns = ["game"],
+            parentColumns = ["gameID"],
+            onDelete = ForeignKey.RESTRICT,
+            onUpdate = ForeignKey.CASCADE,
+            deferred = true
+        ),
         ForeignKey(
             entity = Prediction::class,
             childColumns = ["expected_result"],
             parentColumns = ["predictionID"],
-            onDelete = ForeignKey.SET_NULL,
+            onDelete = ForeignKey.RESTRICT,
             onUpdate = ForeignKey.CASCADE,
             deferred = true
-        )]
+        )
+    ]
 )
 data class LiveRound(
     @PrimaryKey(true) val liveRoundID: Int = 0,

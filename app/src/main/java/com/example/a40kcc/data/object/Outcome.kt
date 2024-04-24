@@ -9,17 +9,20 @@ import androidx.room.PrimaryKey
 
 @Entity(
     "outcome",
-    indices = [Index(value = ["outcomeID"]),
+    indices = [
+        Index(value = ["outcomeID"]),
         Index(value = ["player_01"]),
-        Index(value = ["player_02"])],
-    foreignKeys = [ForeignKey(
-        entity = Player::class,
-        childColumns = ["player_01"],
-        parentColumns = ["playerID"],
-        onDelete = ForeignKey.SET_NULL,
-        onUpdate = ForeignKey.CASCADE,
-        deferred = true
-    ),
+        Index(value = ["player_02"])
+    ],
+    foreignKeys = [
+        ForeignKey(
+            entity = Player::class,
+            childColumns = ["player_01"],
+            parentColumns = ["playerID"],
+            onDelete = ForeignKey.RESTRICT,
+            onUpdate = ForeignKey.CASCADE,
+            deferred = true
+        ),
         ForeignKey(
             entity = Player::class,
             childColumns = ["player_02"],
@@ -27,7 +30,8 @@ import androidx.room.PrimaryKey
             onDelete = ForeignKey.SET_NULL,
             onUpdate = ForeignKey.CASCADE,
             deferred = true
-        )]
+        )
+    ]
 )
 data class Outcome(
     @PrimaryKey(true) val outcomeID: Int = 0,

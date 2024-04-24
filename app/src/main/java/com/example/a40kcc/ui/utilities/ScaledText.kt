@@ -20,7 +20,8 @@ fun ScaledText(
     modifier: Modifier = Modifier,
     style: TextStyle = MaterialTheme.typography.bodyMedium,
     textAlign: TextAlign = TextAlign.Left,
-    color: Color = style.color
+    color: Color = style.color,
+    softWrap: Boolean = false
 ) {
     var resizedTextStyle by remember { mutableStateOf(style) }
     var draw by remember { mutableStateOf(false) }
@@ -35,7 +36,7 @@ fun ScaledText(
                 drawContent()
             }
         },
-        softWrap = false,
+        softWrap = softWrap,
         style = resizedTextStyle,
         textAlign = textAlign,
         onTextLayout = { result ->
