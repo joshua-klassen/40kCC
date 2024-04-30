@@ -1,6 +1,5 @@
-package com.example.a40kcc.ui.utilities
+package com.example.a40kcc
 
-import com.example.a40kcc.R
 import com.example.a40kcc.data.model.GameExpandedViewModel
 import com.example.a40kcc.data.model.GameViewModel
 import com.example.a40kcc.data.model.LiveRoundExpandedViewModel

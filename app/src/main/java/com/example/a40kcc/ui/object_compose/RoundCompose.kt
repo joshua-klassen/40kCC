@@ -22,16 +22,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.window.Dialog
+import com.example.a40kcc.DEPLOYMENT_DATA
+import com.example.a40kcc.PRIMARY_MISSION_DATA
+import com.example.a40kcc.ROUND_VIEW_MODEL
+import com.example.a40kcc.SECONDARY_MISSION_DATA
+import com.example.a40kcc.TOURNAMENT_VIEW_MODEL
 import com.example.a40kcc.data.`object`.CoreObject
 import com.example.a40kcc.data.`object`.Round
 import com.example.a40kcc.data.`object`.RoundWithTournament
-import com.example.a40kcc.ui.utilities.DEPLOYMENT_DATA
 import com.example.a40kcc.ui.utilities.DropDownList
-import com.example.a40kcc.ui.utilities.PRIMARY_MISSION_DATA
-import com.example.a40kcc.ui.utilities.ROUND_VIEW_MODEL
-import com.example.a40kcc.ui.utilities.SECONDARY_MISSION_DATA
 import com.example.a40kcc.ui.utilities.ScaledText
-import com.example.a40kcc.ui.utilities.TOURNAMENT_VIEW_MODEL
 
 class RoundCompose : CoreObjectCompose {
     @Composable

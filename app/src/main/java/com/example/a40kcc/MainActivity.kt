@@ -7,7 +7,11 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
@@ -45,6 +49,8 @@ import com.example.a40kcc.data.model.TournamentViewModel
 import com.example.a40kcc.data.model.TournamentViewModelFactory
 import com.example.a40kcc.data.`object`.DataObject
 import com.example.a40kcc.ui.object_compose.GameCompose
+import com.example.a40kcc.ui.object_compose.LiveRoundCompose
+import com.example.a40kcc.ui.object_compose.LiveRoundScreenDataObject
 import com.example.a40kcc.ui.object_compose.OutcomeCompose
 import com.example.a40kcc.ui.object_compose.PlayerCompose
 import com.example.a40kcc.ui.object_compose.PredictionCompose
@@ -53,27 +59,9 @@ import com.example.a40kcc.ui.object_compose.TeamCompose
 import com.example.a40kcc.ui.object_compose.TournamentCompose
 import com.example.a40kcc.ui.screen.DataScreen
 import com.example.a40kcc.ui.screen.HomeScreen
+import com.example.a40kcc.ui.screen.LiveRoundScreen
 import com.example.a40kcc.ui.screen.ObjectScreen
-import com.example.a40kcc.ui.screen.PreLiveRoundScreen
 import com.example.a40kcc.ui.theme.Theme40kCC
-import com.example.a40kcc.ui.utilities.DEPLOYMENT_DATA
-import com.example.a40kcc.ui.utilities.FACTION_DATA
-import com.example.a40kcc.ui.utilities.GAME_EXPANDED_VIEW_MODEL
-import com.example.a40kcc.ui.utilities.GAME_VIEW_MODEL
-import com.example.a40kcc.ui.utilities.LIVE_ROUND_EXPANDED_VIEW_MODEL
-import com.example.a40kcc.ui.utilities.LIVE_ROUND_VIEW_MODEL
-import com.example.a40kcc.ui.utilities.OUTCOME_VIEW_MODEL
-import com.example.a40kcc.ui.utilities.OUTCOME_WITH_PLAYERS_VIEW_MODEL
-import com.example.a40kcc.ui.utilities.PLAYER_VIEW_MODEL
-import com.example.a40kcc.ui.utilities.PLAYER_WITH_TEAMS_VIEW_MODEL
-import com.example.a40kcc.ui.utilities.PREDICTION_VIEW_MODEL
-import com.example.a40kcc.ui.utilities.PRIMARY_MISSION_DATA
-import com.example.a40kcc.ui.utilities.ROUND_VIEW_MODEL
-import com.example.a40kcc.ui.utilities.ROUND_WITH_TOURNAMENT_VIEW_MODEL
-import com.example.a40kcc.ui.utilities.SECONDARY_MISSION_DATA
-import com.example.a40kcc.ui.utilities.TEAM_VIEW_MODEL
-import com.example.a40kcc.ui.utilities.TEAM_WITH_PLAYERS_VIEW_MODEL
-import com.example.a40kcc.ui.utilities.TOURNAMENT_VIEW_MODEL
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -160,6 +148,7 @@ class MainActivity : ComponentActivity() {
                         headerID = R.array.SecondaryMissionHeader,
                         dataID = R.array.SecondaryMissions
                     )
+                    var liveRoundScreenData by remember { mutableStateOf(LiveRoundScreenDataObject()) }
                     val navController = rememberNavController()
                     NavHost(navController = navController, startDestination = "home") {
                         composable(route = "home") {
@@ -193,8 +182,10 @@ class MainActivity : ComponentActivity() {
                             }
                         }
                         composable(route = "liveRound") {
-                            PreLiveRoundScreen(
+                            LiveRoundScreen(
                                 onBackClick = { navController.navigateUp() },
+                                liveRoundCompose = LiveRoundCompose(),
+                                liveRoundScreenData = liveRoundScreenData,
                                 modifier = modifier
                             )
                         }

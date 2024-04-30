@@ -24,12 +24,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.example.a40kcc.OUTCOME_VIEW_MODEL
+import com.example.a40kcc.PLAYER_VIEW_MODEL
 import com.example.a40kcc.data.`object`.CoreObject
 import com.example.a40kcc.data.`object`.Outcome
 import com.example.a40kcc.data.`object`.OutcomeWithPlayers
 import com.example.a40kcc.ui.utilities.DropDownList
-import com.example.a40kcc.ui.utilities.OUTCOME_VIEW_MODEL
-import com.example.a40kcc.ui.utilities.PLAYER_VIEW_MODEL
 import com.example.a40kcc.ui.utilities.ScaledText
 import kotlin.math.abs
 

@@ -20,12 +20,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.window.Dialog
+import com.example.a40kcc.PLAYER_VIEW_MODEL
+import com.example.a40kcc.TEAM_VIEW_MODEL
 import com.example.a40kcc.data.`object`.CoreObject
 import com.example.a40kcc.data.`object`.Team
 import com.example.a40kcc.ui.utilities.DropDownList
-import com.example.a40kcc.ui.utilities.PLAYER_VIEW_MODEL
 import com.example.a40kcc.ui.utilities.ScaledText
-import com.example.a40kcc.ui.utilities.TEAM_VIEW_MODEL
 
 class TeamCompose : CoreObjectCompose {
     @Composable

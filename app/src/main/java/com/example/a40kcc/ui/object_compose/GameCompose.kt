@@ -19,18 +19,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.window.Dialog
+import com.example.a40kcc.FACTION_DATA
+import com.example.a40kcc.GAME_VIEW_MODEL
+import com.example.a40kcc.OUTCOME_VIEW_MODEL
+import com.example.a40kcc.PLAYER_VIEW_MODEL
+import com.example.a40kcc.PLAYER_WITH_TEAMS_VIEW_MODEL
+import com.example.a40kcc.PREDICTION_VIEW_MODEL
+import com.example.a40kcc.ROUND_VIEW_MODEL
+import com.example.a40kcc.TOURNAMENT_VIEW_MODEL
 import com.example.a40kcc.data.`object`.CoreObject
 import com.example.a40kcc.data.`object`.Game
 import com.example.a40kcc.data.`object`.GameExpanded
 import com.example.a40kcc.ui.utilities.DropDownList
-import com.example.a40kcc.ui.utilities.FACTION_DATA
-import com.example.a40kcc.ui.utilities.GAME_VIEW_MODEL
-import com.example.a40kcc.ui.utilities.OUTCOME_VIEW_MODEL
-import com.example.a40kcc.ui.utilities.PLAYER_VIEW_MODEL
-import com.example.a40kcc.ui.utilities.PLAYER_WITH_TEAMS_VIEW_MODEL
-import com.example.a40kcc.ui.utilities.PREDICTION_VIEW_MODEL
-import com.example.a40kcc.ui.utilities.ROUND_VIEW_MODEL
-import com.example.a40kcc.ui.utilities.TOURNAMENT_VIEW_MODEL
 
 class GameCompose : CoreObjectCompose {
     @Composable

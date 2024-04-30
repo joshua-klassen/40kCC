@@ -21,8 +21,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.navigation.NavHostController
+import com.example.a40kcc.MAIN_ROUTES
 import com.example.a40kcc.R
-import com.example.a40kcc.ui.utilities.MAIN_ROUTES
 import com.example.a40kcc.ui.utilities.ScaledText
 
 @Composable

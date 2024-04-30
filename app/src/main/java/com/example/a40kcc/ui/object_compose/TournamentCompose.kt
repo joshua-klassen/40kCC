@@ -22,10 +22,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.window.Dialog
+import com.example.a40kcc.TOURNAMENT_VIEW_MODEL
 import com.example.a40kcc.data.`object`.CoreObject
 import com.example.a40kcc.data.`object`.Tournament
 import com.example.a40kcc.ui.utilities.ScaledText
-import com.example.a40kcc.ui.utilities.TOURNAMENT_VIEW_MODEL
 import java.util.Date
 
 class TournamentCompose : CoreObjectCompose {

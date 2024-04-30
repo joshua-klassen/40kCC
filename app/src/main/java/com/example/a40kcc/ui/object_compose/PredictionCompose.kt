@@ -23,9 +23,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.window.Dialog
+import com.example.a40kcc.PREDICTION_VIEW_MODEL
 import com.example.a40kcc.data.`object`.CoreObject
 import com.example.a40kcc.data.`object`.Prediction
-import com.example.a40kcc.ui.utilities.PREDICTION_VIEW_MODEL
 import com.example.a40kcc.ui.utilities.ScaledText
 
 class PredictionCompose : CoreObjectCompose {
