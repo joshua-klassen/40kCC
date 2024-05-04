@@ -170,8 +170,7 @@ private fun LiveRoundScreenData(
         liveRounds.forEach { liveRound ->
             Row(
                 horizontalArrangement = Arrangement.SpaceEvenly,
-                modifier = modifier
-                    .fillMaxWidth()
+                modifier = modifier.fillMaxWidth()
             ) {
                 Column(
                     modifier = modifier

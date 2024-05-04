@@ -14,10 +14,12 @@ import kotlinx.coroutines.launch
 import java.sql.Date
 
 class TournamentViewModel(private val tournamentRepository: TournamentRepository) : ViewModel() {
-    val allTournaments: List<Tournament> =
-        tournamentRepository.allTournaments
     val allTournamentsFlow: LiveData<List<Tournament>> =
         tournamentRepository.allTournamentsFlow.asLiveData()
+
+    fun allTournaments(): List<Tournament> {
+        return tournamentRepository.allTournaments()
+    }
 
     fun getById(tournamentId: Int): Tournament {
         return tournamentRepository.getById(tournamentId)

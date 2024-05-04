@@ -1,6 +1,6 @@
 val roomVersion = "2.6.1"
 val navVersion = "2.7.7"
-val composeBomVersion = "2024.04.01"
+val composeBomVersion = "2024.05.00"
 
 plugins {
     id("com.android.application")
@@ -73,14 +73,15 @@ dependencies {
     implementation("androidx.activity:activity-compose:1.9.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("androidx.compose.material3:material3")
-    implementation("androidx.compose.runtime:runtime-livedata:1.6.6")
+    implementation("androidx.compose.runtime:runtime-livedata:1.6.7")
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.core:core-ktx:1.13.0")
+    implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.7.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     implementation("androidx.navigation:navigation-compose:$navVersion")
     implementation("androidx.navigation:navigation-dynamic-features-fragment:$navVersion")
@@ -94,7 +95,7 @@ dependencies {
     implementation("androidx.room:room-rxjava2:$roomVersion")
     implementation("androidx.room:room-rxjava3:$roomVersion")
     implementation("com.google.accompanist:accompanist-drawablepainter:0.35.0-alpha")
-    implementation("com.google.android.material:material:1.11.0")
+    implementation("com.google.android.material:material:1.12.0")
     implementation(platform("androidx.compose:compose-bom:$composeBomVersion"))
     ksp("androidx.room:room-compiler:$roomVersion")
 }

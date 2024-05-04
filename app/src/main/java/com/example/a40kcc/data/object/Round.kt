@@ -46,4 +46,8 @@ data class Round(
             Pair("Deployment", deploymentName)
         )
     }
+
+    override fun getDisplayName(): String {
+        return number.toString()
+    }
 }

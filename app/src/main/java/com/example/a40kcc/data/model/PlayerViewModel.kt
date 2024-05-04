@@ -13,8 +13,11 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 
 class PlayerViewModel(private val playerRepository: PlayerRepository) : ViewModel() {
-    val allPlayers: List<Player> = playerRepository.allPlayers
     val allPlayersFlow: LiveData<List<Player>> = playerRepository.allPlayersFlow.asLiveData()
+
+    fun allPlayers(): List<Player> {
+        return playerRepository.allPlayers()
+    }
 
     fun getById(playerId: Int): Player {
         return playerRepository.getById(playerId)

@@ -1,7 +1,6 @@
 package com.example.a40kcc.ui.object_compose
 
 import android.widget.Toast
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,6 +25,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.example.a40kcc.COLORS
 import com.example.a40kcc.LIVE_ROUND_EXPANDED_VIEW_MODEL
 import com.example.a40kcc.LIVE_ROUND_VIEW_MODEL
 import com.example.a40kcc.PREDICTION_VIEW_MODEL
@@ -78,16 +78,16 @@ class LiveRoundCompose {
         var tournamentRounds: MutableMap<String, Int> = mutableMapOf(Pair("", 0))
         val teamNames: MutableList<String> = mutableListOf("")
 
-        TOURNAMENT_VIEW_MODEL.allTournaments.forEach {
-            tournamentNames += it.name
-            if (it.tournamentID == liveRoundScreenData.tournamentID) {
+        TOURNAMENT_VIEW_MODEL.allTournaments().forEach { tournament ->
+            tournamentNames += tournament.name
+            if (tournament.tournamentID == liveRoundScreenData.tournamentID) {
                 tournamentIndex = tournamentNames.lastIndex
             }
         }
 
-        TEAM_VIEW_MODEL.allTeams.forEach {
-            teamNames += it.name
-            if (it.teamID == liveRoundScreenData.teamID) {
+        TEAM_VIEW_MODEL.allTeams().forEach { team ->
+            teamNames += team.name
+            if (team.teamID == liveRoundScreenData.teamID) {
                 teamIndex = teamNames.lastIndex
             }
         }
@@ -121,13 +121,13 @@ class LiveRoundCompose {
                             itemList = tournamentNames,
                             selectedIndex = tournamentIndex,
                             preText = "Tournament: ",
-                            onItemClick = {
-                                tournamentIndex = it
-                                if (it != 0) {
+                            onItemClick = { index ->
+                                tournamentIndex = index
+                                tournamentRounds = mutableMapOf(Pair("", 0))
+                                if (index != 0) {
                                     liveRoundScreenData.tournamentID =
                                         TOURNAMENT_VIEW_MODEL.getByName(tournamentNames[tournamentIndex])
                                             .first().tournamentID
-                                    tournamentRounds = mutableMapOf(Pair("", 0))
                                     ROUND_VIEW_MODEL.getByTournamentId(liveRoundScreenData.tournamentID)
                                         .forEach { round ->
                                             tournamentRounds += mutableMapOf(
@@ -146,11 +146,13 @@ class LiveRoundCompose {
                             itemList = tournamentRounds.keys.toList(),
                             selectedIndex = roundIndex,
                             preText = "Round: ",
-                            onItemClick = {
-                                roundIndex = it
-                                if (it != 0) {
-                                    liveRoundScreenData.roundID =
-                                        ROUND_VIEW_MODEL.getById(tournamentRounds[tournamentRounds.keys.toList()[roundIndex]]!!).roundID
+                            onItemClick = { index ->
+                                roundIndex = index
+                                if (index != 0) {
+                                    tournamentRounds[tournamentRounds.keys.toList()[roundIndex]]?.let { roundId ->
+                                        liveRoundScreenData.roundID =
+                                            ROUND_VIEW_MODEL.getById(roundId).roundID
+                                    }
                                 }
                             }
                         )
@@ -160,9 +162,9 @@ class LiveRoundCompose {
                             itemList = teamNames,
                             selectedIndex = teamIndex,
                             preText = "Team: ",
-                            onItemClick = {
-                                teamIndex = it
-                                if (it != 0) {
+                            onItemClick = { index ->
+                                teamIndex = index
+                                if (index != 0) {
                                     liveRoundScreenData.teamID =
                                         TEAM_VIEW_MODEL.getByName(teamNames[teamIndex]).teamID
                                 }
@@ -234,11 +236,11 @@ class LiveRoundCompose {
         columnWidth: Dp = 100.dp
     ) {
         lowEndScore = 0
-        var lowEndBackground = Color(0xffffff00)
+        var lowEndColor = Color(COLORS.getValue(key = "Yellow"))
         midScore = 0
-        var midBackground = Color(0xffffff00)
+        var midColor = Color(COLORS.getValue(key = "Yellow"))
         highEndScore = 0
-        var highEndBackground = Color(0xffffff00)
+        var highEndColor = Color(COLORS.getValue(key = "Yellow"))
         liveRounds.forEach {
             if (it.game.outcome != null) {
                 lowEndScore += it.game.outcome.player01TeamPoints
@@ -249,28 +251,28 @@ class LiveRoundCompose {
             }
             midScore = (lowEndScore + highEndScore) / 2
 
-            lowEndBackground = if (lowEndScore <= lossThreshold) {
-                Color(0Xffff0000)
+            lowEndColor = if (lowEndScore <= lossThreshold) {
+                Color(COLORS.getValue(key = "Red"))
             } else if (lowEndScore >= winThreshold) {
-                Color(0xff00ff00)
+                Color(COLORS.getValue(key = "Green"))
             } else {
-                Color(0xffffff00)
+                Color(COLORS.getValue(key = "Yellow"))
             }
 
-            midBackground = if (midScore <= lossThreshold) {
-                Color(0Xffff0000)
+            midColor = if (midScore <= lossThreshold) {
+                Color(COLORS.getValue(key = "Red"))
             } else if (midScore >= winThreshold) {
-                Color(0xff00ff00)
+                Color(COLORS.getValue(key = "Green"))
             } else {
-                Color(0xffffff00)
+                Color(COLORS.getValue(key = "Yellow"))
             }
 
-            highEndBackground = if (highEndScore <= lossThreshold) {
-                Color(0Xffff0000)
+            highEndColor = if (highEndScore <= lossThreshold) {
+                Color(COLORS.getValue(key = "Red"))
             } else if (highEndScore >= winThreshold) {
-                Color(0xff00ff00)
+                Color(COLORS.getValue(key = "Green"))
             } else {
-                Color(0xffffff00)
+                Color(COLORS.getValue(key = "Yellow"))
             }
         }
 
@@ -286,11 +288,11 @@ class LiveRoundCompose {
                     .alignByBaseline()
                     .wrapContentHeight()
                     .width(columnWidth)
-                    .background(lowEndBackground)
             ) {
                 ScaledText(
                     text = "Low End: $lowEndScore",
-                    style = MaterialTheme.typography.titleLarge
+                    style = MaterialTheme.typography.titleLarge,
+                    color = lowEndColor
                 )
             }
             Column(
@@ -300,11 +302,11 @@ class LiveRoundCompose {
                     .alignByBaseline()
                     .wrapContentHeight()
                     .width(columnWidth)
-                    .background(midBackground)
             ) {
                 ScaledText(
                     text = "Mid: $midScore",
-                    style = MaterialTheme.typography.titleLarge
+                    style = MaterialTheme.typography.titleLarge,
+                    color = midColor
                 )
             }
             Column(
@@ -314,11 +316,11 @@ class LiveRoundCompose {
                     .alignByBaseline()
                     .wrapContentHeight()
                     .width(columnWidth)
-                    .background(highEndBackground)
             ) {
                 ScaledText(
                     text = "High End: $highEndScore",
-                    style = MaterialTheme.typography.titleLarge
+                    style = MaterialTheme.typography.titleLarge,
+                    color = highEndColor
                 )
             }
         }
@@ -334,7 +336,7 @@ class LiveRoundCompose {
         var predictionID by remember { mutableIntStateOf(0) }
         var predictionIndex by remember { mutableIntStateOf(0) }
         val predictionNames: MutableList<String> = mutableListOf()
-        PREDICTION_VIEW_MODEL.allPredictions.forEach {
+        PREDICTION_VIEW_MODEL.allPredictions().forEach {
             predictionNames += it.name
             if (it.predictionID == liveRound.liveRound.expectedResult) {
                 predictionIndex = predictionNames.lastIndex
@@ -372,10 +374,12 @@ class LiveRoundCompose {
                             itemList = predictionNames,
                             selectedIndex = predictionIndex,
                             preText = "Current State: ",
-                            onItemClick = {
-                                predictionIndex = it
-                                predictionID =
-                                    PREDICTION_VIEW_MODEL.getByName(predictionNames[predictionIndex]).predictionID
+                            onItemClick = { index ->
+                                predictionIndex = index
+                                if (index != 0) {
+                                    predictionID =
+                                        PREDICTION_VIEW_MODEL.getByName(predictionNames[predictionIndex]).predictionID
+                                }
                             })
                     }
                     Row {

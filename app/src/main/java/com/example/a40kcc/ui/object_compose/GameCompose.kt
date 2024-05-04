@@ -16,13 +16,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.window.Dialog
 import com.example.a40kcc.FACTION_DATA
 import com.example.a40kcc.GAME_VIEW_MODEL
 import com.example.a40kcc.OUTCOME_VIEW_MODEL
-import com.example.a40kcc.PLAYER_VIEW_MODEL
 import com.example.a40kcc.PLAYER_WITH_TEAMS_VIEW_MODEL
 import com.example.a40kcc.PREDICTION_VIEW_MODEL
 import com.example.a40kcc.ROUND_VIEW_MODEL
@@ -30,42 +27,42 @@ import com.example.a40kcc.TOURNAMENT_VIEW_MODEL
 import com.example.a40kcc.data.`object`.CoreObject
 import com.example.a40kcc.data.`object`.Game
 import com.example.a40kcc.data.`object`.GameExpanded
+import com.example.a40kcc.data.`object`.PlayerWithTeams
+import com.example.a40kcc.data.`object`.Prediction
+import com.example.a40kcc.data.`object`.Round
+import com.example.a40kcc.data.`object`.Tournament
+import com.example.a40kcc.ui.utilities.ComposeData
+import com.example.a40kcc.ui.utilities.CoreObjectDropDownList
 import com.example.a40kcc.ui.utilities.DropDownList
 
 class GameCompose : CoreObjectCompose {
     @Composable
     override fun AddObject(
-        modifier: Modifier,
+        composeData: ComposeData,
         onDismissRequest: () -> Unit
     ) {
-        val localContext = LocalContext.current
-        var player01ID by remember { mutableIntStateOf(0) }
-        var player01Faction by remember { mutableStateOf("") }
-        var player02Faction by remember { mutableStateOf("") }
-        var predictionID by remember { mutableIntStateOf(0) }
-        var tournamentID by remember { mutableIntStateOf(0) }
-        var roundID by remember { mutableIntStateOf(0) }
+        val modifier = composeData.modifier
+
+        val players: List<PlayerWithTeams> = PLAYER_WITH_TEAMS_VIEW_MODEL.allPlayers()
+        val predictions: List<Prediction> = PREDICTION_VIEW_MODEL.allPredictions()
+        val tournaments: List<Tournament> = TOURNAMENT_VIEW_MODEL.allTournaments()
+        val factionNames: List<String> = FACTION_DATA.getDataKeys().toList()
+
+        var player01ID by remember { mutableIntStateOf(players[0].player.playerID) }
+        var predictionID by remember { mutableIntStateOf(predictions[0].predictionID) }
+        var tournamentID by remember { mutableIntStateOf(tournaments[0].tournamentID) }
+        var player01Faction by remember { mutableStateOf(factionNames[0]) }
+        var player02Faction by remember { mutableStateOf(factionNames[0]) }
+        var rounds: List<Round> = ROUND_VIEW_MODEL.getByTournamentId(tournamentID)
+        var roundID by remember { mutableIntStateOf(rounds.first().roundID) }
+
         var player01Index by remember { mutableIntStateOf(0) }
         var player01FactionIndex by remember { mutableIntStateOf(0) }
         var player02FactionIndex by remember { mutableIntStateOf(0) }
         var predictionIndex by remember { mutableIntStateOf(0) }
         var tournamentIndex by remember { mutableIntStateOf(0) }
         var roundIndex by remember { mutableIntStateOf(0) }
-        val playerNames: MutableList<String> = mutableListOf("")
-        val factionNames: List<String> = listOf("") + FACTION_DATA.getDataKeys().toList()
-        val predictionNames: MutableList<String> = mutableListOf("")
-        val tournamentNames: MutableList<String> = mutableListOf("")
-        var tournamentRounds: MutableMap<String, Int> = mutableMapOf(Pair("", 0))
 
-        PLAYER_VIEW_MODEL.allPlayers.forEach {
-            playerNames += it.name
-        }
-        PREDICTION_VIEW_MODEL.allPredictions.forEach {
-            predictionNames += it.name
-        }
-        TOURNAMENT_VIEW_MODEL.allTournaments.forEach {
-            tournamentNames += it.name
-        }
         val onConfirmation = {
             val newGame = Game(
                 player01ID = player01ID,
@@ -78,12 +75,13 @@ class GameCompose : CoreObjectCompose {
                 game = newGame,
                 this.getExceptionHandler(
                     errorMessage = "Error adding the new game",
-                    context = localContext,
+                    composeData = composeData,
                     continueRun = true
                 )
             )
             onDismissRequest()
         }
+
         Dialog(onDismissRequest = { onDismissRequest() }) {
             Card(
                 modifier = modifier.wrapContentSize()
@@ -99,22 +97,21 @@ class GameCompose : CoreObjectCompose {
                         )
                     }
                     Row {
-                        DropDownList(
-                            itemList = playerNames,
+                        CoreObjectDropDownList(
+                            itemList = players,
                             selectedIndex = player01Index,
                             modifier = modifier,
                             preText = "Player 01: ",
-                            onItemClick = {
-                                player01Index = it
-                                val player =
-                                    PLAYER_WITH_TEAMS_VIEW_MODEL.getByName(playerNames[player01Index])
-                                player01ID = player.player.playerID
+                            onItemClick = { index ->
+                                player01Index = index
+                                player01ID = players[player01Index].player.playerID
 
-                                if (player.player.factionName != null) {
+                                if (players[player01Index].player.factionName != null) {
                                     player01FactionIndex =
-                                        factionNames.indexOf(player.player.factionName)
+                                        factionNames.indexOf(players[player01Index].player.factionName)
                                 }
-                            })
+                            }
+                        )
                     }
                     Row {
                         DropDownList(
@@ -122,9 +119,9 @@ class GameCompose : CoreObjectCompose {
                             selectedIndex = player01FactionIndex,
                             modifier = modifier,
                             preText = "Player 01 Faction: ",
-                            onItemClick = {
-                                player01FactionIndex = it; player01Faction =
-                                factionNames[player01FactionIndex]
+                            onItemClick = { index ->
+                                player01FactionIndex = index
+                                player01Faction = factionNames[player01FactionIndex]
                             })
                     }
                     Row {
@@ -133,50 +130,43 @@ class GameCompose : CoreObjectCompose {
                             selectedIndex = player02FactionIndex,
                             modifier = modifier,
                             preText = "Player 02 Faction: ",
-                            onItemClick = {
-                                player02FactionIndex = it; player02Faction =
-                                factionNames[player02FactionIndex]
+                            onItemClick = { index ->
+                                player02FactionIndex = index
+                                player02Faction = factionNames[player02FactionIndex]
                             })
                     }
                     Row {
-                        DropDownList(
-                            itemList = predictionNames,
+                        CoreObjectDropDownList(
+                            itemList = predictions,
                             selectedIndex = predictionIndex,
                             modifier = modifier,
                             preText = "Prediction: ",
-                            onItemClick = {
-                                predictionIndex = it; predictionID =
-                                PREDICTION_VIEW_MODEL.getByName(predictionNames[predictionIndex]).predictionID
+                            onItemClick = { index ->
+                                predictionIndex = index
+                                predictionID = predictions[predictionIndex].predictionID
                             })
                     }
                     Row {
-                        DropDownList(
-                            itemList = tournamentNames,
+                        CoreObjectDropDownList(
+                            itemList = tournaments,
                             selectedIndex = tournamentIndex,
                             modifier = modifier,
                             preText = "Tournament: ",
-                            onItemClick = {
-                                tournamentIndex = it; tournamentID =
-                                TOURNAMENT_VIEW_MODEL.getByName(tournamentNames[tournamentIndex])
-                                    .first().tournamentID
-                                tournamentRounds = mutableMapOf(Pair("", 0))
-                                ROUND_VIEW_MODEL.getByTournamentId(tournamentID).forEach { round ->
-                                    tournamentRounds += mutableMapOf(
-                                        Pair(
-                                            round.number.toString(),
-                                            round.roundID
-                                        )
-                                    )
-                                }
+                            onItemClick = { index ->
+                                tournamentIndex = index
+                                tournamentID = tournaments[tournamentIndex].tournamentID
+                                rounds = ROUND_VIEW_MODEL.getByTournamentId(tournamentID)
+                                roundID = rounds.first().roundID
+                                roundIndex = 0
                             })
-                        DropDownList(
-                            itemList = tournamentRounds.keys.toList(),
+                        CoreObjectDropDownList(
+                            itemList = rounds,
                             selectedIndex = roundIndex,
                             modifier = modifier,
                             preText = "Round: ",
-                            onItemClick = {
-                                roundIndex = it; roundID =
-                                ROUND_VIEW_MODEL.getById(tournamentRounds[tournamentRounds.keys.toList()[roundIndex]]!!).roundID
+                            onItemClick = { index ->
+                                roundIndex = index
+                                roundID = rounds[roundIndex].roundID
                             })
                     }
                     Row {
@@ -207,71 +197,73 @@ class GameCompose : CoreObjectCompose {
     @Composable
     override fun EditObject(
         coreObject: CoreObject,
-        modifier: Modifier,
+        composeData: ComposeData,
         onDismissRequest: () -> Unit
     ) {
-        val localContext = LocalContext.current
+        val outcomes: MutableList<String> = mutableListOf("")
+
         val game: GameExpanded = coreObject as GameExpanded
+        val modifier = composeData.modifier
+
+        val players: List<PlayerWithTeams> = PLAYER_WITH_TEAMS_VIEW_MODEL.allPlayers()
+        val predictions: List<Prediction> = PREDICTION_VIEW_MODEL.allPredictions()
+        val tournaments: List<Tournament> = TOURNAMENT_VIEW_MODEL.allTournaments()
+        val factionNames: List<String> = FACTION_DATA.getDataKeys().toList()
+
         var player01ID by remember { mutableIntStateOf(game.game.player01ID) }
-        var player01Faction by remember { mutableStateOf(game.game.player01FactionName) }
-        var player02Faction by remember { mutableStateOf(game.game.player02FactionName) }
         var predictionID by remember {
-            if (game.game.predictionID != null) mutableIntStateOf(game.game.predictionID) else mutableIntStateOf(
-                0
-            )
-        }
-        var outcomeID by remember {
-            if (game.game.outcomeID != null) mutableIntStateOf(game.game.outcomeID) else mutableIntStateOf(
-                0
-            )
+            if (game.game.predictionID != null) {
+                mutableIntStateOf(game.game.predictionID)
+            } else {
+                mutableIntStateOf(0)
+            }
         }
         var tournamentID by remember { mutableIntStateOf(game.round.round.tournamentID) }
+        var player01Faction by remember { mutableStateOf(game.game.player01FactionName) }
+        var player02Faction by remember { mutableStateOf(game.game.player02FactionName) }
+        var rounds: List<Round> = ROUND_VIEW_MODEL.getByTournamentId(tournamentID)
         var roundID by remember { mutableIntStateOf(game.game.roundID) }
+        var outcomeID by remember {
+            if (game.game.outcomeID != null) {
+                mutableIntStateOf(game.game.outcomeID)
+            } else {
+                mutableIntStateOf(0)
+            }
+        }
+
         var player01Index by remember { mutableIntStateOf(0) }
         var player01FactionIndex by remember { mutableIntStateOf(0) }
         var player02FactionIndex by remember { mutableIntStateOf(0) }
         var predictionIndex by remember { mutableIntStateOf(0) }
-        var outcomeIndex by remember { mutableIntStateOf(0) }
         var tournamentIndex by remember { mutableIntStateOf(0) }
         var roundIndex by remember { mutableIntStateOf(0) }
-        val playerNames: MutableList<String> = mutableListOf("")
-        val factionNames: List<String> = listOf("") + FACTION_DATA.getDataKeys().toList()
-        val predictionNames: MutableList<String> = mutableListOf("")
-        val outcomes: MutableList<String> = mutableListOf("")
-        val tournamentNames: MutableList<String> = mutableListOf("")
-        var tournamentRounds: MutableMap<String, Int> = mutableMapOf(Pair("", 0))
-        PLAYER_VIEW_MODEL.allPlayers.forEach {
-            playerNames += it.name
-            if (it.playerID == player01ID) {
-                player01Index = playerNames.lastIndex
-            }
+        var outcomeIndex by remember { mutableIntStateOf(0) }
+
+        if (players.contains(game.player01)) {
+            player01Index = players.indexOf(game.player01)
         }
+
+        if (predictions.contains(game.prediction)) {
+            predictionIndex = predictions.indexOf(game.prediction)
+        }
+
+        if (tournaments.contains(game.round.tournament)) {
+            tournamentIndex = tournaments.indexOf(game.round.tournament)
+        }
+
         player01FactionIndex = factionNames.indexOf(player01Faction)
         player02FactionIndex = factionNames.indexOf(player02Faction)
-        PREDICTION_VIEW_MODEL.allPredictions.forEach {
-            predictionNames += it.name
-            if (it.predictionID == predictionID) {
-                predictionIndex = predictionNames.lastIndex
-            }
-        }
-        TOURNAMENT_VIEW_MODEL.allTournaments.forEach {
-            tournamentNames += it.name
-            if (it.tournamentID == tournamentID) {
-                tournamentIndex = tournamentNames.lastIndex
-            }
-        }
-        if (tournamentIndex != 0) {
-            ROUND_VIEW_MODEL.getByTournamentId(tournamentID).forEach { round ->
-                tournamentRounds += mutableMapOf(Pair(round.number.toString(), round.roundID))
-                if (round.roundID == roundID) {
-                    roundIndex = tournamentRounds.keys.toList().lastIndex
-                }
-            }
-        }
+
         OUTCOME_VIEW_MODEL.getByPlayerId(player01ID).forEach { outcome ->
             outcomes += outcome.outcomeID.toString()
         }
+
         val onConfirmation = {
+            var outcome: Int? = outcomeID
+            if (outcome == 0) {
+                outcome = null
+            }
+
             val updatedGame = Game(
                 gameID = game.game.gameID,
                 player01ID = player01ID,
@@ -279,18 +271,19 @@ class GameCompose : CoreObjectCompose {
                 player02FactionName = player02Faction,
                 predictionID = predictionID,
                 roundID = roundID,
-                outcomeID = outcomeID
+                outcomeID = outcome
             )
             GAME_VIEW_MODEL.update(
                 game = updatedGame,
                 this.getExceptionHandler(
                     errorMessage = "Error updating the game",
-                    context = localContext,
+                    composeData = composeData,
                     continueRun = true
                 )
             )
             onDismissRequest()
         }
+
         Dialog(onDismissRequest = { onDismissRequest() }) {
             Card(
                 modifier = modifier.wrapContentSize()
@@ -306,20 +299,20 @@ class GameCompose : CoreObjectCompose {
                         )
                     }
                     Row {
-                        DropDownList(
-                            itemList = playerNames,
+                        CoreObjectDropDownList(
+                            itemList = players,
                             selectedIndex = player01Index,
                             modifier = modifier,
                             preText = "Player 01: ",
-                            onItemClick = {
-                                player01Index = it
-                                player01ID =
-                                    PLAYER_VIEW_MODEL.getByName(playerNames[player01Index]).playerID
+                            onItemClick = { index ->
+                                player01Index = index
+                                player01ID = players[player01Index].player.playerID
 
                                 OUTCOME_VIEW_MODEL.getByPlayerId(player01ID).forEach { outcome ->
                                     outcomes += outcome.outcomeID.toString()
                                 }
-                            })
+                            }
+                        )
                     }
                     Row {
                         DropDownList(
@@ -327,10 +320,11 @@ class GameCompose : CoreObjectCompose {
                             selectedIndex = outcomeIndex,
                             modifier = modifier,
                             preText = "Outcome: ",
-                            onItemClick = {
-                                outcomeIndex = it
-                                outcomeID = outcomes[outcomeIndex].toInt()
-                            })
+                            onItemClick = { index ->
+                                outcomeIndex = index
+                                outcomeID = outcomes[outcomeIndex].toIntOrNull() ?: 0
+                            }
+                        )
                     }
                     Row {
                         DropDownList(
@@ -338,10 +332,11 @@ class GameCompose : CoreObjectCompose {
                             selectedIndex = player01FactionIndex,
                             modifier = modifier,
                             preText = "Player 01 Faction: ",
-                            onItemClick = {
-                                player01FactionIndex = it
+                            onItemClick = { index ->
+                                player01FactionIndex = index
                                 player01Faction = factionNames[player01FactionIndex]
-                            })
+                            }
+                        )
                     }
                     Row {
                         DropDownList(
@@ -349,54 +344,48 @@ class GameCompose : CoreObjectCompose {
                             selectedIndex = player02FactionIndex,
                             modifier = modifier,
                             preText = "Player 02 Faction: ",
-                            onItemClick = {
-                                player02FactionIndex = it
+                            onItemClick = { index ->
+                                player02FactionIndex = index
                                 player02Faction = factionNames[player02FactionIndex]
-                            })
+                            }
+                        )
                     }
                     Row {
-                        DropDownList(
-                            itemList = predictionNames,
+                        CoreObjectDropDownList(
+                            itemList = predictions,
                             selectedIndex = predictionIndex,
                             modifier = modifier,
                             preText = "Prediction: ",
-                            onItemClick = {
-                                predictionIndex = it
-                                predictionID =
-                                    PREDICTION_VIEW_MODEL.getByName(predictionNames[predictionIndex]).predictionID
-                            })
+                            onItemClick = { index ->
+                                predictionIndex = index
+                                predictionID = predictions[predictionIndex].predictionID
+                            }
+                        )
                     }
                     Row {
-                        DropDownList(
-                            itemList = tournamentNames,
+                        CoreObjectDropDownList(
+                            itemList = tournaments,
                             selectedIndex = tournamentIndex,
                             modifier = modifier,
                             preText = "Tournament: ",
-                            onItemClick = {
-                                tournamentIndex = it
-                                tournamentID =
-                                    TOURNAMENT_VIEW_MODEL.getByName(tournamentNames[tournamentIndex])
-                                        .first().tournamentID
-                                tournamentRounds = mutableMapOf(Pair("", 0))
-                                ROUND_VIEW_MODEL.getByTournamentId(tournamentID).forEach { round ->
-                                    tournamentRounds += mutableMapOf(
-                                        Pair(
-                                            round.number.toString(),
-                                            round.roundID
-                                        )
-                                    )
-                                }
-                            })
-                        DropDownList(
-                            itemList = tournamentRounds.keys.toList(),
+                            onItemClick = { index ->
+                                tournamentIndex = index
+                                tournamentID = tournaments[tournamentIndex].tournamentID
+                                rounds = ROUND_VIEW_MODEL.getByTournamentId(tournamentID)
+                                roundID = rounds.first().roundID
+                                roundIndex = 0
+                            }
+                        )
+                        CoreObjectDropDownList(
+                            itemList = rounds,
                             selectedIndex = roundIndex,
                             modifier = modifier,
                             preText = "Round: ",
-                            onItemClick = {
-                                roundIndex = it
-                                roundID =
-                                    ROUND_VIEW_MODEL.getById(tournamentRounds[tournamentRounds.keys.toList()[roundIndex]]!!).roundID
-                            })
+                            onItemClick = { index ->
+                                roundIndex = index
+                                roundID = rounds[roundIndex].roundID
+                            }
+                        )
                     }
                     Row {
                         TextButton(
@@ -426,22 +415,24 @@ class GameCompose : CoreObjectCompose {
     @Composable
     override fun RemoveObject(
         coreObject: CoreObject,
-        modifier: Modifier,
+        composeData: ComposeData,
         onDismissRequest: () -> Unit
     ) {
-        val localContext = LocalContext.current
+        val modifier = composeData.modifier
         val game: GameExpanded = coreObject as GameExpanded
+
         val onConfirmation = {
             GAME_VIEW_MODEL.delete(
                 game = game.game,
                 this.getExceptionHandler(
                     errorMessage = "Error removing the game",
-                    context = localContext,
+                    composeData = composeData,
                     continueRun = true
                 )
             )
             onDismissRequest()
         }
+
         Dialog(onDismissRequest = { onDismissRequest() }) {
             Card(
                 modifier = modifier.wrapContentSize()

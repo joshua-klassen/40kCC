@@ -1,10 +1,9 @@
 package com.example.a40kcc.ui.object_compose
 
-import android.content.Context
-import android.widget.Toast
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import com.example.a40kcc.data.`object`.CoreObject
+import com.example.a40kcc.ui.utilities.ComposeData
 import kotlinx.coroutines.CoroutineExceptionHandler
 import java.lang.Thread.sleep
 
@@ -23,7 +22,7 @@ interface CoreObjectCompose {
 
     @Composable
     fun AddObject(
-        modifier: Modifier,
+        composeData: ComposeData,
         onDismissRequest: () -> Unit
     ) {
     }
@@ -31,7 +30,7 @@ interface CoreObjectCompose {
     @Composable
     fun EditObject(
         coreObject: CoreObject,
-        modifier: Modifier,
+        composeData: ComposeData,
         onDismissRequest: () -> Unit
     ) {
     }
@@ -39,23 +38,23 @@ interface CoreObjectCompose {
     @Composable
     fun RemoveObject(
         coreObject: CoreObject,
-        modifier: Modifier,
+        composeData: ComposeData,
         onDismissRequest: () -> Unit
     ) {
     }
 
     fun getExceptionHandler(
         errorMessage: String,
-        context: Context,
+        composeData: ComposeData,
         continueRun: Boolean = false
     ): CoroutineExceptionHandler {
         return CoroutineExceptionHandler { _, exception ->
             println("$errorMessage:\n $exception")
-            Toast.makeText(
-                context,
-                errorMessage,
-                Toast.LENGTH_LONG
-            ).show()
+            composeData.showSnackbar(
+                message = errorMessage,
+                duration = SnackbarDuration.Indefinite,
+                withDismissAction = true
+            )
             if (!continueRun) {
                 sleep(3000)
                 throw RuntimeException(errorMessage, exception)

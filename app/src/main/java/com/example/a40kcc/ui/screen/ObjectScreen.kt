@@ -21,11 +21,14 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SmallFloatingActionButton
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import com.example.a40kcc.R
 import com.example.a40kcc.data.`object`.CoreObject
 import com.example.a40kcc.ui.object_compose.CoreObjectCompose
+import com.example.a40kcc.ui.utilities.ComposeData
 import com.example.a40kcc.ui.utilities.ScaledText
 
 @Composable
@@ -47,19 +51,28 @@ fun ObjectScreen(
     columnWidth: Dp = 100.dp
 ) {
     var addObject by remember { mutableStateOf(false) }
-    Scaffold(topBar = {
-        Button(
-            onClick = onBackClick,
-            modifier = modifier
-        ) {
-            Column {
-                Text(
-                    text = stringResource(id = R.string.home_button),
-                    modifier = modifier
-                )
+    val snackbarHostState = remember { SnackbarHostState() }
+    val composeData = remember { ComposeData() }
+    composeData.modifier = modifier
+    composeData.setSnackbarHostState(snackbarHostState, rememberCoroutineScope())
+
+    Scaffold(
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        },
+        topBar = {
+            Button(
+                onClick = onBackClick,
+                modifier = modifier
+            ) {
+                Column {
+                    Text(
+                        text = stringResource(id = R.string.home_button),
+                        modifier = modifier
+                    )
+                }
             }
-        }
-    },
+        },
         bottomBar = {
             if (objectCompose.canAdd()) {
                 Column(
@@ -75,7 +88,7 @@ fun ObjectScreen(
 
                         if (addObject) {
                             objectCompose.AddObject(
-                                modifier = modifier,
+                                composeData = composeData,
                                 onDismissRequest = { addObject = !addObject }
                             )
                         }
@@ -165,7 +178,7 @@ fun ObjectScreen(
                                     if (editObject) {
                                         objectCompose.EditObject(
                                             coreObject = coreObject,
-                                            modifier = modifier,
+                                            composeData = composeData,
                                             onDismissRequest = { editObject = !editObject }
                                         )
                                     }
@@ -193,7 +206,7 @@ fun ObjectScreen(
                                     if (removeObject) {
                                         objectCompose.RemoveObject(
                                             coreObject = coreObject,
-                                            modifier = modifier,
+                                            composeData = composeData,
                                             onDismissRequest = { removeObject = !removeObject }
                                         )
                                     }

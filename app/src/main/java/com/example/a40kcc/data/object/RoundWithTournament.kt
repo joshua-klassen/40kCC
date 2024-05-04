@@ -27,4 +27,8 @@ data class RoundWithTournament(
             Pair("Secondary Mission", round.secondaryMissionName)
         )
     }
+
+    override fun getDisplayName(): String {
+        return tournament.name + " Round " + round.number.toString()
+    }
 }

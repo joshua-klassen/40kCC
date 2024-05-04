@@ -6,8 +6,12 @@ import com.example.a40kcc.data.`object`.Game
 import kotlinx.coroutines.flow.Flow
 
 class GameRepository(private val gameDao: GameDao) {
-    val allGames: List<Game> = gameDao.getAll()
     val allGamesFlow: Flow<List<Game>> = gameDao.getAllFlow()
+
+    @WorkerThread
+    fun allGames(): List<Game> {
+        return gameDao.getAll()
+    }
 
     @WorkerThread
     fun getById(gameId: Int): Game {

@@ -6,8 +6,12 @@ import com.example.a40kcc.data.`object`.LiveRoundExpanded
 import kotlinx.coroutines.flow.Flow
 
 class LiveRoundExpandedRepository(private val liveRoundDao: LiveRoundExpandedDao) {
-    val allLiveRounds: List<LiveRoundExpanded> = liveRoundDao.getAll()
     val allLiveRoundsFlow: Flow<List<LiveRoundExpanded>> = liveRoundDao.getAllFlow()
+
+    @WorkerThread
+    fun allLiveRounds(): List<LiveRoundExpanded> {
+        return liveRoundDao.getAll()
+    }
 
     @WorkerThread
     fun getById(liveRoundId: Int): LiveRoundExpanded {

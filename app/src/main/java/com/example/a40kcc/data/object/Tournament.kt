@@ -29,4 +29,8 @@ data class Tournament(
             Pair("Date", date.toString())
         )
     }
+
+    override fun getDisplayName(): String {
+        return name
+    }
 }

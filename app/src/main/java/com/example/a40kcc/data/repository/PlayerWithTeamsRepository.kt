@@ -6,8 +6,12 @@ import com.example.a40kcc.data.`object`.PlayerWithTeams
 import kotlinx.coroutines.flow.Flow
 
 class PlayerWithTeamsRepository(private val playerDao: PlayerWithTeamsDao) {
-    val allPlayers: List<PlayerWithTeams> = playerDao.getAll()
     val allPlayersFlow: Flow<List<PlayerWithTeams>> = playerDao.getAllFlow()
+
+    @WorkerThread
+    fun allPlayers(): List<PlayerWithTeams> {
+        return playerDao.getAll()
+    }
 
     @WorkerThread
     fun getById(playerId: Int): PlayerWithTeams {

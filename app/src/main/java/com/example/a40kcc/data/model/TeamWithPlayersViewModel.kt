@@ -14,10 +14,12 @@ import kotlinx.coroutines.launch
 
 class TeamWithPlayersViewModel(private val teamRepository: TeamWithPlayersRepository) :
     ViewModel() {
-    val allTeams: List<TeamWithPlayers> =
-        teamRepository.allTeams
     val allTeamsFlow: LiveData<List<TeamWithPlayers>> =
         teamRepository.allTeamsFlow.asLiveData()
+
+    fun allTeams(): List<TeamWithPlayers> {
+        return teamRepository.allTeams()
+    }
 
     fun getById(teamID: Int): TeamWithPlayers {
         return teamRepository.getById(teamID)

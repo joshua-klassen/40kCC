@@ -6,6 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.example.a40kcc.COLORS
 import com.example.a40kcc.data.dao.GameDao
 import com.example.a40kcc.data.dao.GameExpandedDao
 import com.example.a40kcc.data.dao.LiveRoundDao
@@ -70,7 +71,7 @@ abstract class Application40kCCDatabase : RoomDatabase() {
         suspend fun populatePredictions(predictionDao: PredictionDao) {
             var prediction = Prediction(
                 name = "Guaranteed",
-                color = 0xff0000ff,
+                color = COLORS.getValue(key = "Blue"),
                 minPoints = 16,
                 maxPoints = 20,
                 defaultOption = true
@@ -78,7 +79,7 @@ abstract class Application40kCCDatabase : RoomDatabase() {
             predictionDao.insert(prediction)
             prediction = Prediction(
                 name = "Advantage",
-                color = 0xff00ff00,
+                color = COLORS.getValue(key = "Green"),
                 minPoints = 12,
                 maxPoints = 15,
                 defaultOption = true
@@ -86,7 +87,7 @@ abstract class Application40kCCDatabase : RoomDatabase() {
             predictionDao.insert(prediction)
             prediction = Prediction(
                 name = "Close Game",
-                color = 0xffffff00,
+                color = COLORS.getValue(key = "Yellow"),
                 minPoints = 9,
                 maxPoints = 11,
                 defaultOption = true
@@ -94,7 +95,7 @@ abstract class Application40kCCDatabase : RoomDatabase() {
             predictionDao.insert(prediction)
             prediction = Prediction(
                 name = "Disadvantage",
-                color = 0xffffaa00,
+                color = COLORS.getValue(key = "Orange"),
                 minPoints = 5,
                 maxPoints = 9,
                 defaultOption = true
@@ -102,7 +103,7 @@ abstract class Application40kCCDatabase : RoomDatabase() {
             predictionDao.insert(prediction)
             prediction = Prediction(
                 name = "Volatile/Unsure",
-                color = 0xffff0000,
+                color = COLORS.getValue(key = "Red"),
                 minPoints = 0,
                 maxPoints = 4,
                 defaultOption = true

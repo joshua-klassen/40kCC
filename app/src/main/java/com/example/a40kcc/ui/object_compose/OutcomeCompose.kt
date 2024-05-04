@@ -19,8 +19,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -29,6 +27,7 @@ import com.example.a40kcc.PLAYER_VIEW_MODEL
 import com.example.a40kcc.data.`object`.CoreObject
 import com.example.a40kcc.data.`object`.Outcome
 import com.example.a40kcc.data.`object`.OutcomeWithPlayers
+import com.example.a40kcc.ui.utilities.ComposeData
 import com.example.a40kcc.ui.utilities.DropDownList
 import com.example.a40kcc.ui.utilities.ScaledText
 import kotlin.math.abs
@@ -36,10 +35,10 @@ import kotlin.math.abs
 class OutcomeCompose : CoreObjectCompose {
     @Composable
     override fun AddObject(
-        modifier: Modifier,
+        composeData: ComposeData,
         onDismissRequest: () -> Unit
     ) {
-        val localContext = LocalContext.current
+        val modifier = composeData.modifier
         var player01ID by remember { mutableIntStateOf(0) }
         var player01Index by remember { mutableIntStateOf(0) }
         var player01Points by remember { mutableStateOf("0") }
@@ -48,9 +47,11 @@ class OutcomeCompose : CoreObjectCompose {
         var player01TeamPoints by remember { mutableIntStateOf(10) }
         var player02TeamPoints by remember { mutableIntStateOf(10) }
         val playerNames: MutableList<String> = mutableListOf("")
-        PLAYER_VIEW_MODEL.allPlayers.forEach {
-            playerNames += it.name
+
+        PLAYER_VIEW_MODEL.allPlayers().forEach { player ->
+            playerNames += player.name
         }
+
         val onConfirmation = {
             val newOutcome = Outcome(
                 player01ID = player01ID,
@@ -64,7 +65,7 @@ class OutcomeCompose : CoreObjectCompose {
                 newOutcome,
                 this.getExceptionHandler(
                     errorMessage = "Error adding the new outcome",
-                    context = localContext,
+                    composeData = composeData,
                     continueRun = true
                 )
             )
@@ -115,17 +116,18 @@ class OutcomeCompose : CoreObjectCompose {
                             selectedIndex = player01Index,
                             modifier = modifier,
                             preText = "Player 01: ",
-                            onItemClick = {
-                                player01Index = it; player01ID =
-                                PLAYER_VIEW_MODEL.getByName(playerNames[player01Index]).playerID
+                            onItemClick = { index ->
+                                player01Index = index
+                                if (index != 0) {
+                                    player01ID =
+                                        PLAYER_VIEW_MODEL.getByName(playerNames[player01Index]).playerID
+                                }
                             })
                     }
                     Row {
                         TextField(
                             value = player01Points,
-                            onValueChange = {
-                                player01Points = it; calculatePoints()
-                            },
+                            onValueChange = { player01Points = it; calculatePoints() },
                             label = { Text(text = "Player 01 Points: ") },
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                             textStyle = MaterialTheme.typography.bodyMedium
@@ -191,10 +193,10 @@ class OutcomeCompose : CoreObjectCompose {
     @Composable
     override fun EditObject(
         coreObject: CoreObject,
-        modifier: Modifier,
+        composeData: ComposeData,
         onDismissRequest: () -> Unit
     ) {
-        val localContext = LocalContext.current
+        val modifier = composeData.modifier
         val outcome: OutcomeWithPlayers = coreObject as OutcomeWithPlayers
         var player01ID by remember { mutableIntStateOf(outcome.outcome.player01ID) }
         var player01Index by remember { mutableIntStateOf(0) }
@@ -204,12 +206,14 @@ class OutcomeCompose : CoreObjectCompose {
         var player01TeamPoints by remember { mutableIntStateOf(outcome.outcome.player01TeamPoints) }
         var player02TeamPoints by remember { mutableIntStateOf(outcome.outcome.player02TeamPoints) }
         val playerNames: MutableList<String> = mutableListOf("")
-        PLAYER_VIEW_MODEL.allPlayers.forEach {
-            playerNames += it.name
-            if (it.playerID == player01ID) {
+
+        PLAYER_VIEW_MODEL.allPlayers().forEach { player ->
+            playerNames += player.name
+            if (player.playerID == player01ID) {
                 player01Index = playerNames.lastIndex
             }
         }
+
         val onConfirmation = {
             val newOutcome = Outcome(
                 outcomeID = outcome.outcome.outcomeID,
@@ -224,7 +228,7 @@ class OutcomeCompose : CoreObjectCompose {
                 newOutcome,
                 this.getExceptionHandler(
                     errorMessage = "Error updating the outcome",
-                    context = localContext,
+                    composeData = composeData,
                     continueRun = true
                 )
             )
@@ -269,9 +273,12 @@ class OutcomeCompose : CoreObjectCompose {
                             selectedIndex = player01Index,
                             modifier = modifier,
                             preText = "Player 01: ",
-                            onItemClick = {
-                                player01Index = it; player01ID =
-                                PLAYER_VIEW_MODEL.getByName(playerNames[player01Index]).playerID
+                            onItemClick = { index ->
+                                player01Index = index
+                                if (index != 0) {
+                                    player01ID =
+                                        PLAYER_VIEW_MODEL.getByName(playerNames[player01Index]).playerID
+                                }
                             })
                     }
                     Row {

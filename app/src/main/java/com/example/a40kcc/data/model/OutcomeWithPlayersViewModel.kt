@@ -11,10 +11,12 @@ import com.example.a40kcc.data.repository.OutcomeWithPlayersRepository
 
 class OutcomeWithPlayersViewModel(private val outcomeRepository: OutcomeWithPlayersRepository) :
     ViewModel() {
-    val allOutcomes: List<OutcomeWithPlayers> =
-        outcomeRepository.allOutcomes
     val allOutcomesFlow: LiveData<List<OutcomeWithPlayers>> =
         outcomeRepository.allOutcomesFlow.asLiveData()
+
+    fun allOutcomes(): List<OutcomeWithPlayers> {
+        return outcomeRepository.allOutcomes()
+    }
 
     fun getById(gameId: Int): OutcomeWithPlayers {
         return outcomeRepository.getById(gameId)

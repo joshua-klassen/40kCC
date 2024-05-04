@@ -13,8 +13,11 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 
 class OutcomeViewModel(private val outcomeRepository: OutcomeRepository) : ViewModel() {
-    val allOutcomes: List<Outcome> = outcomeRepository.allOutcomes
     val allOutcomesFlow: LiveData<List<Outcome>> = outcomeRepository.allOutcomesFlow.asLiveData()
+
+    fun allOutcomes(): List<Outcome> {
+        return outcomeRepository.allOutcomes()
+    }
 
     fun getById(gameId: Int): Outcome {
         return outcomeRepository.getById(gameId)

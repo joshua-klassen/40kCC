@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import com.example.a40kcc.COLORS
 
 @Entity(
     "prediction",
@@ -20,7 +21,7 @@ data class Prediction(
     override fun getCoreColumns(): Map<String, String> {
         return mapOf(
             Pair("Name", name),
-            Pair("Color", color.toString())
+            Pair("Color", COLORS.filterValues { it == color }.keys.toString())
         )
     }
 
@@ -29,5 +30,9 @@ data class Prediction(
             Pair("Minimum Points", minPoints.toString()),
             Pair("Maximum Points", maxPoints.toString())
         )
+    }
+
+    override fun getDisplayName(): String {
+        return name
     }
 }

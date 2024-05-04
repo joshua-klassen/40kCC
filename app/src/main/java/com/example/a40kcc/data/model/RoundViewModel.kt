@@ -13,8 +13,11 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 
 class RoundViewModel(private val roundRepository: RoundRepository) : ViewModel() {
-    val allRounds: List<Round> = roundRepository.allRounds
     val allRoundsFlow: LiveData<List<Round>> = roundRepository.allRoundsFlow.asLiveData()
+
+    fun allRounds(): List<Round> {
+        return roundRepository.allRounds()
+    }
 
     fun getById(roundID: Int): Round {
         return roundRepository.getById(roundID)

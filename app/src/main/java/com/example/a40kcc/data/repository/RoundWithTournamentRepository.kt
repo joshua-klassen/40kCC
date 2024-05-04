@@ -6,8 +6,12 @@ import com.example.a40kcc.data.`object`.RoundWithTournament
 import kotlinx.coroutines.flow.Flow
 
 class RoundWithTournamentRepository(private val roundDao: RoundWithTournamentDao) {
-    val allRounds: List<RoundWithTournament> = roundDao.getAll()
     val allRoundsFlow: Flow<List<RoundWithTournament>> = roundDao.getAllFlow()
+
+    @WorkerThread
+    fun allRounds(): List<RoundWithTournament> {
+        return roundDao.getAll()
+    }
 
     @WorkerThread
     fun getById(roundId: Int): RoundWithTournament {

@@ -10,10 +10,12 @@ import com.example.a40kcc.data.`object`.GameExpanded
 import com.example.a40kcc.data.repository.GameExpandedRepository
 
 class GameExpandedViewModel(private val gameRepository: GameExpandedRepository) : ViewModel() {
-    val allGames: List<GameExpanded> =
-        gameRepository.allGames
     val allGamesFlow: LiveData<List<GameExpanded>> =
         gameRepository.allGamesFlow.asLiveData()
+
+    fun allGames(): List<GameExpanded> {
+        return gameRepository.allGames()
+    }
 
     fun getById(gameId: Int): GameExpanded {
         return gameRepository.getById(gameId)

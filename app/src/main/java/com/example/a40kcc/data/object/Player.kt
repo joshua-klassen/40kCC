@@ -28,4 +28,8 @@ data class Player(
             Pair("Preferred Faction", factionName.toString())
         )
     }
+
+    override fun getDisplayName(): String {
+        return name
+    }
 }

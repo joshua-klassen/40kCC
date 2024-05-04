@@ -23,4 +23,8 @@ data class Team(
     override fun getDetailColumns(): Map<String, String> {
         return emptyMap()
     }
+
+    override fun getDisplayName(): String {
+        return name
+    }
 }

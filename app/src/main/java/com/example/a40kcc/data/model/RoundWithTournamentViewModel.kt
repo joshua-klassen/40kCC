@@ -11,10 +11,12 @@ import com.example.a40kcc.data.repository.RoundWithTournamentRepository
 
 class RoundWithTournamentViewModel(private val roundRepository: RoundWithTournamentRepository) :
     ViewModel() {
-    val allRounds: List<RoundWithTournament> =
-        roundRepository.allRounds
     val allRoundsFlow: LiveData<List<RoundWithTournament>> =
         roundRepository.allRoundsFlow.asLiveData()
+
+    fun allRounds(): List<RoundWithTournament> {
+        return roundRepository.allRounds()
+    }
 
     fun getById(roundID: Int): RoundWithTournament {
         return roundRepository.getById(roundID)

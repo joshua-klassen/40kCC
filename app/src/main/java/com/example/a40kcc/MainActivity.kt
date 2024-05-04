@@ -11,7 +11,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
@@ -148,7 +147,7 @@ class MainActivity : ComponentActivity() {
                         headerID = R.array.SecondaryMissionHeader,
                         dataID = R.array.SecondaryMissions
                     )
-                    var liveRoundScreenData by remember { mutableStateOf(LiveRoundScreenDataObject()) }
+                    val liveRoundScreenData by remember { mutableStateOf(LiveRoundScreenDataObject()) }
                     val navController = rememberNavController()
                     NavHost(navController = navController, startDestination = "home") {
                         composable(route = "home") {

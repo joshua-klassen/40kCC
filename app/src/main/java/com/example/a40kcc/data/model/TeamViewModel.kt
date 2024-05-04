@@ -13,8 +13,11 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 
 class TeamViewModel(private val teamRepository: TeamRepository) : ViewModel() {
-    val allTeams: List<Team> = teamRepository.allTeams
     val allTeamsFlow: LiveData<List<Team>> = teamRepository.allTeamsFlow.asLiveData()
+
+    fun allTeams(): List<Team> {
+        return teamRepository.allTeams()
+    }
 
     fun getById(teamID: Int): Team {
         return teamRepository.getById(teamID)

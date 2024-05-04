@@ -13,49 +13,50 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.window.Dialog
+import com.example.a40kcc.COLORS
 import com.example.a40kcc.PREDICTION_VIEW_MODEL
 import com.example.a40kcc.data.`object`.CoreObject
 import com.example.a40kcc.data.`object`.Prediction
+import com.example.a40kcc.ui.utilities.ComposeData
 import com.example.a40kcc.ui.utilities.ScaledText
 
 class PredictionCompose : CoreObjectCompose {
     @Composable
     override fun AddObject(
-        modifier: Modifier,
+        composeData: ComposeData,
         onDismissRequest: () -> Unit
     ) {
-        val localContext = LocalContext.current
+        val modifier = composeData.modifier
         var predictionName by remember { mutableStateOf("") }
-        var predictionColor by remember { mutableLongStateOf(0xFF000000) }
-        var predictionMin by remember { mutableIntStateOf(0) }
-        var predictionMax by remember { mutableIntStateOf(0) }
+        var predictionColor by remember { mutableLongStateOf(COLORS.getValue(key = "Black")) }
+        var predictionMin by remember { mutableStateOf("") }
+        var predictionMax by remember { mutableStateOf("") }
+
         val onConfirmation = {
             val newPrediction = Prediction(
                 name = predictionName,
                 color = predictionColor,
-                minPoints = predictionMin,
-                maxPoints = predictionMax
+                minPoints = predictionMin.toIntOrNull() ?: 0,
+                maxPoints = predictionMax.toIntOrNull() ?: 0
             )
             PREDICTION_VIEW_MODEL.insert(
                 newPrediction,
                 this.getExceptionHandler(
                     errorMessage = "Error adding new prediction $predictionName",
-                    context = localContext,
+                    composeData = composeData,
                     continueRun = true
                 )
             )
             onDismissRequest()
         }
+
         Dialog(onDismissRequest = { onDismissRequest() }) {
             Card(
                 modifier = modifier.wrapContentSize()
@@ -88,8 +89,8 @@ class PredictionCompose : CoreObjectCompose {
                     }
                     Row {
                         TextField(
-                            value = predictionMin.toString(),
-                            onValueChange = { predictionMin = it.toInt() },
+                            value = predictionMin,
+                            onValueChange = { predictionMin = it },
                             label = { Text(text = "Minimum Points: ") },
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                             textStyle = MaterialTheme.typography.bodyMedium
@@ -97,8 +98,8 @@ class PredictionCompose : CoreObjectCompose {
                     }
                     Row {
                         TextField(
-                            value = predictionMax.toString(),
-                            onValueChange = { predictionMax = it.toInt() },
+                            value = predictionMax,
+                            onValueChange = { predictionMax = it },
                             label = { Text(text = "Maximum Points: ") },
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                             textStyle = MaterialTheme.typography.bodyMedium
@@ -138,22 +139,24 @@ class PredictionCompose : CoreObjectCompose {
     @Composable
     override fun RemoveObject(
         coreObject: CoreObject,
-        modifier: Modifier,
+        composeData: ComposeData,
         onDismissRequest: () -> Unit
     ) {
-        val localContext = LocalContext.current
+        val modifier = composeData.modifier
         val prediction: Prediction = coreObject as Prediction
+
         val onConfirmation = {
             PREDICTION_VIEW_MODEL.delete(
                 prediction,
                 this.getExceptionHandler(
                     errorMessage = "Error removing prediction ${prediction.name}",
-                    context = localContext,
+                    composeData = composeData,
                     continueRun = true
                 )
             )
             onDismissRequest()
         }
+
         Dialog(onDismissRequest = { onDismissRequest() }) {
             Card(
                 modifier = modifier.wrapContentSize()

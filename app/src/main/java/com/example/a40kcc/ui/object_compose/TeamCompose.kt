@@ -17,30 +17,31 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.window.Dialog
 import com.example.a40kcc.PLAYER_VIEW_MODEL
 import com.example.a40kcc.TEAM_VIEW_MODEL
 import com.example.a40kcc.data.`object`.CoreObject
 import com.example.a40kcc.data.`object`.Team
+import com.example.a40kcc.ui.utilities.ComposeData
 import com.example.a40kcc.ui.utilities.DropDownList
 import com.example.a40kcc.ui.utilities.ScaledText
 
 class TeamCompose : CoreObjectCompose {
     @Composable
     override fun AddObject(
-        modifier: Modifier,
+        composeData: ComposeData,
         onDismissRequest: () -> Unit
     ) {
-        val localContext = LocalContext.current
+        val modifier = composeData.modifier
         var teamName by remember { mutableStateOf("") }
         var playerID by remember { mutableIntStateOf(0) }
         var playerIndex by remember { mutableIntStateOf(0) }
         val playerNames: MutableList<String> = mutableListOf("")
-        PLAYER_VIEW_MODEL.allPlayers.forEach {
-            playerNames += it.name
+
+        PLAYER_VIEW_MODEL.allPlayers().forEach { player ->
+            playerNames += player.name
         }
+
         val onConfirmation = {
             val newTeam = Team(
                 name = teamName
@@ -49,7 +50,7 @@ class TeamCompose : CoreObjectCompose {
                 newTeam,
                 this.getExceptionHandler(
                     errorMessage = "Error adding the new team $teamName",
-                    context = localContext,
+                    composeData = composeData,
                     continueRun = true
                 )
             )
@@ -84,9 +85,12 @@ class TeamCompose : CoreObjectCompose {
                             selectedIndex = playerIndex,
                             modifier = modifier,
                             preText = "Player: ",
-                            onItemClick = {
-                                playerIndex = it; playerID =
-                                PLAYER_VIEW_MODEL.getByName(playerNames[playerIndex]).playerID
+                            onItemClick = { index ->
+                                playerIndex = index
+                                if (index != 0) {
+                                    playerID =
+                                        PLAYER_VIEW_MODEL.getByName(playerNames[playerIndex]).playerID
+                                }
                             })
                     }
                     Row {
@@ -121,22 +125,24 @@ class TeamCompose : CoreObjectCompose {
     @Composable
     override fun RemoveObject(
         coreObject: CoreObject,
-        modifier: Modifier,
+        composeData: ComposeData,
         onDismissRequest: () -> Unit
     ) {
-        val localContext = LocalContext.current
+        val modifier = composeData.modifier
         val team: Team = coreObject as Team
+
         val onConfirmation = {
             TEAM_VIEW_MODEL.delete(
                 team,
                 this.getExceptionHandler(
                     errorMessage = "Error removing the team ${team.name}",
-                    context = localContext,
+                    composeData = composeData,
                     continueRun = true
                 )
             )
             onDismissRequest()
         }
+
         Dialog(onDismissRequest = { onDismissRequest() }) {
             Card(
                 modifier = modifier.wrapContentSize()

@@ -61,22 +61,22 @@ val MAIN_ROUTES: Map<String, Map<String, String>> = mapOf(
         "Text" to R.string.secondary_mission_text.toString(),
         "Image" to R.drawable.icon_secondary_missions.toString()
     ),
-    "outcomes" to mapOf(
+    /*"outcomes" to mapOf(
         "Text" to R.string.outcome_text.toString(),
         "Image" to R.drawable.icon_outcomes.toString()
-    ),
+    ),*/
     "players" to mapOf(
         "Text" to R.string.player_text.toString(),
         "Image" to R.drawable.icon_players.toString()
     ),
-    "predictions" to mapOf(
+    /*"predictions" to mapOf(
         "Text" to R.string.prediction_text.toString(),
         "Image" to R.drawable.icon_predictions.toString()
-    ),
-    "rounds" to mapOf(
+    ),*/
+    /*"rounds" to mapOf(
         "Text" to R.string.round_text.toString(),
         "Image" to R.drawable.icon_rounds.toString()
-    ),
+    ),*/
     "teams" to mapOf(
         "Text" to R.string.team_text.toString(),
         "Image" to R.drawable.icon_teams.toString()
@@ -85,4 +85,21 @@ val MAIN_ROUTES: Map<String, Map<String, String>> = mapOf(
         "Text" to R.string.tournament_text.toString(),
         "Image" to R.drawable.icon_tournaments.toString()
     )
+)
+
+val COLORS: Map<String, Long> = mapOf(
+    "Blue" to 0xff0000ff,
+    "Green" to 0xff00ff00,
+    "Yellow" to 0xffffff00,
+    "Orange" to 0xffffaa00,
+    "Red" to 0xffff0000,
+    "Aqua" to 0xff00ffff,
+    "Purple" to 0xffff00ff,
+    "Light Blue" to 0xff00aaff,
+    "Sea Green" to 0xff00ffaa,
+    "Sick Yellow" to 0xffaaff00,
+    "Deep Purple" to 0xffaa00ff,
+    "Pink" to 0xffff00aa,
+    "White" to 0xffffffff,
+    "Black" to 0xff000000
 )

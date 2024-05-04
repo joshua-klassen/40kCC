@@ -13,8 +13,11 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 
 class GameViewModel(private val gameRepository: GameRepository) : ViewModel() {
-    val allGames: List<Game> = gameRepository.allGames
     val allGamesFlow: LiveData<List<Game>> = gameRepository.allGamesFlow.asLiveData()
+
+    fun allGames(): List<Game> {
+        return gameRepository.allGames()
+    }
 
     fun getById(gameId: Int): Game {
         return gameRepository.getById(gameId)

@@ -6,11 +6,10 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.content.res.getResourceIdOrThrow
 
 class DataObject(resources: Resources, headerID: Int, dataID: Int) {
-    private var headers: Array<String>
+    private var headers: Array<String> = resources.getStringArray(headerID)
     private var data: Map<String, Array<Any>> = emptyMap()
 
     init {
-        headers = resources.getStringArray(headerID)
         val dataArray: TypedArray = resources.obtainTypedArray(dataID)
         var dataArrayIterator = 0
         while (dataArrayIterator < dataArray.length()) {

@@ -29,4 +29,8 @@ data class TeamWithPlayers(
 
         return columnMap
     }
+
+    override fun getDisplayName(): String {
+        return team.name
+    }
 }

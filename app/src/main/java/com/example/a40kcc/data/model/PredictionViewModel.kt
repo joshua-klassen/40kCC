@@ -11,10 +11,12 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 
 class PredictionViewModel(private val predictionRepository: PredictionRepository) : ViewModel() {
-    val allPredictions: List<Prediction> =
-        predictionRepository.allPredictions
     val allPredictionsFlow: LiveData<List<Prediction>> =
         predictionRepository.allPredictionsFlow.asLiveData()
+
+    fun allPredictions(): List<Prediction> {
+        return predictionRepository.allPredictions()
+    }
 
     fun getByName(predictionName: String): Prediction {
         return predictionRepository.getByName(predictionName)

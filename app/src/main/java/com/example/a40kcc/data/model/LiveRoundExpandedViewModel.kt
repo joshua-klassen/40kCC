@@ -11,10 +11,12 @@ import com.example.a40kcc.data.repository.LiveRoundExpandedRepository
 
 class LiveRoundExpandedViewModel(private val liveRoundRepository: LiveRoundExpandedRepository) :
     ViewModel() {
-    val allLiveRounds: List<LiveRoundExpanded> =
-        liveRoundRepository.allLiveRounds
     val allLiveRoundsFlow: LiveData<List<LiveRoundExpanded>> =
         liveRoundRepository.allLiveRoundsFlow.asLiveData()
+
+    fun allLiveRounds(): List<LiveRoundExpanded> {
+        return liveRoundRepository.allLiveRounds()
+    }
 
     fun getById(liveRoundId: Int): LiveRoundExpanded {
         return liveRoundRepository.getById(liveRoundId)
