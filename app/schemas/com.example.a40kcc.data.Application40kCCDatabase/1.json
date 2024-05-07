@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "1194c350a7ff53c31fa75b67d9e5d9f4",
+    "identityHash": "4ef277a489d63b219457f00b35f0b46e",
     "entities": [
       {
         "tableName": "game",
@@ -443,7 +443,7 @@
       },
       {
         "tableName": "playerTeamCrossRef",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`playerID` INTEGER NOT NULL, `teamID` INTEGER NOT NULL, PRIMARY KEY(`playerID`, `teamID`), FOREIGN KEY(`teamID`) REFERENCES `team`(`teamID`) ON UPDATE CASCADE ON DELETE RESTRICT DEFERRABLE INITIALLY DEFERRED, FOREIGN KEY(`playerID`) REFERENCES `player`(`playerID`) ON UPDATE CASCADE ON DELETE RESTRICT DEFERRABLE INITIALLY DEFERRED)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`playerID` INTEGER NOT NULL, `teamID` INTEGER NOT NULL, PRIMARY KEY(`playerID`, `teamID`), FOREIGN KEY(`teamID`) REFERENCES `team`(`teamID`) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED, FOREIGN KEY(`playerID`) REFERENCES `player`(`playerID`) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED)",
         "fields": [
           {
             "fieldPath": "playerID",
@@ -488,7 +488,7 @@
         "foreignKeys": [
           {
             "table": "team",
-            "onDelete": "RESTRICT",
+            "onDelete": "CASCADE",
             "onUpdate": "CASCADE",
             "columns": [
               "teamID"
@@ -499,7 +499,7 @@
           },
           {
             "table": "player",
-            "onDelete": "RESTRICT",
+            "onDelete": "CASCADE",
             "onUpdate": "CASCADE",
             "columns": [
               "playerID"
@@ -572,7 +572,7 @@
       },
       {
         "tableName": "round",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`roundID` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `number` INTEGER NOT NULL, `primary_mission` TEXT NOT NULL, `secondary_mission` TEXT NOT NULL, `deployment` TEXT NOT NULL, `tournament` INTEGER NOT NULL, FOREIGN KEY(`tournament`) REFERENCES `tournament`(`tournamentID`) ON UPDATE CASCADE ON DELETE RESTRICT DEFERRABLE INITIALLY DEFERRED)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`roundID` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `number` INTEGER NOT NULL, `primary_mission` TEXT NOT NULL, `secondary_mission` TEXT NOT NULL, `deployment` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "roundID",
@@ -603,12 +603,6 @@
             "columnName": "deployment",
             "affinity": "TEXT",
             "notNull": true
-          },
-          {
-            "fieldPath": "tournamentID",
-            "columnName": "tournament",
-            "affinity": "INTEGER",
-            "notNull": true
           }
         ],
         "primaryKey": {
@@ -626,30 +620,9 @@
             ],
             "orders": [],
             "createSql": "CREATE INDEX IF NOT EXISTS `index_round_roundID` ON `${TABLE_NAME}` (`roundID`)"
-          },
-          {
-            "name": "index_round_tournament",
-            "unique": false,
-            "columnNames": [
-              "tournament"
-            ],
-            "orders": [],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_round_tournament` ON `${TABLE_NAME}` (`tournament`)"
           }
         ],
-        "foreignKeys": [
-          {
-            "table": "tournament",
-            "onDelete": "RESTRICT",
-            "onUpdate": "CASCADE",
-            "columns": [
-              "tournament"
-            ],
-            "referencedColumns": [
-              "tournamentID"
-            ]
-          }
-        ]
+        "foreignKeys": []
       },
       {
         "tableName": "team",
@@ -734,12 +707,81 @@
           }
         ],
         "foreignKeys": []
+      },
+      {
+        "tableName": "tournamentRoundCrossRef",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`tournamentID` INTEGER NOT NULL, `roundID` INTEGER NOT NULL, PRIMARY KEY(`tournamentID`, `roundID`), FOREIGN KEY(`roundID`) REFERENCES `round`(`roundID`) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED, FOREIGN KEY(`tournamentID`) REFERENCES `tournament`(`tournamentID`) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED)",
+        "fields": [
+          {
+            "fieldPath": "tournamentID",
+            "columnName": "tournamentID",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "roundID",
+            "columnName": "roundID",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "tournamentID",
+            "roundID"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_tournamentRoundCrossRef_tournamentID",
+            "unique": false,
+            "columnNames": [
+              "tournamentID"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_tournamentRoundCrossRef_tournamentID` ON `${TABLE_NAME}` (`tournamentID`)"
+          },
+          {
+            "name": "index_tournamentRoundCrossRef_roundID",
+            "unique": false,
+            "columnNames": [
+              "roundID"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_tournamentRoundCrossRef_roundID` ON `${TABLE_NAME}` (`roundID`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "round",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "roundID"
+            ],
+            "referencedColumns": [
+              "roundID"
+            ]
+          },
+          {
+            "table": "tournament",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "tournamentID"
+            ],
+            "referencedColumns": [
+              "tournamentID"
+            ]
+          }
+        ]
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1194c350a7ff53c31fa75b67d9e5d9f4')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4ef277a489d63b219457f00b35f0b46e')"
     ]
   }
 }

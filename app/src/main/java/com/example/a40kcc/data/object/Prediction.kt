@@ -7,16 +7,16 @@ import androidx.room.PrimaryKey
 import com.example.a40kcc.COLORS
 
 @Entity(
-    "prediction",
+    tableName = "prediction",
     indices = [Index(value = ["predictionID"])]
 )
 data class Prediction(
-    @PrimaryKey(true) val predictionID: Int = 0,
-    @ColumnInfo("name") val name: String,
-    @ColumnInfo("color") val color: Long,
-    @ColumnInfo("minimum_points") val minPoints: Int,
-    @ColumnInfo("maximum_points") val maxPoints: Int,
-    @ColumnInfo("default_option") val defaultOption: Boolean = false
+    @PrimaryKey(autoGenerate = true) val predictionID: Int = 0,
+    @ColumnInfo(name = "name") val name: String,
+    @ColumnInfo(name = "color") val color: Long,
+    @ColumnInfo(name = "minimum_points") val minPoints: Int,
+    @ColumnInfo(name = "maximum_points") val maxPoints: Int,
+    @ColumnInfo(name = "default_option") val defaultOption: Boolean = false
 ) : CoreObject {
     override fun getCoreColumns(): Map<String, String> {
         return mapOf(

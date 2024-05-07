@@ -36,11 +36,11 @@ data class GameExpanded(
 ) : CoreObject {
     override fun getCoreColumns(): Map<String, String> {
         return mapOf(
-            Pair("Player 01", player01.player.name),
-            Pair("Player 02", player02?.player?.name ?: ""),
-            Pair("Prediction", prediction.name),
-            Pair("Round #", round.round.number.toString()),
-            Pair("Tournament", round.tournament.name)
+            Pair("Player 01", player01.getDisplayName()),
+            Pair("Player 02", player02?.getDisplayName() ?: ""),
+            Pair("Prediction", prediction.getDisplayName()),
+            Pair("Round #", round.round.getDisplayName()),
+            Pair("Tournament", round.tournament.getDisplayName())
         )
     }
 
@@ -52,5 +52,9 @@ data class GameExpanded(
             Pair("Primary Mission", round.round.primaryMissionName),
             Pair("Secondary Mission", round.round.secondaryMissionName)
         )
+    }
+
+    override fun getDisplayName(): String {
+        return "Game ${player01.getDisplayName()} at ${round.getDisplayName()}"
     }
 }

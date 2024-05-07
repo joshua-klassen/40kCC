@@ -16,6 +16,7 @@ import com.example.a40kcc.data.repository.RoundWithTournamentRepository
 import com.example.a40kcc.data.repository.TeamRepository
 import com.example.a40kcc.data.repository.TeamWithPlayersRepository
 import com.example.a40kcc.data.repository.TournamentRepository
+import com.example.a40kcc.data.repository.TournamentWithRoundsRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 
@@ -37,4 +38,5 @@ class Application40kCC : Application() {
     val team by lazy { TeamRepository(database.teamDao()) }
     val teamWithPlayers by lazy { TeamWithPlayersRepository(database.teamWithPlayersDao()) }
     val tournament by lazy { TournamentRepository(database.tournamentDao()) }
+    val tournamentWithRounds by lazy { TournamentWithRoundsRepository(database.tournamentWithRoundsDao()) }
 }

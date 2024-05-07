@@ -6,11 +6,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
 import com.example.a40kcc.data.`object`.Team
 import com.example.a40kcc.data.repository.TeamRepository
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.launch
 
 class TeamViewModel(private val teamRepository: TeamRepository) : ViewModel() {
     val allTeamsFlow: LiveData<List<Team>> = teamRepository.allTeamsFlow.asLiveData()
@@ -27,22 +24,16 @@ class TeamViewModel(private val teamRepository: TeamRepository) : ViewModel() {
         return teamRepository.getByName(teamName)
     }
 
-    fun insert(team: Team, exceptionHandler: CoroutineExceptionHandler) {
-        viewModelScope.launch(exceptionHandler) {
-            teamRepository.insert(team)
-        }
+    suspend fun insert(team: Team) {
+        teamRepository.insert(team)
     }
 
-    fun update(team: Team, exceptionHandler: CoroutineExceptionHandler) {
-        viewModelScope.launch(exceptionHandler) {
-            teamRepository.update(team)
-        }
+    suspend fun update(team: Team) {
+        teamRepository.update(team)
     }
 
-    fun delete(team: Team, exceptionHandler: CoroutineExceptionHandler) {
-        viewModelScope.launch(exceptionHandler) {
-            teamRepository.delete(team)
-        }
+    suspend fun delete(team: Team) {
+        teamRepository.delete(team)
     }
 }
 

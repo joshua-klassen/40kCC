@@ -7,14 +7,14 @@ import androidx.room.PrimaryKey
 import java.util.Date
 
 @Entity(
-    "tournament",
+    tableName = "tournament",
     indices = [Index(value = ["tournamentID"])]
 )
 data class Tournament(
-    @PrimaryKey(true) val tournamentID: Int = 0,
-    @ColumnInfo("name") val name: String,
-    @ColumnInfo("round_count") val roundCount: Int,
-    @ColumnInfo("date") val date: Date
+    @PrimaryKey(autoGenerate = true) val tournamentID: Int = 0,
+    @ColumnInfo(name = "name") val name: String,
+    @ColumnInfo(name = "round_count") val roundCount: Int,
+    @ColumnInfo(name = "date") val date: Date
 ) : CoreObject {
     override fun getCoreColumns(): Map<String, String> {
         return mapOf(

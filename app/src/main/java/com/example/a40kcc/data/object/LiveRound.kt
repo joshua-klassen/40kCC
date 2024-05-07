@@ -7,7 +7,7 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 
 @Entity(
-    "live_round",
+    tableName = "live_round",
     indices = [
         Index(value = ["liveRoundID"]),
         Index(value = ["game"]),
@@ -33,9 +33,9 @@ import androidx.room.PrimaryKey
     ]
 )
 data class LiveRound(
-    @PrimaryKey(true) val liveRoundID: Int = 0,
-    @ColumnInfo("game") val gameID: Int,
-    @ColumnInfo("expected_result") val expectedResult: Int
+    @PrimaryKey(autoGenerate = true) val liveRoundID: Int = 0,
+    @ColumnInfo(name = "game") val gameID: Int,
+    @ColumnInfo(name = "expected_result") val expectedResult: Int
 ) : CoreObject {
     override fun getCoreColumns(): Map<String, String> {
         return mapOf(
@@ -47,5 +47,9 @@ data class LiveRound(
 
     override fun getDetailColumns(): Map<String, String> {
         return emptyMap()
+    }
+
+    override fun getDisplayName(): String {
+        return "liveRoundID: $liveRoundID"
     }
 }

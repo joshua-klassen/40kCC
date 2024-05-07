@@ -7,7 +7,7 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 
 @Entity(
-    "game",
+    tableName = "game",
     indices = [
         Index(value = ["gameID"]),
         Index(value = ["player_01"]),
@@ -60,22 +60,22 @@ import androidx.room.PrimaryKey
     ]
 )
 data class Game(
-    @PrimaryKey(true) val gameID: Int = 0,
-    @ColumnInfo("player_01") val player01ID: Int,
-    @ColumnInfo("player_02", defaultValue = "NULL") val player02ID: Int? = null,
-    @ColumnInfo("player_01_faction") val player01FactionName: String,
-    @ColumnInfo("player_02_faction") val player02FactionName: String,
+    @PrimaryKey(autoGenerate = true) val gameID: Int = 0,
+    @ColumnInfo(name = "player_01") val player01ID: Int,
+    @ColumnInfo(name = "player_02", defaultValue = "NULL") val player02ID: Int? = null,
+    @ColumnInfo(name = "player_01_faction") val player01FactionName: String,
+    @ColumnInfo(name = "player_02_faction") val player02FactionName: String,
     @ColumnInfo(
-        "player_01_faction_detachment",
+        name = "player_01_faction_detachment",
         defaultValue = "NULL"
     ) val player01FactionDetachment: String? = "NULL",
     @ColumnInfo(
-        "player_02_faction_detachment",
+        name = "player_02_faction_detachment",
         defaultValue = "NULL"
     ) val player02FactionDetachment: String? = "NULL",
-    @ColumnInfo("prediction", defaultValue = "NULL") val predictionID: Int? = null,
-    @ColumnInfo("round") val roundID: Int,
-    @ColumnInfo("outcome", defaultValue = "NULL") val outcomeID: Int? = null
+    @ColumnInfo(name = "prediction", defaultValue = "NULL") val predictionID: Int? = null,
+    @ColumnInfo(name = "round") val roundID: Int,
+    @ColumnInfo(name = "outcome", defaultValue = "NULL") val outcomeID: Int? = null
 ) : CoreObject {
     override fun getCoreColumns(): Map<String, String> {
         return mapOf(
@@ -95,5 +95,9 @@ data class Game(
             Pair("Prediction ID", predictionID.toString()),
             Pair("Outcome ID", outcomeID.toString())
         )
+    }
+
+    override fun getDisplayName(): String {
+        return "gameID: $gameID"
     }
 }

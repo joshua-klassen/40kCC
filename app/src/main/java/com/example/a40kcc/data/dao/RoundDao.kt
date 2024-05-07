@@ -35,9 +35,4 @@ interface RoundDao : BaseDao<Round> {
         "SELECT * FROM round WHERE deployment LIKE :deploymentName"
     )
     fun getByDeployment(deploymentName: String): List<Round>
-
-    @Query(
-        "SELECT * FROM round WHERE tournament = :tournamentId"
-    )
-    fun getByTournamentId(tournamentId: Int): List<Round>
 }

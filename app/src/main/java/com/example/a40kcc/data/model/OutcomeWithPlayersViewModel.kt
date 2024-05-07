@@ -9,30 +9,30 @@ import androidx.lifecycle.asLiveData
 import com.example.a40kcc.data.`object`.OutcomeWithPlayers
 import com.example.a40kcc.data.repository.OutcomeWithPlayersRepository
 
-class OutcomeWithPlayersViewModel(private val outcomeRepository: OutcomeWithPlayersRepository) :
+class OutcomeWithPlayersViewModel(private val outcomeWithPlayersRepository: OutcomeWithPlayersRepository) :
     ViewModel() {
     val allOutcomesFlow: LiveData<List<OutcomeWithPlayers>> =
-        outcomeRepository.allOutcomesFlow.asLiveData()
+        outcomeWithPlayersRepository.allOutcomesFlow.asLiveData()
 
     fun allOutcomes(): List<OutcomeWithPlayers> {
-        return outcomeRepository.allOutcomes()
+        return outcomeWithPlayersRepository.allOutcomes()
     }
 
     fun getById(gameId: Int): OutcomeWithPlayers {
-        return outcomeRepository.getById(gameId)
+        return outcomeWithPlayersRepository.getById(gameId)
     }
 
     fun getByPlayerId(gameId: Int): List<OutcomeWithPlayers> {
-        return outcomeRepository.getByPlayerId(gameId)
+        return outcomeWithPlayersRepository.getByPlayerId(gameId)
     }
 }
 
-class OutcomeWithPlayersViewModelFactory(private val outcomeRepository: OutcomeWithPlayersRepository) :
+class OutcomeWithPlayersViewModelFactory(private val outcomeWithPlayersRepository: OutcomeWithPlayersRepository) :
     ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(OutcomeWithPlayersViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return OutcomeWithPlayersViewModel(outcomeRepository) as T
+            return OutcomeWithPlayersViewModel(outcomeWithPlayersRepository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

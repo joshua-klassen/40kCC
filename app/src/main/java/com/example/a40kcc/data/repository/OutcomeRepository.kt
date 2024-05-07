@@ -24,6 +24,11 @@ class OutcomeRepository(private val outcomeDao: OutcomeDao) {
     }
 
     @WorkerThread
+    fun getByPlayers(player01Id: Int, player02Id: Int): List<Outcome> {
+        return outcomeDao.getByPlayers(player01Id, player02Id)
+    }
+
+    @WorkerThread
     suspend fun insert(outcome: Outcome) {
         outcomeDao.insert(outcome)
     }

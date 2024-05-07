@@ -6,11 +6,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
 import com.example.a40kcc.data.`object`.Round
 import com.example.a40kcc.data.repository.RoundRepository
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.launch
 
 class RoundViewModel(private val roundRepository: RoundRepository) : ViewModel() {
     val allRoundsFlow: LiveData<List<Round>> = roundRepository.allRoundsFlow.asLiveData()
@@ -39,26 +36,16 @@ class RoundViewModel(private val roundRepository: RoundRepository) : ViewModel()
         return roundRepository.getByDeployment(deploymentName)
     }
 
-    fun getByTournamentId(tournamentID: Int): List<Round> {
-        return roundRepository.getByTournamentId(tournamentID)
+    suspend fun insert(round: Round) {
+        roundRepository.insert(round)
     }
 
-    fun insert(round: Round, exceptionHandler: CoroutineExceptionHandler) {
-        viewModelScope.launch(exceptionHandler) {
-            roundRepository.insert(round)
-        }
+    suspend fun update(round: Round) {
+        roundRepository.update(round)
     }
 
-    fun update(round: Round, exceptionHandler: CoroutineExceptionHandler) {
-        viewModelScope.launch(exceptionHandler) {
-            roundRepository.update(round)
-        }
-    }
-
-    fun delete(round: Round, exceptionHandler: CoroutineExceptionHandler) {
-        viewModelScope.launch(exceptionHandler) {
-            roundRepository.delete(round)
-        }
+    suspend fun delete(round: Round) {
+        roundRepository.delete(round)
     }
 }
 

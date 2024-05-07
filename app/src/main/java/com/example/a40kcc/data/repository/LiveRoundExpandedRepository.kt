@@ -5,26 +5,26 @@ import com.example.a40kcc.data.dao.LiveRoundExpandedDao
 import com.example.a40kcc.data.`object`.LiveRoundExpanded
 import kotlinx.coroutines.flow.Flow
 
-class LiveRoundExpandedRepository(private val liveRoundDao: LiveRoundExpandedDao) {
-    val allLiveRoundsFlow: Flow<List<LiveRoundExpanded>> = liveRoundDao.getAllFlow()
+class LiveRoundExpandedRepository(private val liveRoundExpandedDao: LiveRoundExpandedDao) {
+    val allLiveRoundsFlow: Flow<List<LiveRoundExpanded>> = liveRoundExpandedDao.getAllFlow()
 
     @WorkerThread
     fun allLiveRounds(): List<LiveRoundExpanded> {
-        return liveRoundDao.getAll()
+        return liveRoundExpandedDao.getAll()
     }
 
     @WorkerThread
     fun getById(liveRoundId: Int): LiveRoundExpanded {
-        return liveRoundDao.getById(liveRoundId)
+        return liveRoundExpandedDao.getById(liveRoundId)
     }
 
     @WorkerThread
     fun getByGameId(gameId: Int): LiveRoundExpanded {
-        return liveRoundDao.getByGameId(gameId)
+        return liveRoundExpandedDao.getByGameId(gameId)
     }
 
     @WorkerThread
     fun getByExpectedResultId(predictionId: Int): LiveRoundExpanded {
-        return liveRoundDao.getByExpectedResultId(predictionId)
+        return liveRoundExpandedDao.getByExpectedResultId(predictionId)
     }
 }

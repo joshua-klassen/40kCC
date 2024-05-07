@@ -36,6 +36,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.a40kcc.R
 import com.example.a40kcc.data.`object`.CoreObject
 import com.example.a40kcc.ui.object_compose.CoreObjectCompose
@@ -45,16 +46,21 @@ import com.example.a40kcc.ui.utilities.ScaledText
 @Composable
 fun ObjectScreen(
     objectList: List<CoreObject>,
-    onBackClick: () -> Unit,
+    navController: NavController,
     objectCompose: CoreObjectCompose,
     modifier: Modifier = Modifier,
     columnWidth: Dp = 100.dp
 ) {
-    var addObject by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
-    val composeData = remember { ComposeData() }
-    composeData.modifier = modifier
-    composeData.setSnackbarHostState(snackbarHostState, rememberCoroutineScope())
+    val composeData = remember {
+        ComposeData(
+            snackbarHostState = snackbarHostState,
+            coroutineScope = scope,
+            modifier = modifier
+        )
+    }
+    var addObject by remember { mutableStateOf(false) }
 
     Scaffold(
         snackbarHost = {
@@ -62,7 +68,7 @@ fun ObjectScreen(
         },
         topBar = {
             Button(
-                onClick = onBackClick,
+                onClick = { navController.navigate(route = "home") },
                 modifier = modifier
             ) {
                 Column {
@@ -89,6 +95,7 @@ fun ObjectScreen(
                         if (addObject) {
                             objectCompose.AddObject(
                                 composeData = composeData,
+                                navController = navController,
                                 onDismissRequest = { addObject = !addObject }
                             )
                         }
@@ -179,6 +186,7 @@ fun ObjectScreen(
                                         objectCompose.EditObject(
                                             coreObject = coreObject,
                                             composeData = composeData,
+                                            navController = navController,
                                             onDismissRequest = { editObject = !editObject }
                                         )
                                     }
@@ -207,6 +215,7 @@ fun ObjectScreen(
                                         objectCompose.RemoveObject(
                                             coreObject = coreObject,
                                             composeData = composeData,
+                                            navController = navController,
                                             onDismissRequest = { removeObject = !removeObject }
                                         )
                                     }

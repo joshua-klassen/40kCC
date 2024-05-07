@@ -6,50 +6,45 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
 import com.example.a40kcc.data.`object`.PlayerWithTeams
 import com.example.a40kcc.data.repository.PlayerWithTeamsRepository
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.launch
 
-class PlayerWithTeamsViewModel(private val playerRepository: PlayerWithTeamsRepository) :
+class PlayerWithTeamsViewModel(private val playerWithTeamsRepository: PlayerWithTeamsRepository) :
     ViewModel() {
     val allPlayersFlow: LiveData<List<PlayerWithTeams>> =
-        playerRepository.allPlayersFlow.asLiveData()
+        playerWithTeamsRepository.allPlayersFlow.asLiveData()
 
     fun allPlayers(): List<PlayerWithTeams> {
-        return playerRepository.allPlayers()
+        return playerWithTeamsRepository.allPlayers()
     }
 
     fun getById(playerId: Int): PlayerWithTeams {
-        return playerRepository.getById(playerId)
+        return playerWithTeamsRepository.getById(playerId)
     }
 
     fun getByName(playerName: String): PlayerWithTeams {
-        return playerRepository.getByName(playerName)
+        return playerWithTeamsRepository.getByName(playerName)
     }
 
     fun getByFactionName(factionName: String): List<PlayerWithTeams> {
-        return playerRepository.getByFactionName(factionName)
+        return playerWithTeamsRepository.getByFactionName(factionName)
     }
 
     fun getByNickname(playerNickname: String): PlayerWithTeams {
-        return playerRepository.getByNickname(playerNickname)
+        return playerWithTeamsRepository.getByNickname(playerNickname)
     }
 
-    fun insert(playerID: Int, teamID: Int, exceptionHandler: CoroutineExceptionHandler) {
-        viewModelScope.launch(exceptionHandler) {
-            playerRepository.insert(playerID, teamID)
-        }
+    suspend fun insert(playerID: Int, teamID: Int) {
+        playerWithTeamsRepository.insert(playerID, teamID)
     }
 }
 
-class PlayerWithTeamsViewModelFactory(private val playerRepository: PlayerWithTeamsRepository) :
+class PlayerWithTeamsViewModelFactory(private val playerWithTeamsRepository: PlayerWithTeamsRepository) :
     ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(PlayerWithTeamsViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return PlayerWithTeamsViewModel(playerRepository) as T
+            return PlayerWithTeamsViewModel(playerWithTeamsRepository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

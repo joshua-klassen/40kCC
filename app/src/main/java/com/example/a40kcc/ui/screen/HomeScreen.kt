@@ -26,7 +26,10 @@ import com.example.a40kcc.R
 import com.example.a40kcc.ui.utilities.ScaledText
 
 @Composable
-fun HomeScreen(navController: NavHostController, modifier: Modifier = Modifier) {
+fun HomeScreen(
+    navController: NavHostController,
+    modifier: Modifier = Modifier
+) {
     val cardSideMargin = dimensionResource(id = R.dimen.card_side_margin)
     val cardBottomMargin = dimensionResource(id = R.dimen.card_bottom_margin)
 

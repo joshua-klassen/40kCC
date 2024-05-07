@@ -14,6 +14,7 @@ import com.example.a40kcc.data.model.RoundWithTournamentViewModel
 import com.example.a40kcc.data.model.TeamViewModel
 import com.example.a40kcc.data.model.TeamWithPlayersViewModel
 import com.example.a40kcc.data.model.TournamentViewModel
+import com.example.a40kcc.data.model.TournamentWithRoundsViewModel
 import com.example.a40kcc.data.`object`.DataObject
 
 lateinit var DEPLOYMENT_DATA: DataObject
@@ -35,6 +36,7 @@ lateinit var ROUND_WITH_TOURNAMENT_VIEW_MODEL: RoundWithTournamentViewModel
 lateinit var TEAM_VIEW_MODEL: TeamViewModel
 lateinit var TEAM_WITH_PLAYERS_VIEW_MODEL: TeamWithPlayersViewModel
 lateinit var TOURNAMENT_VIEW_MODEL: TournamentViewModel
+lateinit var TOURNAMENT_WITH_ROUNDS_VIEW_MODEL: TournamentWithRoundsViewModel
 
 val MAIN_ROUTES: Map<String, Map<String, String>> = mapOf(
     "deployments" to mapOf(
@@ -61,22 +63,10 @@ val MAIN_ROUTES: Map<String, Map<String, String>> = mapOf(
         "Text" to R.string.secondary_mission_text.toString(),
         "Image" to R.drawable.icon_secondary_missions.toString()
     ),
-    /*"outcomes" to mapOf(
-        "Text" to R.string.outcome_text.toString(),
-        "Image" to R.drawable.icon_outcomes.toString()
-    ),*/
     "players" to mapOf(
         "Text" to R.string.player_text.toString(),
         "Image" to R.drawable.icon_players.toString()
     ),
-    /*"predictions" to mapOf(
-        "Text" to R.string.prediction_text.toString(),
-        "Image" to R.drawable.icon_predictions.toString()
-    ),*/
-    /*"rounds" to mapOf(
-        "Text" to R.string.round_text.toString(),
-        "Image" to R.drawable.icon_rounds.toString()
-    ),*/
     "teams" to mapOf(
         "Text" to R.string.team_text.toString(),
         "Image" to R.drawable.icon_teams.toString()

@@ -39,11 +39,6 @@ class RoundRepository(private val roundDao: RoundDao) {
     }
 
     @WorkerThread
-    fun getByTournamentId(tournamentId: Int): List<Round> {
-        return roundDao.getByTournamentId(tournamentId)
-    }
-
-    @WorkerThread
     suspend fun insert(round: Round) {
         roundDao.insert(round)
     }

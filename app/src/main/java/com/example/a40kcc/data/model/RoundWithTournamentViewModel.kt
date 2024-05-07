@@ -9,46 +9,46 @@ import androidx.lifecycle.asLiveData
 import com.example.a40kcc.data.`object`.RoundWithTournament
 import com.example.a40kcc.data.repository.RoundWithTournamentRepository
 
-class RoundWithTournamentViewModel(private val roundRepository: RoundWithTournamentRepository) :
+class RoundWithTournamentViewModel(private val roundWithTournamentRepository: RoundWithTournamentRepository) :
     ViewModel() {
     val allRoundsFlow: LiveData<List<RoundWithTournament>> =
-        roundRepository.allRoundsFlow.asLiveData()
+        roundWithTournamentRepository.allRoundsFlow.asLiveData()
 
     fun allRounds(): List<RoundWithTournament> {
-        return roundRepository.allRounds()
+        return roundWithTournamentRepository.allRounds()
     }
 
     fun getById(roundID: Int): RoundWithTournament {
-        return roundRepository.getById(roundID)
+        return roundWithTournamentRepository.getById(roundID)
     }
 
     fun getByRoundNumber(roundNumber: Int): List<RoundWithTournament> {
-        return roundRepository.getByRoundNumber(roundNumber)
+        return roundWithTournamentRepository.getByRoundNumber(roundNumber)
     }
 
     fun getByPrimaryMission(primaryMissionName: String): List<RoundWithTournament> {
-        return roundRepository.getByPrimaryMission(primaryMissionName)
+        return roundWithTournamentRepository.getByPrimaryMission(primaryMissionName)
     }
 
     fun getBySecondaryMission(secondaryMissionName: String): List<RoundWithTournament> {
-        return roundRepository.getBySecondaryMission(secondaryMissionName)
+        return roundWithTournamentRepository.getBySecondaryMission(secondaryMissionName)
     }
 
     fun getByDeployment(deploymentName: String): List<RoundWithTournament> {
-        return roundRepository.getByDeployment(deploymentName)
+        return roundWithTournamentRepository.getByDeployment(deploymentName)
     }
 
-    fun getByTournamentId(tournamentID: Int): List<RoundWithTournament> {
-        return roundRepository.getByTournamentId(tournamentID)
+    suspend fun insert(tournamentID: Int, roundID: Int) {
+        roundWithTournamentRepository.insert(tournamentID, roundID)
     }
 }
 
-class RoundWithTournamentViewModelFactory(private val roundRepository: RoundWithTournamentRepository) :
+class RoundWithTournamentViewModelFactory(private val roundWithTournamentRepository: RoundWithTournamentRepository) :
     ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(RoundWithTournamentViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return RoundWithTournamentViewModel(roundRepository) as T
+            return RoundWithTournamentViewModel(roundWithTournamentRepository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

@@ -18,23 +18,27 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.window.Dialog
+import androidx.navigation.NavController
 import com.example.a40kcc.FACTION_DATA
 import com.example.a40kcc.PLAYER_VIEW_MODEL
+import com.example.a40kcc.PLAYER_WITH_TEAMS_VIEW_MODEL
 import com.example.a40kcc.TEAM_VIEW_MODEL
 import com.example.a40kcc.data.`object`.CoreObject
 import com.example.a40kcc.data.`object`.Player
 import com.example.a40kcc.data.`object`.PlayerWithTeams
+import com.example.a40kcc.data.`object`.Team
 import com.example.a40kcc.ui.utilities.ComposeData
 import com.example.a40kcc.ui.utilities.DropDownList
 import com.example.a40kcc.ui.utilities.ScaledText
+import kotlinx.coroutines.launch
 
 class PlayerCompose : CoreObjectCompose {
     @Composable
     override fun AddObject(
         composeData: ComposeData,
+        navController: NavController,
         onDismissRequest: () -> Unit
     ) {
-        val modifier = composeData.modifier
         var playerName by remember { mutableStateOf("") }
         var playerNickname by remember { mutableStateOf("") }
         var playerFaction by remember { mutableStateOf("") }
@@ -42,11 +46,7 @@ class PlayerCompose : CoreObjectCompose {
         var factionIndex by remember { mutableIntStateOf(0) }
         var teamIndex by remember { mutableIntStateOf(0) }
         val factionNames: List<String> = listOf("") + FACTION_DATA.getDataKeys().toList()
-        val teamNames: MutableList<String> = mutableListOf("")
-
-        TEAM_VIEW_MODEL.allTeams().forEach { team ->
-            teamNames += team.name
-        }
+        val teams: List<Team> = TEAM_VIEW_MODEL.allTeams()
 
         val onConfirmation = {
             val newPlayer = Player(
@@ -54,36 +54,43 @@ class PlayerCompose : CoreObjectCompose {
                 nickname = playerNickname,
                 factionName = playerFaction
             )
-            PLAYER_VIEW_MODEL.insert(
-                newPlayer,
-                this.getExceptionHandler(
-                    errorMessage = "Error adding the new player $playerName",
-                    composeData = composeData,
-                    continueRun = true
+
+            composeData.getScope().launch(
+                composeData.getExceptionHandler(
+                    errorMessage = "Error adding the new player: $playerName"
                 )
-            )
+            ) {
+                PLAYER_VIEW_MODEL.insert(newPlayer)
+                if (teamID != 0) {
+                    val lastPlayer = PLAYER_VIEW_MODEL.allPlayers().last()
+                    PLAYER_WITH_TEAMS_VIEW_MODEL.insert(
+                        playerID = lastPlayer.playerID,
+                        teamID = teamID
+                    )
+                }
+            }
             onDismissRequest()
         }
 
         Dialog(onDismissRequest = { onDismissRequest() }) {
             Card(
-                modifier = modifier.wrapContentSize()
+                modifier = composeData.modifier.wrapContentSize()
             ) {
                 Column(
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = modifier.fillMaxWidth()
+                    modifier = composeData.modifier.fillMaxWidth()
                 ) {
                     Row {
                         Text(
-                            text = "Add a new player (Only player name is required)"
+                            text = "Add a new player"
                         )
                     }
                     Row {
                         TextField(
                             value = playerName,
                             onValueChange = { playerName = it },
-                            label = { Text(text = "Player Name: ") },
+                            label = { Text(text = "*Player Name: ") },
                             textStyle = MaterialTheme.typography.bodyMedium
                         )
                     }
@@ -99,27 +106,35 @@ class PlayerCompose : CoreObjectCompose {
                         DropDownList(
                             itemList = factionNames,
                             selectedIndex = factionIndex,
-                            modifier = modifier,
+                            modifier = composeData.modifier,
                             preText = "Preferred Faction: ",
                             onItemClick = {
-                                factionIndex = it; playerFaction = factionNames[factionIndex]
+                                factionIndex = it
+                                playerFaction = factionNames[factionIndex]
                             })
                     }
                     Row {
                         DropDownList(
-                            itemList = teamNames,
+                            itemList = teams.map { it.getDisplayName() },
                             selectedIndex = teamIndex,
-                            modifier = modifier,
+                            modifier = composeData.modifier,
                             preText = "Team: ",
+                            addEmptyFirstOption = true,
                             onItemClick = {
-                                teamIndex = it; teamID =
-                                TEAM_VIEW_MODEL.getByName(teamNames[teamIndex]).teamID
-                            })
+                                teamIndex = it
+                                if (teamIndex < 0) {
+                                    teamIndex = 0
+                                    teamID = 0
+                                } else {
+                                    teamID = teams[teamIndex].teamID
+                                }
+                            }
+                        )
                     }
                     Row {
                         TextButton(
                             onClick = { onDismissRequest() },
-                            modifier = modifier
+                            modifier = composeData.modifier
                         ) {
                             Text(
                                 text = "Cancel",
@@ -128,7 +143,7 @@ class PlayerCompose : CoreObjectCompose {
                         }
                         TextButton(
                             onClick = { onConfirmation() },
-                            modifier = modifier
+                            modifier = composeData.modifier
                         ) {
                             Text(
                                 text = "Add",
@@ -145,9 +160,9 @@ class PlayerCompose : CoreObjectCompose {
     override fun EditObject(
         coreObject: CoreObject,
         composeData: ComposeData,
+        navController: NavController,
         onDismissRequest: () -> Unit
     ) {
-        val modifier = composeData.modifier
         val player: PlayerWithTeams = coreObject as PlayerWithTeams
         var playerName by remember { mutableStateOf(player.player.name) }
         var playerNickname by remember { mutableStateOf(player.player.nickname!!) }
@@ -156,13 +171,10 @@ class PlayerCompose : CoreObjectCompose {
         var factionIndex by remember { mutableIntStateOf(0) }
         var teamIndex by remember { mutableIntStateOf(0) }
         val factionNames: List<String> = listOf("") + FACTION_DATA.getDataKeys().toList()
-        val teamNames: MutableList<String> = mutableListOf("")
+        val teams: List<Team> = TEAM_VIEW_MODEL.allTeams()
 
-        TEAM_VIEW_MODEL.allTeams().forEach { team ->
-            teamNames += team.name
-            if (team.name == player.team[0].name) {
-                teamIndex = teamNames.lastIndex
-            }
+        if (teams.contains(player.team[0])) {
+            teamIndex = teams.indexOf(player.team[0])
         }
 
         factionIndex = factionNames.indexOf(playerFaction)
@@ -174,25 +186,24 @@ class PlayerCompose : CoreObjectCompose {
                 nickname = playerNickname,
                 factionName = playerFaction
             )
-            PLAYER_VIEW_MODEL.update(
-                updatedPlayer,
-                this.getExceptionHandler(
-                    errorMessage = "Error updating the player ${player.player.name}",
-                    composeData = composeData,
-                    continueRun = true
+            composeData.getScope().launch(
+                composeData.getExceptionHandler(
+                    errorMessage = "Error updating player: ${player.getDisplayName()}"
                 )
-            )
-            onDismissRequest()
+            ) {
+                PLAYER_VIEW_MODEL.update(updatedPlayer)
+                onDismissRequest()
+            }
         }
 
         Dialog(onDismissRequest = { onDismissRequest() }) {
             Card(
-                modifier = modifier.wrapContentSize()
+                modifier = composeData.modifier.wrapContentSize()
             ) {
                 Column(
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = modifier.fillMaxWidth()
+                    modifier = composeData.modifier.fillMaxWidth()
                 ) {
                     Row {
                         Text(
@@ -219,7 +230,7 @@ class PlayerCompose : CoreObjectCompose {
                         DropDownList(
                             itemList = factionNames,
                             selectedIndex = factionIndex,
-                            modifier = modifier,
+                            modifier = composeData.modifier,
                             preText = "Preferred Faction: ",
                             onItemClick = {
                                 factionIndex = it; playerFaction = factionNames[factionIndex]
@@ -227,21 +238,24 @@ class PlayerCompose : CoreObjectCompose {
                     }
                     Row {
                         DropDownList(
-                            itemList = teamNames,
+                            itemList = teams.map { it.getDisplayName() },
                             selectedIndex = teamIndex,
-                            modifier = modifier,
+                            modifier = composeData.modifier,
                             preText = "Team: ",
                             onItemClick = { index ->
                                 teamIndex = index
-                                if (index != 0) {
-                                    teamID = TEAM_VIEW_MODEL.getByName(teamNames[teamIndex]).teamID
+                                if (teamIndex < 0) {
+                                    teamIndex = 0
+                                    teamID = 0
+                                } else {
+                                    teamID = teams[teamIndex].teamID
                                 }
                             })
                     }
                     Row {
                         TextButton(
                             onClick = { onDismissRequest() },
-                            modifier = modifier
+                            modifier = composeData.modifier
                         ) {
                             Text(
                                 text = "Cancel",
@@ -250,7 +264,7 @@ class PlayerCompose : CoreObjectCompose {
                         }
                         TextButton(
                             onClick = { onConfirmation() },
-                            modifier = modifier
+                            modifier = composeData.modifier
                         ) {
                             Text(
                                 text = "Add",
@@ -267,21 +281,21 @@ class PlayerCompose : CoreObjectCompose {
     override fun RemoveObject(
         coreObject: CoreObject,
         composeData: ComposeData,
+        navController: NavController,
         onDismissRequest: () -> Unit
     ) {
         val modifier = composeData.modifier
         val player: PlayerWithTeams = coreObject as PlayerWithTeams
 
         val onConfirmation = {
-            PLAYER_VIEW_MODEL.delete(
-                player.player,
-                this.getExceptionHandler(
-                    errorMessage = "Error removing the player ${player.player.name}",
-                    composeData = composeData,
-                    continueRun = true
+            composeData.getScope().launch(
+                composeData.getExceptionHandler(
+                    errorMessage = "Error while deleting the player: ${player.getDisplayName()}"
                 )
-            )
-            onDismissRequest()
+            ) {
+                PLAYER_VIEW_MODEL.delete(player.player)
+                onDismissRequest()
+            }
         }
 
         Dialog(onDismissRequest = { onDismissRequest() }) {

@@ -6,11 +6,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
 import com.example.a40kcc.data.`object`.Player
 import com.example.a40kcc.data.repository.PlayerRepository
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.launch
 
 class PlayerViewModel(private val playerRepository: PlayerRepository) : ViewModel() {
     val allPlayersFlow: LiveData<List<Player>> = playerRepository.allPlayersFlow.asLiveData()
@@ -35,22 +32,16 @@ class PlayerViewModel(private val playerRepository: PlayerRepository) : ViewMode
         return playerRepository.getByNickname(playerNickname)
     }
 
-    fun insert(player: Player, exceptionHandler: CoroutineExceptionHandler) {
-        viewModelScope.launch(exceptionHandler) {
-            playerRepository.insert(player)
-        }
+    suspend fun insert(player: Player) {
+        playerRepository.insert(player)
     }
 
-    fun update(player: Player, exceptionHandler: CoroutineExceptionHandler) {
-        viewModelScope.launch(exceptionHandler) {
-            playerRepository.update(player)
-        }
+    suspend fun update(player: Player) {
+        playerRepository.update(player)
     }
 
-    fun delete(player: Player, exceptionHandler: CoroutineExceptionHandler) {
-        viewModelScope.launch(exceptionHandler) {
-            playerRepository.delete(player)
-        }
+    suspend fun delete(player: Player) {
+        playerRepository.delete(player)
     }
 }
 

@@ -43,5 +43,5 @@ interface PlayerWithTeamsDao : BaseDao<Player> {
     @Query(
         "INSERT INTO playerTeamCrossRef (playerID, teamID) VALUES(:playerID, :teamID)"
     )
-    fun insert(playerID: Int, teamID: Int)
+    suspend fun insert(playerID: Int, teamID: Int)
 }

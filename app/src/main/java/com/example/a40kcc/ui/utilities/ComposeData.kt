@@ -3,30 +3,30 @@ package com.example.a40kcc.ui.utilities
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.ui.Modifier
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-class ComposeData {
+fun getExceptionHandler(
+    errorMessage: String,
+    continueRun: Boolean = true
+): CoroutineExceptionHandler {
+    return CoroutineExceptionHandler { _, exception ->
+        println("$errorMessage:\n $exception")
+        if (!continueRun) {
+            Thread.sleep(3000)
+            throw RuntimeException(errorMessage, exception)
+        }
+    }
+}
+
+class ComposeData(
+    private var snackbarHostState: SnackbarHostState,
+    private var coroutineScope: CoroutineScope,
     var modifier: Modifier = Modifier
-    private var snackbarHostState: SnackbarHostState? = null
-    private var coroutineScope: CoroutineScope? = null
-
-    fun setSnackbarHostState(
-        newSnackbarHostState: SnackbarHostState,
-        newCoroutineScope: CoroutineScope
-    ) {
-        snackbarHostState = newSnackbarHostState
-        coroutineScope = newCoroutineScope
-    }
-
-    @Suppress("unused")
-    fun getScope(): CoroutineScope? {
+) {
+    fun getScope(): CoroutineScope {
         return coroutineScope
-    }
-
-    @Suppress("unused")
-    fun getSnackbarHostState(): SnackbarHostState? {
-        return snackbarHostState
     }
 
     fun showSnackbar(
@@ -35,21 +35,30 @@ class ComposeData {
         actionLabel: String? = null,
         withDismissAction: Boolean = false
     ) {
-        if (coroutineScope == null) {
-            throw NullPointerException("Cannot create snackbar message as the scope is null")
+        coroutineScope.launch {
+            snackbarHostState.showSnackbar(
+                message = message,
+                actionLabel = actionLabel,
+                withDismissAction = withDismissAction,
+                duration = duration
+            )
         }
+    }
 
-        coroutineScope?.let { scope ->
-            scope.launch {
-                if (snackbarHostState == null) {
-                    throw NullPointerException("Cannot create snackbar message as the snackbar host state is null")
-                }
-                snackbarHostState?.showSnackbar(
-                    message = message,
-                    actionLabel = actionLabel,
-                    withDismissAction = withDismissAction,
-                    duration = duration
-                )
+    fun getExceptionHandler(
+        errorMessage: String,
+        continueRun: Boolean = true
+    ): CoroutineExceptionHandler {
+        return CoroutineExceptionHandler { _, exception ->
+            println("$errorMessage:\n $exception")
+            this.showSnackbar(
+                message = errorMessage,
+                duration = SnackbarDuration.Indefinite,
+                withDismissAction = true
+            )
+            if (!continueRun) {
+                Thread.sleep(3000)
+                throw RuntimeException(errorMessage, exception)
             }
         }
     }

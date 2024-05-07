@@ -5,41 +5,41 @@ import com.example.a40kcc.data.dao.RoundWithTournamentDao
 import com.example.a40kcc.data.`object`.RoundWithTournament
 import kotlinx.coroutines.flow.Flow
 
-class RoundWithTournamentRepository(private val roundDao: RoundWithTournamentDao) {
-    val allRoundsFlow: Flow<List<RoundWithTournament>> = roundDao.getAllFlow()
+class RoundWithTournamentRepository(private val roundWithTournamentDao: RoundWithTournamentDao) {
+    val allRoundsFlow: Flow<List<RoundWithTournament>> = roundWithTournamentDao.getAllFlow()
 
     @WorkerThread
     fun allRounds(): List<RoundWithTournament> {
-        return roundDao.getAll()
+        return roundWithTournamentDao.getAll()
     }
 
     @WorkerThread
     fun getById(roundId: Int): RoundWithTournament {
-        return roundDao.getById(roundId)
+        return roundWithTournamentDao.getById(roundId)
     }
 
     @WorkerThread
     fun getByRoundNumber(roundNumber: Int): List<RoundWithTournament> {
-        return roundDao.getByRoundNumber(roundNumber)
+        return roundWithTournamentDao.getByRoundNumber(roundNumber)
     }
 
     @WorkerThread
     fun getByPrimaryMission(primaryMissionName: String): List<RoundWithTournament> {
-        return roundDao.getByPrimaryMission(primaryMissionName)
+        return roundWithTournamentDao.getByPrimaryMission(primaryMissionName)
     }
 
     @WorkerThread
     fun getBySecondaryMission(secondaryMissionName: String): List<RoundWithTournament> {
-        return roundDao.getBySecondaryMission(secondaryMissionName)
+        return roundWithTournamentDao.getBySecondaryMission(secondaryMissionName)
     }
 
     @WorkerThread
     fun getByDeployment(deploymentName: String): List<RoundWithTournament> {
-        return roundDao.getByDeployment(deploymentName)
+        return roundWithTournamentDao.getByDeployment(deploymentName)
     }
 
     @WorkerThread
-    fun getByTournamentId(tournamentId: Int): List<RoundWithTournament> {
-        return roundDao.getByTournamentId(tournamentId)
+    suspend fun insert(tournamentID: Int, roundID: Int) {
+        roundWithTournamentDao.insert(tournamentID, roundID)
     }
 }

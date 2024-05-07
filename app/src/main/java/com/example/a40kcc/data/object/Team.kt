@@ -6,12 +6,12 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 
 @Entity(
-    "team",
+    tableName = "team",
     indices = [Index(value = ["teamID"])]
 )
 data class Team(
-    @PrimaryKey(true) val teamID: Int = 0,
-    @ColumnInfo("name") val name: String
+    @PrimaryKey(autoGenerate = true) val teamID: Int = 0,
+    @ColumnInfo(name = "name") val name: String
 ) : CoreObject {
     override fun getCoreColumns(): Map<String, String> {
         return mapOf(

@@ -9,34 +9,34 @@ import androidx.lifecycle.asLiveData
 import com.example.a40kcc.data.`object`.LiveRoundExpanded
 import com.example.a40kcc.data.repository.LiveRoundExpandedRepository
 
-class LiveRoundExpandedViewModel(private val liveRoundRepository: LiveRoundExpandedRepository) :
+class LiveRoundExpandedViewModel(private val liveRoundExpandedRepository: LiveRoundExpandedRepository) :
     ViewModel() {
     val allLiveRoundsFlow: LiveData<List<LiveRoundExpanded>> =
-        liveRoundRepository.allLiveRoundsFlow.asLiveData()
+        liveRoundExpandedRepository.allLiveRoundsFlow.asLiveData()
 
     fun allLiveRounds(): List<LiveRoundExpanded> {
-        return liveRoundRepository.allLiveRounds()
+        return liveRoundExpandedRepository.allLiveRounds()
     }
 
     fun getById(liveRoundId: Int): LiveRoundExpanded {
-        return liveRoundRepository.getById(liveRoundId)
+        return liveRoundExpandedRepository.getById(liveRoundId)
     }
 
     fun getByGameId(gameId: Int): LiveRoundExpanded {
-        return liveRoundRepository.getByGameId(gameId)
+        return liveRoundExpandedRepository.getByGameId(gameId)
     }
 
     fun getByExpectedResultId(predictionId: Int): LiveRoundExpanded {
-        return liveRoundRepository.getByExpectedResultId(predictionId)
+        return liveRoundExpandedRepository.getByExpectedResultId(predictionId)
     }
 }
 
-class LiveRoundExpandedViewModelFactory(private val liveRoundRepository: LiveRoundExpandedRepository) :
+class LiveRoundExpandedViewModelFactory(private val liveRoundExpandedRepository: LiveRoundExpandedRepository) :
     ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(LiveRoundExpandedViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return LiveRoundExpandedViewModel(liveRoundRepository) as T
+            return LiveRoundExpandedViewModel(liveRoundExpandedRepository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

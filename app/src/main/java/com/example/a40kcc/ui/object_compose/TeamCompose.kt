@@ -12,59 +12,50 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.window.Dialog
-import com.example.a40kcc.PLAYER_VIEW_MODEL
+import androidx.navigation.NavController
 import com.example.a40kcc.TEAM_VIEW_MODEL
 import com.example.a40kcc.data.`object`.CoreObject
 import com.example.a40kcc.data.`object`.Team
 import com.example.a40kcc.ui.utilities.ComposeData
-import com.example.a40kcc.ui.utilities.DropDownList
 import com.example.a40kcc.ui.utilities.ScaledText
+import kotlinx.coroutines.launch
 
 class TeamCompose : CoreObjectCompose {
     @Composable
     override fun AddObject(
         composeData: ComposeData,
+        navController: NavController,
         onDismissRequest: () -> Unit
     ) {
-        val modifier = composeData.modifier
         var teamName by remember { mutableStateOf("") }
-        var playerID by remember { mutableIntStateOf(0) }
-        var playerIndex by remember { mutableIntStateOf(0) }
-        val playerNames: MutableList<String> = mutableListOf("")
-
-        PLAYER_VIEW_MODEL.allPlayers().forEach { player ->
-            playerNames += player.name
-        }
 
         val onConfirmation = {
             val newTeam = Team(
                 name = teamName
             )
-            TEAM_VIEW_MODEL.insert(
-                newTeam,
-                this.getExceptionHandler(
-                    errorMessage = "Error adding the new team $teamName",
-                    composeData = composeData,
-                    continueRun = true
+            composeData.getScope().launch(
+                composeData.getExceptionHandler(
+                    errorMessage = "Error adding team: $teamName"
                 )
-            )
-            onDismissRequest()
+            ) {
+                TEAM_VIEW_MODEL.insert(newTeam)
+                onDismissRequest()
+            }
         }
 
         Dialog(onDismissRequest = { onDismissRequest() }) {
             Card(
-                modifier = modifier.wrapContentSize()
+                modifier = composeData.modifier.wrapContentSize()
             ) {
                 Column(
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = modifier.fillMaxWidth()
+                    modifier = composeData.modifier.fillMaxWidth()
                 ) {
                     Row {
                         ScaledText(
@@ -80,23 +71,9 @@ class TeamCompose : CoreObjectCompose {
                         )
                     }
                     Row {
-                        DropDownList(
-                            itemList = playerNames,
-                            selectedIndex = playerIndex,
-                            modifier = modifier,
-                            preText = "Player: ",
-                            onItemClick = { index ->
-                                playerIndex = index
-                                if (index != 0) {
-                                    playerID =
-                                        PLAYER_VIEW_MODEL.getByName(playerNames[playerIndex]).playerID
-                                }
-                            })
-                    }
-                    Row {
                         TextButton(
                             onClick = { onDismissRequest() },
-                            modifier = modifier
+                            modifier = composeData.modifier
                         ) {
                             Text(
                                 text = "Cancel",
@@ -105,7 +82,7 @@ class TeamCompose : CoreObjectCompose {
                         }
                         TextButton(
                             onClick = { onConfirmation() },
-                            modifier = modifier
+                            modifier = composeData.modifier
                         ) {
                             Text(
                                 text = "Add",
@@ -126,31 +103,30 @@ class TeamCompose : CoreObjectCompose {
     override fun RemoveObject(
         coreObject: CoreObject,
         composeData: ComposeData,
+        navController: NavController,
         onDismissRequest: () -> Unit
     ) {
-        val modifier = composeData.modifier
         val team: Team = coreObject as Team
 
         val onConfirmation = {
-            TEAM_VIEW_MODEL.delete(
-                team,
-                this.getExceptionHandler(
-                    errorMessage = "Error removing the team ${team.name}",
-                    composeData = composeData,
-                    continueRun = true
+            composeData.getScope().launch(
+                composeData.getExceptionHandler(
+                    errorMessage = "Error removing team: ${team.getDisplayName()}"
                 )
-            )
-            onDismissRequest()
+            ) {
+                TEAM_VIEW_MODEL.delete(team)
+                onDismissRequest()
+            }
         }
 
         Dialog(onDismissRequest = { onDismissRequest() }) {
             Card(
-                modifier = modifier.wrapContentSize()
+                modifier = composeData.modifier.wrapContentSize()
             ) {
                 Column(
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = modifier.fillMaxWidth()
+                    modifier = composeData.modifier.fillMaxWidth()
                 ) {
                     Row {
                         ScaledText(
@@ -167,7 +143,7 @@ class TeamCompose : CoreObjectCompose {
                     Row {
                         TextButton(
                             onClick = { onDismissRequest() },
-                            modifier = modifier
+                            modifier = composeData.modifier
                         ) {
                             Text(
                                 text = "Cancel",
@@ -176,7 +152,7 @@ class TeamCompose : CoreObjectCompose {
                         }
                         TextButton(
                             onClick = { onConfirmation() },
-                            modifier = modifier
+                            modifier = composeData.modifier
                         ) {
                             Text(
                                 text = "Confirm",

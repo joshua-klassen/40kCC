@@ -5,16 +5,16 @@ import com.example.a40kcc.data.dao.GameExpandedDao
 import com.example.a40kcc.data.`object`.GameExpanded
 import kotlinx.coroutines.flow.Flow
 
-class GameExpandedRepository(private val gameDao: GameExpandedDao) {
-    val allGamesFlow: Flow<List<GameExpanded>> = gameDao.getAllFlow()
+class GameExpandedRepository(private val gameExpandedDao: GameExpandedDao) {
+    val allGamesFlow: Flow<List<GameExpanded>> = gameExpandedDao.getAllFlow()
 
     @WorkerThread
     fun allGames(): List<GameExpanded> {
-        return gameDao.getAll()
+        return gameExpandedDao.getAll()
     }
 
     @WorkerThread
     fun getById(gameId: Int): GameExpanded {
-        return gameDao.getById(gameId)
+        return gameExpandedDao.getById(gameId)
     }
 }

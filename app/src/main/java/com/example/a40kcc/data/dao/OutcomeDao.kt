@@ -20,4 +20,9 @@ interface OutcomeDao : BaseDao<Outcome> {
         "SELECT * FROM outcome WHERE (player_01 = :playerId OR player_02 = :playerId)"
     )
     fun getByPlayerId(playerId: Int): List<Outcome>
+
+    @Query(
+        "SELECT * FROM outcome WHERE (player_01 = :player01Id AND player_02 = :player02Id)"
+    )
+    fun getByPlayers(player01Id: Int, player02Id: Int): List<Outcome>
 }

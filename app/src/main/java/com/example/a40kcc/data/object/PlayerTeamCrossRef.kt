@@ -5,7 +5,7 @@ import androidx.room.ForeignKey
 import androidx.room.Index
 
 @Entity(
-    "playerTeamCrossRef",
+    tableName = "playerTeamCrossRef",
     indices = [
         Index(value = ["playerID"]),
         Index(value = ["teamID"])
@@ -16,7 +16,7 @@ import androidx.room.Index
             entity = Team::class,
             childColumns = ["teamID"],
             parentColumns = ["teamID"],
-            onDelete = ForeignKey.RESTRICT,
+            onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE,
             deferred = true
         ),
@@ -24,7 +24,7 @@ import androidx.room.Index
             entity = Player::class,
             childColumns = ["playerID"],
             parentColumns = ["playerID"],
-            onDelete = ForeignKey.RESTRICT,
+            onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE,
             deferred = true
         )

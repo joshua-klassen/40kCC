@@ -16,7 +16,7 @@ data class TeamWithPlayers(
 ) : CoreObject {
     override fun getCoreColumns(): Map<String, String> {
         return mapOf(
-            Pair("Team Name", team.name)
+            Pair("Team Name", team.getDisplayName())
         )
     }
 
@@ -24,13 +24,13 @@ data class TeamWithPlayers(
         val columnMap = mutableMapOf<String, String>()
 
         player.forEach {
-            columnMap += Pair("Player ${it.playerID}", it.name)
+            columnMap += Pair("Player ${it.playerID}", it.getDisplayName())
         }
 
         return columnMap
     }
 
     override fun getDisplayName(): String {
-        return team.name
+        return team.getDisplayName()
     }
 }

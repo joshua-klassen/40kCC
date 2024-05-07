@@ -6,11 +6,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
 import com.example.a40kcc.data.`object`.Tournament
 import com.example.a40kcc.data.repository.TournamentRepository
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.launch
 import java.sql.Date
 
 class TournamentViewModel(private val tournamentRepository: TournamentRepository) : ViewModel() {
@@ -33,22 +30,16 @@ class TournamentViewModel(private val tournamentRepository: TournamentRepository
         return tournamentRepository.getByDate(tournamentDate)
     }
 
-    fun insert(tournament: Tournament, exceptionHandler: CoroutineExceptionHandler) {
-        viewModelScope.launch(exceptionHandler) {
-            tournamentRepository.insert(tournament)
-        }
+    suspend fun insert(tournament: Tournament) {
+        tournamentRepository.insert(tournament)
     }
 
-    fun update(tournament: Tournament, exceptionHandler: CoroutineExceptionHandler) {
-        viewModelScope.launch(exceptionHandler) {
-            tournamentRepository.update(tournament)
-        }
+    suspend fun update(tournament: Tournament) {
+        tournamentRepository.update(tournament)
     }
 
-    fun delete(tournament: Tournament, exceptionHandler: CoroutineExceptionHandler) {
-        viewModelScope.launch(exceptionHandler) {
-            tournamentRepository.delete(tournament)
-        }
+    suspend fun delete(tournament: Tournament) {
+        tournamentRepository.delete(tournament)
     }
 }
 

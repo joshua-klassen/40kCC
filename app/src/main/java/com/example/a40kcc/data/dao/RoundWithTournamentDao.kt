@@ -47,7 +47,7 @@ interface RoundWithTournamentDao : BaseDao<Round> {
 
     @Transaction
     @Query(
-        "SELECT * FROM round WHERE tournament = :tournamentId"
+        "INSERT INTO tournamentRoundCrossRef (tournamentID, roundID) VALUES(:tournamentID, :roundID)"
     )
-    fun getByTournamentId(tournamentId: Int): List<RoundWithTournament>
+    suspend fun insert(tournamentID: Int, roundID: Int)
 }

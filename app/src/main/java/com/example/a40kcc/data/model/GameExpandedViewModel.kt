@@ -9,25 +9,26 @@ import androidx.lifecycle.asLiveData
 import com.example.a40kcc.data.`object`.GameExpanded
 import com.example.a40kcc.data.repository.GameExpandedRepository
 
-class GameExpandedViewModel(private val gameRepository: GameExpandedRepository) : ViewModel() {
+class GameExpandedViewModel(private val gameExpandedRepository: GameExpandedRepository) :
+    ViewModel() {
     val allGamesFlow: LiveData<List<GameExpanded>> =
-        gameRepository.allGamesFlow.asLiveData()
+        gameExpandedRepository.allGamesFlow.asLiveData()
 
     fun allGames(): List<GameExpanded> {
-        return gameRepository.allGames()
+        return gameExpandedRepository.allGames()
     }
 
     fun getById(gameId: Int): GameExpanded {
-        return gameRepository.getById(gameId)
+        return gameExpandedRepository.getById(gameId)
     }
 }
 
-class GameExpandedViewModelFactory(private val gameRepository: GameExpandedRepository) :
+class GameExpandedViewModelFactory(private val gameExpandedRepository: GameExpandedRepository) :
     ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(GameExpandedViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return GameExpandedViewModel(gameRepository) as T
+            return GameExpandedViewModel(gameExpandedRepository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

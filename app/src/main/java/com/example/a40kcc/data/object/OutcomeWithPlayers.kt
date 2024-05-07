@@ -18,9 +18,9 @@ data class OutcomeWithPlayers(
 ) : CoreObject {
     override fun getCoreColumns(): Map<String, String> {
         return mapOf(
-            Pair("Player 01", player01.name),
+            Pair("Player 01", player01.getDisplayName()),
             Pair("Player 01 Points", outcome.player01Points.toString()),
-            Pair("Player 02", player02?.name ?: ""),
+            Pair("Player 02", player02?.getDisplayName() ?: ""),
             Pair("Player 01 Points", outcome.player02Points.toString())
         )
     }
@@ -31,5 +31,9 @@ data class OutcomeWithPlayers(
             Pair("Player 02 Points", outcome.player02TeamPoints.toString()),
             Pair("Point Differential", outcome.pointDifferential.toString())
         )
+    }
+
+    override fun getDisplayName(): String {
+        return "${player01.getDisplayName()} vs ${player02?.getDisplayName()}\n${outcome.getDisplayName()}"
     }
 }

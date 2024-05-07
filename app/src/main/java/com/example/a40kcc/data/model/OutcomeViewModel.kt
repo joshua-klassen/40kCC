@@ -6,11 +6,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
 import com.example.a40kcc.data.`object`.Outcome
 import com.example.a40kcc.data.repository.OutcomeRepository
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.launch
 
 class OutcomeViewModel(private val outcomeRepository: OutcomeRepository) : ViewModel() {
     val allOutcomesFlow: LiveData<List<Outcome>> = outcomeRepository.allOutcomesFlow.asLiveData()
@@ -27,16 +24,16 @@ class OutcomeViewModel(private val outcomeRepository: OutcomeRepository) : ViewM
         return outcomeRepository.getByPlayerId(playerId)
     }
 
-    fun insert(outcome: Outcome, exceptionHandler: CoroutineExceptionHandler) {
-        viewModelScope.launch(exceptionHandler) {
-            outcomeRepository.insert(outcome)
-        }
+    fun getByPlayers(player01Id: Int, player02Id: Int): List<Outcome> {
+        return outcomeRepository.getByPlayers(player01Id, player02Id)
     }
 
-    fun update(outcome: Outcome, exceptionHandler: CoroutineExceptionHandler) {
-        viewModelScope.launch(exceptionHandler) {
-            outcomeRepository.update(outcome)
-        }
+    suspend fun insert(outcome: Outcome) {
+        outcomeRepository.insert(outcome)
+    }
+
+    suspend fun update(outcome: Outcome) {
+        outcomeRepository.update(outcome)
     }
 }
 

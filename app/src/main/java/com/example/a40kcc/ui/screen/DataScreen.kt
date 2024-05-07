@@ -32,6 +32,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.a40kcc.R
 import com.example.a40kcc.data.`object`.DataObject
 import com.example.a40kcc.ui.utilities.ScaledText
@@ -40,14 +41,14 @@ import com.google.accompanist.drawablepainter.rememberDrawablePainter
 @Composable
 fun DataScreen(
     data: DataObject,
-    onBackClick: () -> Unit,
+    navController: NavController,
     modifier: Modifier = Modifier,
     imageWidth: Dp = R.dimen.icon_image_size_default.dp,
     imageHeight: Dp = R.dimen.icon_image_size_default.dp
 ) {
     Scaffold(topBar = {
         Button(
-            onClick = onBackClick,
+            onClick = { navController.navigate(route = "home") },
             modifier = modifier
         ) {
             Column {

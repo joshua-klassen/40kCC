@@ -1,11 +1,10 @@
 package com.example.a40kcc.ui.object_compose
 
-import androidx.compose.material3.SnackbarDuration
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavController
 import com.example.a40kcc.data.`object`.CoreObject
 import com.example.a40kcc.ui.utilities.ComposeData
 import kotlinx.coroutines.CoroutineExceptionHandler
-import java.lang.Thread.sleep
 
 interface CoreObjectCompose {
     fun canAdd(): Boolean {
@@ -23,6 +22,7 @@ interface CoreObjectCompose {
     @Composable
     fun AddObject(
         composeData: ComposeData,
+        navController: NavController,
         onDismissRequest: () -> Unit
     ) {
     }
@@ -31,6 +31,7 @@ interface CoreObjectCompose {
     fun EditObject(
         coreObject: CoreObject,
         composeData: ComposeData,
+        navController: NavController,
         onDismissRequest: () -> Unit
     ) {
     }
@@ -39,6 +40,7 @@ interface CoreObjectCompose {
     fun RemoveObject(
         coreObject: CoreObject,
         composeData: ComposeData,
+        navController: NavController,
         onDismissRequest: () -> Unit
     ) {
     }
@@ -48,17 +50,10 @@ interface CoreObjectCompose {
         composeData: ComposeData,
         continueRun: Boolean = false
     ): CoroutineExceptionHandler {
-        return CoroutineExceptionHandler { _, exception ->
-            println("$errorMessage:\n $exception")
-            composeData.showSnackbar(
-                message = errorMessage,
-                duration = SnackbarDuration.Indefinite,
-                withDismissAction = true
-            )
-            if (!continueRun) {
-                sleep(3000)
-                throw RuntimeException(errorMessage, exception)
-            }
-        }
+        return getExceptionHandler(
+            errorMessage = errorMessage,
+            composeData = composeData,
+            continueRun = continueRun
+        )
     }
 }

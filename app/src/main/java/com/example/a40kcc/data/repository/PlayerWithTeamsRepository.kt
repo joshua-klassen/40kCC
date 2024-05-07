@@ -5,36 +5,36 @@ import com.example.a40kcc.data.dao.PlayerWithTeamsDao
 import com.example.a40kcc.data.`object`.PlayerWithTeams
 import kotlinx.coroutines.flow.Flow
 
-class PlayerWithTeamsRepository(private val playerDao: PlayerWithTeamsDao) {
-    val allPlayersFlow: Flow<List<PlayerWithTeams>> = playerDao.getAllFlow()
+class PlayerWithTeamsRepository(private val playerWithTeamsDao: PlayerWithTeamsDao) {
+    val allPlayersFlow: Flow<List<PlayerWithTeams>> = playerWithTeamsDao.getAllFlow()
 
     @WorkerThread
     fun allPlayers(): List<PlayerWithTeams> {
-        return playerDao.getAll()
+        return playerWithTeamsDao.getAll()
     }
 
     @WorkerThread
     fun getById(playerId: Int): PlayerWithTeams {
-        return playerDao.getById(playerId)
+        return playerWithTeamsDao.getById(playerId)
     }
 
     @WorkerThread
     fun getByName(playerName: String): PlayerWithTeams {
-        return playerDao.getByName(playerName)
+        return playerWithTeamsDao.getByName(playerName)
     }
 
     @WorkerThread
     fun getByFactionName(factionName: String): List<PlayerWithTeams> {
-        return playerDao.getByFactionName(factionName)
+        return playerWithTeamsDao.getByFactionName(factionName)
     }
 
     @WorkerThread
     fun getByNickname(playerNickname: String): PlayerWithTeams {
-        return playerDao.getByNickname(playerNickname)
+        return playerWithTeamsDao.getByNickname(playerNickname)
     }
 
     @WorkerThread
-    fun insert(playerID: Int, teamID: Int) {
-        playerDao.insert(playerID, teamID)
+    suspend fun insert(playerID: Int, teamID: Int) {
+        playerWithTeamsDao.insert(playerID, teamID)
     }
 }
