@@ -1,10 +1,9 @@
 package com.example.a40kcc.ui.object_compose
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import com.example.a40kcc.data.`object`.CoreObject
-import com.example.a40kcc.ui.utilities.ComposeData
-import kotlinx.coroutines.CoroutineExceptionHandler
 
 interface CoreObjectCompose {
     fun canAdd(): Boolean {
@@ -21,8 +20,8 @@ interface CoreObjectCompose {
 
     @Composable
     fun AddObject(
-        composeData: ComposeData,
         navController: NavController,
+        modifier: Modifier = Modifier,
         onDismissRequest: () -> Unit
     ) {
     }
@@ -30,8 +29,8 @@ interface CoreObjectCompose {
     @Composable
     fun EditObject(
         coreObject: CoreObject,
-        composeData: ComposeData,
         navController: NavController,
+        modifier: Modifier = Modifier,
         onDismissRequest: () -> Unit
     ) {
     }
@@ -39,21 +38,9 @@ interface CoreObjectCompose {
     @Composable
     fun RemoveObject(
         coreObject: CoreObject,
-        composeData: ComposeData,
         navController: NavController,
+        modifier: Modifier = Modifier,
         onDismissRequest: () -> Unit
     ) {
-    }
-
-    fun getExceptionHandler(
-        errorMessage: String,
-        composeData: ComposeData,
-        continueRun: Boolean = false
-    ): CoroutineExceptionHandler {
-        return getExceptionHandler(
-            errorMessage = errorMessage,
-            composeData = composeData,
-            continueRun = continueRun
-        )
     }
 }

@@ -9,12 +9,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -142,7 +139,10 @@ fun EditGame(
                     onClick = { onConfirmation() },
                     modifier = modifier.align(Alignment.End)
                 ) {
-                    Icon(imageVector = Icons.Filled.Add, contentDescription = "Add")
+                    Text(
+                        text = "Update",
+                        modifier = modifier
+                    )
                 }
             }
         }
@@ -152,12 +152,22 @@ fun EditGame(
                 .padding(paddingValues)
                 .fillMaxSize()
         ) {
-            Row {
-                Text(
-                    text = "Game Data"
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = modifier
+                    .fillMaxWidth()
+            ) {
+                ScaledText(
+                    text = "Game Data",
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = modifier
                 )
             }
-            Row {
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = modifier
+                    .fillMaxWidth()
+            ) {
                 ScaledText(
                     text = "Player 01: ${game.player01.player.getDisplayName()}",
                     style = MaterialTheme.typography.bodyMedium,
@@ -169,7 +179,11 @@ fun EditGame(
                     modifier = modifier
                 )
             }
-            Row {
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = modifier
+                    .fillMaxWidth()
+            ) {
                 ScaledText(
                     text = "Player 02 Faction: ${game.game.player02FactionName}",
                     style = MaterialTheme.typography.bodyMedium,
@@ -181,12 +195,22 @@ fun EditGame(
                     modifier = modifier
                 )
             }
-            Row {
-                Text(
-                    text = "Update"
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = modifier
+                    .fillMaxWidth()
+            ) {
+                ScaledText(
+                    text = "Update",
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = modifier
                 )
             }
-            Row {
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = modifier
+                    .fillMaxWidth()
+            ) {
                 DropDownList(
                     itemList = predictions.map { it.getDisplayName() },
                     selectedIndex = predictionIndex,
@@ -198,7 +222,11 @@ fun EditGame(
                     }
                 )
             }
-            Row {
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = modifier
+                    .fillMaxWidth()
+            ) {
                 if (outcomeID != 0) {
                     ScaledText(
                         text = "Outcome: ${OUTCOME_VIEW_MODEL.getById(outcomeID).getDisplayName()}",
@@ -212,9 +240,10 @@ fun EditGame(
                     },
                     modifier = modifier
                 ) {
-                    Text(
+                    ScaledText(
                         text = "Add Outcome",
-                        style = MaterialTheme.typography.titleMedium
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = modifier
                     )
                 }
 
@@ -304,8 +333,10 @@ private fun AddOutcome(
                 modifier = modifier.fillMaxWidth()
             ) {
                 Row {
-                    Text(
-                        text = "Add a new outcome"
+                    ScaledText(
+                        text = "Add a new outcome",
+                        style = MaterialTheme.typography.titleLarge,
+                        modifier = modifier
                     )
                 }
                 Row {

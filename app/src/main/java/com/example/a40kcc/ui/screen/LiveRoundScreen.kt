@@ -14,8 +14,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -23,7 +22,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
 import com.example.a40kcc.COLORS
+import com.example.a40kcc.COMPOSE_DATA
 import com.example.a40kcc.LIVE_ROUND_EXPANDED_VIEW_MODEL
 import com.example.a40kcc.LIVE_ROUND_VIEW_MODEL
 import com.example.a40kcc.PREDICTION_VIEW_MODEL
@@ -49,7 +48,6 @@ import com.example.a40kcc.data.`object`.Round
 import com.example.a40kcc.data.`object`.RoundWithTournament
 import com.example.a40kcc.data.`object`.Team
 import com.example.a40kcc.data.`object`.TournamentWithRounds
-import com.example.a40kcc.ui.utilities.ComposeData
 import com.example.a40kcc.ui.utilities.DropDownList
 import com.example.a40kcc.ui.utilities.ScaledText
 import kotlinx.coroutines.launch
@@ -63,22 +61,16 @@ private var winThreshold: Int = 0
 @Composable
 fun LiveRoundScreen(
     navController: NavController,
+    rememberedTournament: TournamentWithRounds?,
+    rememberedRound: RoundWithTournament?,
+    rememberedTeam: Team?,
     modifier: Modifier = Modifier,
     columnWidth: Dp = 100.dp
 ) {
-    val scope = rememberCoroutineScope()
-    val snackbarHostState = remember { SnackbarHostState() }
-    val composeData = remember {
-        ComposeData(
-            snackbarHostState = snackbarHostState,
-            coroutineScope = scope,
-            modifier = modifier
-        )
-    }
     var showPreScreen by remember { mutableStateOf(true) }
-    var tournament: TournamentWithRounds? by remember { mutableStateOf(null) }
-    var round: RoundWithTournament? by remember { mutableStateOf(null) }
-    var team: Team? by remember { mutableStateOf(null) }
+    var tournament: TournamentWithRounds? = rememberedTournament
+    var round: RoundWithTournament? = rememberedRound
+    var team: Team? = rememberedTeam
 
     val changeRound: (tournament: TournamentWithRounds, round: Round, team: Team) -> Unit =
         { tempTournament, tempRound, tempTeam ->
@@ -89,9 +81,6 @@ fun LiveRoundScreen(
         }
 
     Scaffold(
-        snackbarHost = {
-            SnackbarHost(hostState = snackbarHostState)
-        },
         topBar = {
             Button(
                 onClick = { navController.navigate(route = "home") },
@@ -112,7 +101,10 @@ fun LiveRoundScreen(
                 },
                 modifier = modifier
             ) {
-                if (showPreScreen) {
+                if (showPreScreen &&
+                    TOURNAMENT_WITH_ROUNDS_VIEW_MODEL.allTournaments().isNotEmpty() &&
+                    TEAM_VIEW_MODEL.allTeams().isNotEmpty()
+                ) {
                     PreLiveRoundScreen(
                         tournament = tournament,
                         round = round,
@@ -120,6 +112,13 @@ fun LiveRoundScreen(
                         modifier = modifier,
                         onDismissRequest = changeRound
                     )
+                } else {
+                    COMPOSE_DATA.showSnackbar(
+                        message = "At least one tournament and team must exist to view the Live Round",
+                        duration = SnackbarDuration.Indefinite,
+                        withDismissAction = true
+                    )
+                    navController.navigate("home")
                 }
                 Column {
                     Text(
@@ -138,18 +137,28 @@ fun LiveRoundScreen(
             if (showPreScreen ||
                 (tournament == null || round == null || team == null)
             ) {
-                PreLiveRoundScreen(
-                    tournament = tournament,
-                    round = round,
-                    team = team,
-                    modifier = modifier,
-                    onDismissRequest = changeRound
-                )
+                if (TOURNAMENT_WITH_ROUNDS_VIEW_MODEL.allTournaments().isNotEmpty() &&
+                    TEAM_VIEW_MODEL.allTeams().isNotEmpty()
+                ) {
+                    PreLiveRoundScreen(
+                        tournament = tournament,
+                        round = round,
+                        team = team,
+                        modifier = modifier,
+                        onDismissRequest = changeRound
+                    )
+                } else {
+                    COMPOSE_DATA.showSnackbar(
+                        message = "At least one tournament and team must exist to view the Live Round",
+                        duration = SnackbarDuration.Indefinite,
+                        withDismissAction = true
+                    )
+                    navController.navigate("home")
+                }
             } else {
                 LiveRoundScreenData(
                     round = round!!,
                     team = team!!,
-                    composeData = composeData,
                     columnWidth = columnWidth
                 )
             }
@@ -161,7 +170,7 @@ fun LiveRoundScreen(
 private fun LiveRoundScreenData(
     round: RoundWithTournament,
     team: Team,
-    composeData: ComposeData,
+    modifier: Modifier = Modifier,
     columnWidth: Dp = 100.dp
 ) {
     var editLiveRound by remember { mutableStateOf(false) }
@@ -172,13 +181,13 @@ private fun LiveRoundScreenData(
 
     Row(
         horizontalArrangement = Arrangement.SpaceEvenly,
-        modifier = composeData.modifier
+        modifier = modifier
             .fillMaxWidth()
     ) {
         Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = composeData.modifier
+            modifier = modifier
                 .width(columnWidth)
                 .alignByBaseline()
                 .wrapContentHeight()
@@ -191,7 +200,7 @@ private fun LiveRoundScreenData(
         Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = composeData.modifier
+            modifier = modifier
                 .width(columnWidth)
                 .alignByBaseline()
                 .wrapContentHeight()
@@ -204,7 +213,7 @@ private fun LiveRoundScreenData(
         Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = composeData.modifier
+            modifier = modifier
                 .width(columnWidth)
                 .alignByBaseline()
                 .wrapContentHeight()
@@ -219,10 +228,10 @@ private fun LiveRoundScreenData(
     liveRounds.forEach { liveRound ->
         Row(
             horizontalArrangement = Arrangement.SpaceEvenly,
-            modifier = composeData.modifier.fillMaxWidth()
+            modifier = modifier.fillMaxWidth()
         ) {
             Column(
-                modifier = composeData.modifier
+                modifier = modifier
                     .width(columnWidth)
                     .alignByBaseline()
                     .wrapContentHeight()
@@ -230,12 +239,12 @@ private fun LiveRoundScreenData(
                 ScaledText(
                     text = liveRound.game.player01.player.name,
                     style = MaterialTheme.typography.titleMedium,
-                    modifier = composeData.modifier,
+                    modifier = modifier,
                     textAlign = TextAlign.Center
                 )
             }
             Column(
-                modifier = composeData.modifier
+                modifier = modifier
                     .width(columnWidth)
                     .alignByBaseline()
                     .wrapContentHeight()
@@ -243,13 +252,13 @@ private fun LiveRoundScreenData(
                 ScaledText(
                     text = liveRound.expectedResult.name,
                     style = MaterialTheme.typography.titleLarge,
-                    modifier = composeData.modifier,
+                    modifier = modifier,
                     textAlign = TextAlign.Center,
                     color = Color(liveRound.expectedResult.color)
                 )
             }
             Column(
-                modifier = composeData.modifier
+                modifier = modifier
                     .width(columnWidth)
                     .alignByBaseline()
                     .wrapContentHeight()
@@ -259,13 +268,13 @@ private fun LiveRoundScreenData(
                         text = liveRound.game.outcome.player01TeamPoints.toString(),
                         style = MaterialTheme.typography.titleLarge,
                         textAlign = TextAlign.Center,
-                        modifier = composeData.modifier
+                        modifier = modifier
                     )
                 } else {
                     ScaledText(
                         text = liveRound.expectedResult.name,
                         style = MaterialTheme.typography.titleMedium,
-                        modifier = composeData.modifier
+                        modifier = modifier
                             .clickable(enabled = true, onClick = {
                                 editLiveRound = !editLiveRound
                             }),
@@ -279,14 +288,14 @@ private fun LiveRoundScreenData(
         if (editLiveRound) {
             EditLiveRound(
                 liveRound = liveRound,
-                composeData = composeData,
+                modifier = modifier,
                 onDismissRequest = { editLiveRound = !editLiveRound }
             )
         }
     }
     RoundResults(
         liveRounds = liveRounds,
-        modifier = composeData.modifier,
+        modifier = modifier,
         columnWidth = columnWidth
     )
 }
@@ -517,8 +526,8 @@ fun RoundResults(
 @Composable
 fun EditLiveRound(
     liveRound: LiveRoundExpanded,
-    onDismissRequest: () -> Unit,
-    composeData: ComposeData
+    modifier: Modifier = Modifier,
+    onDismissRequest: () -> Unit
 ) {
     var predictionID by remember { mutableIntStateOf(0) }
     var predictionIndex by remember { mutableIntStateOf(0) }
@@ -535,8 +544,8 @@ fun EditLiveRound(
             gameID = liveRound.liveRound.gameID,
             expectedResult = predictionID
         )
-        composeData.getScope().launch(
-            composeData.getExceptionHandler(
+        COMPOSE_DATA.getScope().launch(
+            COMPOSE_DATA.getExceptionHandler(
                 errorMessage = "Error updating the round: ${liveRound.getDisplayName()}"
             )
         ) {
@@ -547,12 +556,12 @@ fun EditLiveRound(
 
     Dialog(onDismissRequest = { onDismissRequest() }) {
         Card(
-            modifier = composeData.modifier.wrapContentSize()
+            modifier = modifier.wrapContentSize()
         ) {
             Column(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = composeData.modifier.fillMaxWidth()
+                modifier = modifier.fillMaxWidth()
             ) {
                 Row {
                     DropDownList(

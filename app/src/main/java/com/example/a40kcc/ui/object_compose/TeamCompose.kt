@@ -16,20 +16,21 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
+import com.example.a40kcc.COMPOSE_DATA
 import com.example.a40kcc.TEAM_VIEW_MODEL
 import com.example.a40kcc.data.`object`.CoreObject
 import com.example.a40kcc.data.`object`.Team
-import com.example.a40kcc.ui.utilities.ComposeData
 import com.example.a40kcc.ui.utilities.ScaledText
 import kotlinx.coroutines.launch
 
 class TeamCompose : CoreObjectCompose {
     @Composable
     override fun AddObject(
-        composeData: ComposeData,
         navController: NavController,
+        modifier: Modifier,
         onDismissRequest: () -> Unit
     ) {
         var teamName by remember { mutableStateOf("") }
@@ -38,8 +39,8 @@ class TeamCompose : CoreObjectCompose {
             val newTeam = Team(
                 name = teamName
             )
-            composeData.getScope().launch(
-                composeData.getExceptionHandler(
+            COMPOSE_DATA.getScope().launch(
+                COMPOSE_DATA.getExceptionHandler(
                     errorMessage = "Error adding team: $teamName"
                 )
             ) {
@@ -50,12 +51,12 @@ class TeamCompose : CoreObjectCompose {
 
         Dialog(onDismissRequest = { onDismissRequest() }) {
             Card(
-                modifier = composeData.modifier.wrapContentSize()
+                modifier = modifier.wrapContentSize()
             ) {
                 Column(
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = composeData.modifier.fillMaxWidth()
+                    modifier = modifier.fillMaxWidth()
                 ) {
                     Row {
                         ScaledText(
@@ -73,7 +74,7 @@ class TeamCompose : CoreObjectCompose {
                     Row {
                         TextButton(
                             onClick = { onDismissRequest() },
-                            modifier = composeData.modifier
+                            modifier = modifier
                         ) {
                             Text(
                                 text = "Cancel",
@@ -82,7 +83,7 @@ class TeamCompose : CoreObjectCompose {
                         }
                         TextButton(
                             onClick = { onConfirmation() },
-                            modifier = composeData.modifier
+                            modifier = modifier
                         ) {
                             Text(
                                 text = "Add",
@@ -102,15 +103,15 @@ class TeamCompose : CoreObjectCompose {
     @Composable
     override fun RemoveObject(
         coreObject: CoreObject,
-        composeData: ComposeData,
         navController: NavController,
+        modifier: Modifier,
         onDismissRequest: () -> Unit
     ) {
         val team: Team = coreObject as Team
 
         val onConfirmation = {
-            composeData.getScope().launch(
-                composeData.getExceptionHandler(
+            COMPOSE_DATA.getScope().launch(
+                COMPOSE_DATA.getExceptionHandler(
                     errorMessage = "Error removing team: ${team.getDisplayName()}"
                 )
             ) {
@@ -121,12 +122,12 @@ class TeamCompose : CoreObjectCompose {
 
         Dialog(onDismissRequest = { onDismissRequest() }) {
             Card(
-                modifier = composeData.modifier.wrapContentSize()
+                modifier = modifier.wrapContentSize()
             ) {
                 Column(
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = composeData.modifier.fillMaxWidth()
+                    modifier = modifier.fillMaxWidth()
                 ) {
                     Row {
                         ScaledText(
@@ -143,7 +144,7 @@ class TeamCompose : CoreObjectCompose {
                     Row {
                         TextButton(
                             onClick = { onDismissRequest() },
-                            modifier = composeData.modifier
+                            modifier = modifier
                         ) {
                             Text(
                                 text = "Cancel",
@@ -152,7 +153,7 @@ class TeamCompose : CoreObjectCompose {
                         }
                         TextButton(
                             onClick = { onConfirmation() },
-                            modifier = composeData.modifier
+                            modifier = modifier
                         ) {
                             Text(
                                 text = "Confirm",

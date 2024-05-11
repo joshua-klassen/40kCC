@@ -16,8 +16,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
+import com.example.a40kcc.COMPOSE_DATA
 import com.example.a40kcc.FACTION_DATA
 import com.example.a40kcc.GAME_VIEW_MODEL
 import com.example.a40kcc.LIVE_ROUND_VIEW_MODEL
@@ -31,15 +33,19 @@ import com.example.a40kcc.data.`object`.LiveRound
 import com.example.a40kcc.data.`object`.PlayerWithTeams
 import com.example.a40kcc.data.`object`.Prediction
 import com.example.a40kcc.data.`object`.TournamentWithRounds
-import com.example.a40kcc.ui.utilities.ComposeData
 import com.example.a40kcc.ui.utilities.DropDownList
 import kotlinx.coroutines.launch
 
 class GameCompose : CoreObjectCompose {
+    override fun canAdd(): Boolean {
+        return !(PLAYER_WITH_TEAMS_VIEW_MODEL.allPlayers()
+            .isEmpty() || TOURNAMENT_WITH_ROUNDS_VIEW_MODEL.allTournaments().isEmpty())
+    }
+
     @Composable
     override fun AddObject(
-        composeData: ComposeData,
         navController: NavController,
+        modifier: Modifier,
         onDismissRequest: () -> Unit
     ) {
         val players: List<PlayerWithTeams> = PLAYER_WITH_TEAMS_VIEW_MODEL.allPlayers()
@@ -70,8 +76,8 @@ class GameCompose : CoreObjectCompose {
                 predictionID = predictionID,
                 roundID = roundID
             )
-            composeData.getScope().launch(
-                composeData.getExceptionHandler(
+            COMPOSE_DATA.getScope().launch(
+                COMPOSE_DATA.getExceptionHandler(
                     errorMessage = "Error adding the new game"
                 )
             ) {
@@ -89,12 +95,12 @@ class GameCompose : CoreObjectCompose {
 
         Dialog(onDismissRequest = { onDismissRequest() }) {
             Card(
-                modifier = composeData.modifier.wrapContentSize()
+                modifier = modifier.wrapContentSize()
             ) {
                 Column(
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = composeData.modifier.fillMaxWidth()
+                    modifier = modifier.fillMaxWidth()
                 ) {
                     Row {
                         Text(
@@ -105,7 +111,7 @@ class GameCompose : CoreObjectCompose {
                         DropDownList(
                             itemList = players.map { it.getDisplayName() },
                             selectedIndex = player01Index,
-                            modifier = composeData.modifier,
+                            modifier = modifier,
                             preText = "Player 01: ",
                             onItemClick = { index ->
                                 player01Index = index
@@ -122,7 +128,7 @@ class GameCompose : CoreObjectCompose {
                         DropDownList(
                             itemList = factionNames,
                             selectedIndex = player01FactionIndex,
-                            modifier = composeData.modifier,
+                            modifier = modifier,
                             preText = "Player 01 Faction: ",
                             onItemClick = { index ->
                                 player01FactionIndex = index
@@ -133,7 +139,7 @@ class GameCompose : CoreObjectCompose {
                         DropDownList(
                             itemList = factionNames,
                             selectedIndex = player02FactionIndex,
-                            modifier = composeData.modifier,
+                            modifier = modifier,
                             preText = "Player 02 Faction: ",
                             onItemClick = { index ->
                                 player02FactionIndex = index
@@ -144,7 +150,7 @@ class GameCompose : CoreObjectCompose {
                         DropDownList(
                             itemList = predictions.map { it.getDisplayName() },
                             selectedIndex = predictionIndex,
-                            modifier = composeData.modifier,
+                            modifier = modifier,
                             preText = "Prediction: ",
                             onItemClick = { index ->
                                 predictionIndex = index
@@ -155,7 +161,7 @@ class GameCompose : CoreObjectCompose {
                         DropDownList(
                             itemList = tournaments.map { it.getDisplayName() },
                             selectedIndex = tournamentIndex,
-                            modifier = composeData.modifier,
+                            modifier = modifier,
                             preText = "Tournament: ",
                             onItemClick = { index ->
                                 tournamentIndex = index
@@ -166,7 +172,7 @@ class GameCompose : CoreObjectCompose {
                         DropDownList(
                             itemList = tournaments[tournamentIndex].round.map { it.getDisplayName() },
                             selectedIndex = roundIndex,
-                            modifier = composeData.modifier,
+                            modifier = modifier,
                             preText = "Round: ",
                             onItemClick = { index ->
                                 roundIndex = index
@@ -176,7 +182,7 @@ class GameCompose : CoreObjectCompose {
                     Row {
                         TextButton(
                             onClick = { onDismissRequest() },
-                            modifier = composeData.modifier
+                            modifier = modifier
                         ) {
                             Text(
                                 text = "Cancel",
@@ -185,7 +191,7 @@ class GameCompose : CoreObjectCompose {
                         }
                         TextButton(
                             onClick = { onConfirmation() },
-                            modifier = composeData.modifier
+                            modifier = modifier
                         ) {
                             Text(
                                 text = "Add",
@@ -201,8 +207,8 @@ class GameCompose : CoreObjectCompose {
     @Composable
     override fun EditObject(
         coreObject: CoreObject,
-        composeData: ComposeData,
         navController: NavController,
+        modifier: Modifier,
         onDismissRequest: () -> Unit
     ) {
         val game: GameExpanded = coreObject as GameExpanded
@@ -215,15 +221,15 @@ class GameCompose : CoreObjectCompose {
     @Composable
     override fun RemoveObject(
         coreObject: CoreObject,
-        composeData: ComposeData,
         navController: NavController,
+        modifier: Modifier,
         onDismissRequest: () -> Unit
     ) {
         val game: GameExpanded = coreObject as GameExpanded
 
         val onConfirmation = {
-            composeData.getScope().launch(
-                composeData.getExceptionHandler(
+            COMPOSE_DATA.getScope().launch(
+                COMPOSE_DATA.getExceptionHandler(
                     errorMessage = "Error removing the game: ${game.getDisplayName()}"
                 )
             ) {
@@ -234,12 +240,12 @@ class GameCompose : CoreObjectCompose {
 
         Dialog(onDismissRequest = { onDismissRequest() }) {
             Card(
-                modifier = composeData.modifier.wrapContentSize()
+                modifier = modifier.wrapContentSize()
             ) {
                 Column(
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = composeData.modifier.fillMaxWidth()
+                    modifier = modifier.fillMaxWidth()
                 ) {
                     Row {
                         Text(
@@ -250,7 +256,7 @@ class GameCompose : CoreObjectCompose {
                     Row {
                         TextButton(
                             onClick = { onDismissRequest() },
-                            modifier = composeData.modifier
+                            modifier = modifier
                         ) {
                             Text(
                                 text = "Cancel",
@@ -259,7 +265,7 @@ class GameCompose : CoreObjectCompose {
                         }
                         TextButton(
                             onClick = { onConfirmation() },
-                            modifier = composeData.modifier
+                            modifier = modifier
                         ) {
                             Text(
                                 text = "Confirm",

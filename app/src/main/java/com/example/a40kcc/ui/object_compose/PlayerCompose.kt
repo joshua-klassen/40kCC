@@ -17,8 +17,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
+import com.example.a40kcc.COMPOSE_DATA
 import com.example.a40kcc.FACTION_DATA
 import com.example.a40kcc.PLAYER_VIEW_MODEL
 import com.example.a40kcc.PLAYER_WITH_TEAMS_VIEW_MODEL
@@ -27,7 +29,6 @@ import com.example.a40kcc.data.`object`.CoreObject
 import com.example.a40kcc.data.`object`.Player
 import com.example.a40kcc.data.`object`.PlayerWithTeams
 import com.example.a40kcc.data.`object`.Team
-import com.example.a40kcc.ui.utilities.ComposeData
 import com.example.a40kcc.ui.utilities.DropDownList
 import com.example.a40kcc.ui.utilities.ScaledText
 import kotlinx.coroutines.launch
@@ -35,8 +36,8 @@ import kotlinx.coroutines.launch
 class PlayerCompose : CoreObjectCompose {
     @Composable
     override fun AddObject(
-        composeData: ComposeData,
         navController: NavController,
+        modifier: Modifier,
         onDismissRequest: () -> Unit
     ) {
         var playerName by remember { mutableStateOf("") }
@@ -55,8 +56,8 @@ class PlayerCompose : CoreObjectCompose {
                 factionName = playerFaction
             )
 
-            composeData.getScope().launch(
-                composeData.getExceptionHandler(
+            COMPOSE_DATA.getScope().launch(
+                COMPOSE_DATA.getExceptionHandler(
                     errorMessage = "Error adding the new player: $playerName"
                 )
             ) {
@@ -74,12 +75,12 @@ class PlayerCompose : CoreObjectCompose {
 
         Dialog(onDismissRequest = { onDismissRequest() }) {
             Card(
-                modifier = composeData.modifier.wrapContentSize()
+                modifier = modifier.wrapContentSize()
             ) {
                 Column(
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = composeData.modifier.fillMaxWidth()
+                    modifier = modifier.fillMaxWidth()
                 ) {
                     Row {
                         Text(
@@ -106,7 +107,7 @@ class PlayerCompose : CoreObjectCompose {
                         DropDownList(
                             itemList = factionNames,
                             selectedIndex = factionIndex,
-                            modifier = composeData.modifier,
+                            modifier = modifier,
                             preText = "Preferred Faction: ",
                             onItemClick = {
                                 factionIndex = it
@@ -117,7 +118,7 @@ class PlayerCompose : CoreObjectCompose {
                         DropDownList(
                             itemList = teams.map { it.getDisplayName() },
                             selectedIndex = teamIndex,
-                            modifier = composeData.modifier,
+                            modifier = modifier,
                             preText = "Team: ",
                             addEmptyFirstOption = true,
                             onItemClick = {
@@ -134,7 +135,7 @@ class PlayerCompose : CoreObjectCompose {
                     Row {
                         TextButton(
                             onClick = { onDismissRequest() },
-                            modifier = composeData.modifier
+                            modifier = modifier
                         ) {
                             Text(
                                 text = "Cancel",
@@ -143,7 +144,7 @@ class PlayerCompose : CoreObjectCompose {
                         }
                         TextButton(
                             onClick = { onConfirmation() },
-                            modifier = composeData.modifier
+                            modifier = modifier
                         ) {
                             Text(
                                 text = "Add",
@@ -159,8 +160,8 @@ class PlayerCompose : CoreObjectCompose {
     @Composable
     override fun EditObject(
         coreObject: CoreObject,
-        composeData: ComposeData,
         navController: NavController,
+        modifier: Modifier,
         onDismissRequest: () -> Unit
     ) {
         val player: PlayerWithTeams = coreObject as PlayerWithTeams
@@ -186,8 +187,8 @@ class PlayerCompose : CoreObjectCompose {
                 nickname = playerNickname,
                 factionName = playerFaction
             )
-            composeData.getScope().launch(
-                composeData.getExceptionHandler(
+            COMPOSE_DATA.getScope().launch(
+                COMPOSE_DATA.getExceptionHandler(
                     errorMessage = "Error updating player: ${player.getDisplayName()}"
                 )
             ) {
@@ -198,12 +199,12 @@ class PlayerCompose : CoreObjectCompose {
 
         Dialog(onDismissRequest = { onDismissRequest() }) {
             Card(
-                modifier = composeData.modifier.wrapContentSize()
+                modifier = modifier.wrapContentSize()
             ) {
                 Column(
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = composeData.modifier.fillMaxWidth()
+                    modifier = modifier.fillMaxWidth()
                 ) {
                     Row {
                         Text(
@@ -230,7 +231,7 @@ class PlayerCompose : CoreObjectCompose {
                         DropDownList(
                             itemList = factionNames,
                             selectedIndex = factionIndex,
-                            modifier = composeData.modifier,
+                            modifier = modifier,
                             preText = "Preferred Faction: ",
                             onItemClick = {
                                 factionIndex = it; playerFaction = factionNames[factionIndex]
@@ -240,7 +241,7 @@ class PlayerCompose : CoreObjectCompose {
                         DropDownList(
                             itemList = teams.map { it.getDisplayName() },
                             selectedIndex = teamIndex,
-                            modifier = composeData.modifier,
+                            modifier = modifier,
                             preText = "Team: ",
                             onItemClick = { index ->
                                 teamIndex = index
@@ -255,7 +256,7 @@ class PlayerCompose : CoreObjectCompose {
                     Row {
                         TextButton(
                             onClick = { onDismissRequest() },
-                            modifier = composeData.modifier
+                            modifier = modifier
                         ) {
                             Text(
                                 text = "Cancel",
@@ -264,7 +265,7 @@ class PlayerCompose : CoreObjectCompose {
                         }
                         TextButton(
                             onClick = { onConfirmation() },
-                            modifier = composeData.modifier
+                            modifier = modifier
                         ) {
                             Text(
                                 text = "Add",
@@ -280,16 +281,15 @@ class PlayerCompose : CoreObjectCompose {
     @Composable
     override fun RemoveObject(
         coreObject: CoreObject,
-        composeData: ComposeData,
         navController: NavController,
+        modifier: Modifier,
         onDismissRequest: () -> Unit
     ) {
-        val modifier = composeData.modifier
         val player: PlayerWithTeams = coreObject as PlayerWithTeams
 
         val onConfirmation = {
-            composeData.getScope().launch(
-                composeData.getExceptionHandler(
+            COMPOSE_DATA.getScope().launch(
+                COMPOSE_DATA.getExceptionHandler(
                     errorMessage = "Error while deleting the player: ${player.getDisplayName()}"
                 )
             ) {

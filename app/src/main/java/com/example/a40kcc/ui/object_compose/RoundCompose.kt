@@ -18,12 +18,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.window.Dialog
+import com.example.a40kcc.COMPOSE_DATA
 import com.example.a40kcc.DEPLOYMENT_DATA
 import com.example.a40kcc.PRIMARY_MISSION_DATA
 import com.example.a40kcc.ROUND_VIEW_MODEL
 import com.example.a40kcc.SECONDARY_MISSION_DATA
 import com.example.a40kcc.data.`object`.Round
-import com.example.a40kcc.ui.utilities.ComposeData
 import com.example.a40kcc.ui.utilities.DropDownList
 import com.example.a40kcc.ui.utilities.ScaledText
 import kotlinx.coroutines.launch
@@ -132,7 +132,7 @@ fun AddRound(
 @Composable
 fun EditRound(
     round: Round,
-    composeData: ComposeData,
+    modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit
 ) {
     var primaryMissionName by remember { mutableStateOf(round.primaryMissionName) }
@@ -167,8 +167,8 @@ fun EditRound(
             secondaryMissionName = secondaryMissionName,
             deploymentName = deploymentName
         )
-        composeData.getScope().launch(
-            composeData.getExceptionHandler(
+        COMPOSE_DATA.getScope().launch(
+            COMPOSE_DATA.getExceptionHandler(
                 errorMessage = "Error updating the round: ${round.getDisplayName()}"
             )
         ) {
@@ -179,12 +179,12 @@ fun EditRound(
 
     Dialog(onDismissRequest = { onDismissRequest() }) {
         Card(
-            modifier = composeData.modifier.wrapContentSize()
+            modifier = modifier.wrapContentSize()
         ) {
             Column(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = composeData.modifier.fillMaxWidth()
+                modifier = modifier.fillMaxWidth()
             ) {
                 Row {
                     ScaledText(
@@ -195,7 +195,7 @@ fun EditRound(
                     DropDownList(
                         itemList = primaryMissionNames,
                         selectedIndex = primaryMissionIndex,
-                        modifier = composeData.modifier,
+                        modifier = modifier,
                         preText = "Primary Mission: ",
                         onItemClick = { index ->
                             primaryMissionIndex = index
@@ -206,7 +206,7 @@ fun EditRound(
                     DropDownList(
                         itemList = secondaryMissionNames,
                         selectedIndex = secondaryMissionIndex,
-                        modifier = composeData.modifier,
+                        modifier = modifier,
                         preText = "Secondary Mission: ",
                         onItemClick = { index ->
                             secondaryMissionIndex = index
@@ -217,7 +217,7 @@ fun EditRound(
                     DropDownList(
                         itemList = deploymentNames,
                         selectedIndex = deploymentIndex,
-                        modifier = composeData.modifier,
+                        modifier = modifier,
                         preText = "Deployment: ",
                         onItemClick = { index ->
                             deploymentIndex = index
@@ -227,7 +227,7 @@ fun EditRound(
                 Row {
                     TextButton(
                         onClick = { onDismissRequest() },
-                        modifier = composeData.modifier
+                        modifier = modifier
                     ) {
                         Text(
                             text = "Cancel",
@@ -236,7 +236,7 @@ fun EditRound(
                     }
                     TextButton(
                         onClick = { onConfirmation() },
-                        modifier = composeData.modifier
+                        modifier = modifier
                     ) {
                         Text(
                             text = "Add",
@@ -252,12 +252,12 @@ fun EditRound(
 @Composable
 fun RemoveRound(
     round: Round,
-    composeData: ComposeData,
+    modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit
 ) {
     val onConfirmation = {
-        composeData.getScope().launch(
-            composeData.getExceptionHandler(
+        COMPOSE_DATA.getScope().launch(
+            COMPOSE_DATA.getExceptionHandler(
                 errorMessage = "Error removing the round: ${round.getDisplayName()}"
             )
         ) {
@@ -268,12 +268,12 @@ fun RemoveRound(
 
     Dialog(onDismissRequest = { onDismissRequest() }) {
         Card(
-            modifier = composeData.modifier.wrapContentSize()
+            modifier = modifier.wrapContentSize()
         ) {
             Column(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = composeData.modifier.fillMaxWidth()
+                modifier = modifier.fillMaxWidth()
             ) {
                 Row {
                     ScaledText(
@@ -284,7 +284,7 @@ fun RemoveRound(
                 Row {
                     TextButton(
                         onClick = { onDismissRequest() },
-                        modifier = composeData.modifier
+                        modifier = modifier
                     ) {
                         Text(
                             text = "Cancel",
@@ -293,7 +293,7 @@ fun RemoveRound(
                     }
                     TextButton(
                         onClick = { onConfirmation() },
-                        modifier = composeData.modifier
+                        modifier = modifier
                     ) {
                         Text(
                             text = "Confirm",
