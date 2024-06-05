@@ -83,7 +83,8 @@ class TeamCompose : CoreObjectCompose {
                         }
                         TextButton(
                             onClick = { onConfirmation() },
-                            modifier = modifier
+                            modifier = modifier,
+                            enabled = (teamName.isNotBlank())
                         ) {
                             Text(
                                 text = "Add",

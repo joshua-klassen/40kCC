@@ -61,16 +61,13 @@ private var winThreshold: Int = 0
 @Composable
 fun LiveRoundScreen(
     navController: NavController,
-    rememberedTournament: TournamentWithRounds?,
-    rememberedRound: RoundWithTournament?,
-    rememberedTeam: Team?,
     modifier: Modifier = Modifier,
     columnWidth: Dp = 100.dp
 ) {
     var showPreScreen by remember { mutableStateOf(true) }
-    var tournament: TournamentWithRounds? = rememberedTournament
-    var round: RoundWithTournament? = rememberedRound
-    var team: Team? = rememberedTeam
+    var tournament: TournamentWithRounds? by remember { mutableStateOf(null) }
+    var round: RoundWithTournament? by remember { mutableStateOf(null) }
+    var team: Team? by remember { mutableStateOf(null) }
 
     val changeRound: (tournament: TournamentWithRounds, round: Round, team: Team) -> Unit =
         { tempTournament, tempRound, tempTeam ->
@@ -101,25 +98,6 @@ fun LiveRoundScreen(
                 },
                 modifier = modifier
             ) {
-                if (showPreScreen &&
-                    TOURNAMENT_WITH_ROUNDS_VIEW_MODEL.allTournaments().isNotEmpty() &&
-                    TEAM_VIEW_MODEL.allTeams().isNotEmpty()
-                ) {
-                    PreLiveRoundScreen(
-                        tournament = tournament,
-                        round = round,
-                        team = team,
-                        modifier = modifier,
-                        onDismissRequest = changeRound
-                    )
-                } else {
-                    COMPOSE_DATA.showSnackbar(
-                        message = "At least one tournament and team must exist to view the Live Round",
-                        duration = SnackbarDuration.Indefinite,
-                        withDismissAction = true
-                    )
-                    navController.navigate("home")
-                }
                 Column {
                     Text(
                         text = "Change Round",

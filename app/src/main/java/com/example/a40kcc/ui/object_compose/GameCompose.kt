@@ -54,12 +54,12 @@ class GameCompose : CoreObjectCompose {
             TOURNAMENT_WITH_ROUNDS_VIEW_MODEL.allTournaments()
         val factionNames: List<String> = FACTION_DATA.getDataKeys().toList()
 
-        var player01ID by remember { mutableIntStateOf(players[0].player.playerID) }
-        var predictionID by remember { mutableIntStateOf(predictions[0].predictionID) }
-        var tournamentID by remember { mutableIntStateOf(tournaments[0].tournament.tournamentID) }
-        var player01Faction by remember { mutableStateOf(factionNames[0]) }
-        var player02Faction by remember { mutableStateOf(factionNames[0]) }
-        var roundID by remember { mutableIntStateOf(tournaments[0].round.first().roundID) }
+        var player01ID by remember { mutableIntStateOf(0) }
+        var predictionID by remember { mutableIntStateOf(0) }
+        var tournamentID by remember { mutableIntStateOf(0) }
+        var player01Faction by remember { mutableStateOf("") }
+        var player02Faction by remember { mutableStateOf("") }
+        var roundID by remember { mutableIntStateOf(0) }
 
         var player01Index by remember { mutableIntStateOf(0) }
         var player01FactionIndex by remember { mutableIntStateOf(0) }
@@ -113,13 +113,20 @@ class GameCompose : CoreObjectCompose {
                             selectedIndex = player01Index,
                             modifier = modifier,
                             preText = "Player 01: ",
+                            addEmptyFirstOption = true,
+                            firstOptionSelected = (player01ID == 0),
                             onItemClick = { index ->
                                 player01Index = index
-                                player01ID = players[player01Index].player.playerID
+                                if (player01Index < 0) {
+                                    player01Index = 0
+                                    player01ID = 0
+                                } else {
+                                    player01ID = players[player01Index].player.playerID
 
-                                if (players[player01Index].player.factionName != null) {
-                                    player01FactionIndex =
-                                        factionNames.indexOf(players[player01Index].player.factionName)
+                                    if (players[player01Index].player.factionName != null) {
+                                        player01FactionIndex =
+                                            factionNames.indexOf(players[player01Index].player.factionName)
+                                    }
                                 }
                             }
                         )
@@ -130,10 +137,18 @@ class GameCompose : CoreObjectCompose {
                             selectedIndex = player01FactionIndex,
                             modifier = modifier,
                             preText = "Player 01 Faction: ",
+                            addEmptyFirstOption = true,
+                            firstOptionSelected = (player01Faction.isBlank()),
                             onItemClick = { index ->
                                 player01FactionIndex = index
-                                player01Faction = factionNames[player01FactionIndex]
-                            })
+                                if (player01FactionIndex < 0) {
+                                    player01FactionIndex = 0
+                                    player01Faction = ""
+                                } else {
+                                    player01Faction = factionNames[player01FactionIndex]
+                                }
+                            }
+                        )
                     }
                     Row {
                         DropDownList(
@@ -141,10 +156,18 @@ class GameCompose : CoreObjectCompose {
                             selectedIndex = player02FactionIndex,
                             modifier = modifier,
                             preText = "Player 02 Faction: ",
+                            addEmptyFirstOption = true,
+                            firstOptionSelected = (player02Faction.isBlank()),
                             onItemClick = { index ->
                                 player02FactionIndex = index
-                                player02Faction = factionNames[player02FactionIndex]
-                            })
+                                if (player02FactionIndex < 0) {
+                                    player02FactionIndex = 0
+                                    player02Faction = ""
+                                } else {
+                                    player02Faction = factionNames[player02FactionIndex]
+                                }
+                            }
+                        )
                     }
                     Row {
                         DropDownList(
@@ -152,10 +175,18 @@ class GameCompose : CoreObjectCompose {
                             selectedIndex = predictionIndex,
                             modifier = modifier,
                             preText = "Prediction: ",
+                            addEmptyFirstOption = true,
+                            firstOptionSelected = (predictionID == 0),
                             onItemClick = { index ->
                                 predictionIndex = index
-                                predictionID = predictions[predictionIndex].predictionID
-                            })
+                                if (predictionIndex < 0) {
+                                    predictionIndex = 0
+                                    predictionID = 0
+                                } else {
+                                    predictionID = predictions[predictionIndex].predictionID
+                                }
+                            }
+                        )
                     }
                     Row {
                         DropDownList(
@@ -163,21 +194,42 @@ class GameCompose : CoreObjectCompose {
                             selectedIndex = tournamentIndex,
                             modifier = modifier,
                             preText = "Tournament: ",
+                            addEmptyFirstOption = true,
+                            firstOptionSelected = (tournamentID == 0),
                             onItemClick = { index ->
                                 tournamentIndex = index
-                                tournamentID = tournaments[tournamentIndex].tournament.tournamentID
-                                roundID = tournaments[tournamentIndex].round.first().roundID
-                                roundIndex = 0
-                            })
+                                if (tournamentIndex < 0) {
+                                    tournamentIndex = 0
+                                    tournamentID = 0
+                                    roundID = 0
+                                    roundIndex = 0
+                                } else {
+                                    tournamentID =
+                                        tournaments[tournamentIndex].tournament.tournamentID
+                                    roundID = 0
+                                    roundIndex = 0
+                                }
+                            }
+                        )
+                    }
+                    Row {
                         DropDownList(
                             itemList = tournaments[tournamentIndex].round.map { it.getDisplayName() },
                             selectedIndex = roundIndex,
                             modifier = modifier,
                             preText = "Round: ",
+                            addEmptyFirstOption = true,
+                            firstOptionSelected = (roundID == 0),
                             onItemClick = { index ->
                                 roundIndex = index
-                                roundID = tournaments[tournamentIndex].round[roundIndex].roundID
-                            })
+                                if (roundIndex < 0) {
+                                    roundIndex = 0
+                                    roundID = 0
+                                } else {
+                                    roundID = tournaments[tournamentIndex].round[roundIndex].roundID
+                                }
+                            }
+                        )
                     }
                     Row {
                         TextButton(
@@ -191,7 +243,8 @@ class GameCompose : CoreObjectCompose {
                         }
                         TextButton(
                             onClick = { onConfirmation() },
-                            modifier = modifier
+                            modifier = modifier,
+                            enabled = ((player01ID != 0) and player01Faction.isNotBlank() and (predictionID != 0) and (roundID != 0))
                         ) {
                             Text(
                                 text = "Add",

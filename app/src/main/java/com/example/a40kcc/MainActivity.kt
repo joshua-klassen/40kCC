@@ -10,9 +10,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -55,9 +53,6 @@ import com.example.a40kcc.data.model.TournamentViewModelFactory
 import com.example.a40kcc.data.model.TournamentWithRoundsViewModel
 import com.example.a40kcc.data.model.TournamentWithRoundsViewModelFactory
 import com.example.a40kcc.data.`object`.DataObject
-import com.example.a40kcc.data.`object`.RoundWithTournament
-import com.example.a40kcc.data.`object`.Team
-import com.example.a40kcc.data.`object`.TournamentWithRounds
 import com.example.a40kcc.ui.object_compose.GameCompose
 import com.example.a40kcc.ui.object_compose.PlayerCompose
 import com.example.a40kcc.ui.object_compose.TeamCompose
@@ -212,18 +207,8 @@ class MainActivity : ComponentActivity() {
                                 }
                             }
                             composable(route = "liveRound") {
-                                val tournament: TournamentWithRounds? by remember {
-                                    mutableStateOf(
-                                        null
-                                    )
-                                }
-                                val round: RoundWithTournament? by remember { mutableStateOf(null) }
-                                val team: Team? by remember { mutableStateOf(null) }
                                 LiveRoundScreen(
                                     navController = navController,
-                                    rememberedTournament = tournament,
-                                    rememberedRound = round,
-                                    rememberedTeam = team,
                                     modifier = modifier
                                 )
                             }

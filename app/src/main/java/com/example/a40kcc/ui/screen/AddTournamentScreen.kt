@@ -64,10 +64,8 @@ fun AddTournament(
                 errorMessage = "Error adding the new tournament $tournamentName"
             )
         ) {
-            println("to be inserted ${newTournament.tournamentID}")
             TOURNAMENT_VIEW_MODEL.insert(newTournament)
             val lastTournament = TOURNAMENT_VIEW_MODEL.allTournaments().last()
-            println("last ${newTournament.tournamentID}")
             rounds.forEach { round ->
                 TOURNAMENT_WITH_ROUNDS_VIEW_MODEL.insert(
                     tournamentID = lastTournament.tournamentID,

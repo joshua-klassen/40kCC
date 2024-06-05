@@ -34,14 +34,20 @@ fun DropDownList(
     modifier: Modifier = Modifier,
     preText: String? = "",
     addEmptyFirstOption: Boolean = false,
+    firstOptionSelected: Boolean = false,
     onItemClick: (Int) -> Unit
 ) {
     var showDropdown by remember { mutableStateOf(false) }
     val scrollState = rememberScrollState()
     var items: List<String> = itemList
+    var itemIndex: Int = selectedIndex
 
     if (addEmptyFirstOption) {
         items = listOf("") + itemList
+
+        if (!firstOptionSelected) {
+            itemIndex += 1
+        }
     }
 
     Row(horizontalArrangement = Arrangement.SpaceEvenly, modifier = modifier) {
@@ -66,7 +72,7 @@ fun DropDownList(
                     .defaultMinSize(minWidth = 50.dp)
             ) {
                 Text(
-                    text = items[selectedIndex],
+                    text = items[itemIndex],
                     style = MaterialTheme.typography.bodyMedium
                 )
             }

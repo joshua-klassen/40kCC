@@ -91,7 +91,7 @@ class PlayerCompose : CoreObjectCompose {
                         TextField(
                             value = playerName,
                             onValueChange = { playerName = it },
-                            label = { Text(text = "*Player Name: ") },
+                            label = { Text(text = "Player Name: ") },
                             textStyle = MaterialTheme.typography.bodyMedium
                         )
                     }
@@ -109,9 +109,16 @@ class PlayerCompose : CoreObjectCompose {
                             selectedIndex = factionIndex,
                             modifier = modifier,
                             preText = "Preferred Faction: ",
+                            addEmptyFirstOption = true,
+                            firstOptionSelected = (playerFaction.isBlank()),
                             onItemClick = {
                                 factionIndex = it
-                                playerFaction = factionNames[factionIndex]
+                                if (factionIndex < 0) {
+                                    factionIndex = 0
+                                    playerFaction = ""
+                                } else {
+                                    playerFaction = factionNames[factionIndex]
+                                }
                             })
                     }
                     Row {
@@ -121,6 +128,7 @@ class PlayerCompose : CoreObjectCompose {
                             modifier = modifier,
                             preText = "Team: ",
                             addEmptyFirstOption = true,
+                            firstOptionSelected = (teamID == 0),
                             onItemClick = {
                                 teamIndex = it
                                 if (teamIndex < 0) {
@@ -144,7 +152,8 @@ class PlayerCompose : CoreObjectCompose {
                         }
                         TextButton(
                             onClick = { onConfirmation() },
-                            modifier = modifier
+                            modifier = modifier,
+                            enabled = (playerFaction.isNotBlank() and playerName.isNotBlank())
                         ) {
                             Text(
                                 text = "Add",
