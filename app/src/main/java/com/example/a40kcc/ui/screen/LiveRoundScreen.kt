@@ -15,6 +15,8 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -33,7 +35,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
 import com.example.a40kcc.COLORS
-import com.example.a40kcc.COMPOSE_DATA
 import com.example.a40kcc.LIVE_ROUND_EXPANDED_VIEW_MODEL
 import com.example.a40kcc.LIVE_ROUND_VIEW_MODEL
 import com.example.a40kcc.PREDICTION_VIEW_MODEL
@@ -49,6 +50,7 @@ import com.example.a40kcc.data.`object`.RoundWithTournament
 import com.example.a40kcc.data.`object`.Team
 import com.example.a40kcc.data.`object`.TournamentWithRounds
 import com.example.a40kcc.ui.utilities.DropDownList
+import com.example.a40kcc.ui.utilities.ErrorHandling
 import com.example.a40kcc.ui.utilities.ScaledText
 import kotlinx.coroutines.launch
 
@@ -68,6 +70,13 @@ fun LiveRoundScreen(
     var tournament: TournamentWithRounds? by remember { mutableStateOf(null) }
     var round: RoundWithTournament? by remember { mutableStateOf(null) }
     var team: Team? by remember { mutableStateOf(null) }
+    val snackbarHostState = remember { SnackbarHostState() }
+    val errorHandling = remember {
+        ErrorHandling(
+            snackbarHostState = snackbarHostState,
+            modifier = modifier
+        )
+    }
 
     val changeRound: (tournament: TournamentWithRounds, round: Round, team: Team) -> Unit =
         { tempTournament, tempRound, tempTeam ->
@@ -78,6 +87,9 @@ fun LiveRoundScreen(
         }
 
     Scaffold(
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        },
         topBar = {
             Button(
                 onClick = { navController.navigate(route = "home") },
@@ -126,7 +138,7 @@ fun LiveRoundScreen(
                         onDismissRequest = changeRound
                     )
                 } else {
-                    COMPOSE_DATA.showSnackbar(
+                    errorHandling.showSnackbar(
                         message = "At least one tournament and team must exist to view the Live Round",
                         duration = SnackbarDuration.Indefinite,
                         withDismissAction = true
@@ -137,6 +149,7 @@ fun LiveRoundScreen(
                 LiveRoundScreenData(
                     round = round!!,
                     team = team!!,
+                    errorHandling = errorHandling,
                     columnWidth = columnWidth
                 )
             }
@@ -148,6 +161,7 @@ fun LiveRoundScreen(
 private fun LiveRoundScreenData(
     round: RoundWithTournament,
     team: Team,
+    errorHandling: ErrorHandling,
     modifier: Modifier = Modifier,
     columnWidth: Dp = 100.dp
 ) {
@@ -215,7 +229,7 @@ private fun LiveRoundScreenData(
                     .wrapContentHeight()
             ) {
                 ScaledText(
-                    text = liveRound.game.player01.player.name,
+                    text = liveRound.game?.player01?.player?.name ?: "",
                     style = MaterialTheme.typography.titleMedium,
                     modifier = modifier,
                     textAlign = TextAlign.Center
@@ -228,11 +242,11 @@ private fun LiveRoundScreenData(
                     .wrapContentHeight()
             ) {
                 ScaledText(
-                    text = liveRound.expectedResult.name,
+                    text = liveRound.expectedResult?.name ?: "",
                     style = MaterialTheme.typography.titleLarge,
                     modifier = modifier,
                     textAlign = TextAlign.Center,
-                    color = Color(liveRound.expectedResult.color)
+                    color = Color(liveRound.expectedResult?.color ?: 0xffffffff)
                 )
             }
             Column(
@@ -241,7 +255,7 @@ private fun LiveRoundScreenData(
                     .alignByBaseline()
                     .wrapContentHeight()
             ) {
-                if (liveRound.game.outcome != null) {
+                if (liveRound.game?.outcome != null) {
                     ScaledText(
                         text = liveRound.game.outcome.player01TeamPoints.toString(),
                         style = MaterialTheme.typography.titleLarge,
@@ -250,14 +264,14 @@ private fun LiveRoundScreenData(
                     )
                 } else {
                     ScaledText(
-                        text = liveRound.expectedResult.name,
+                        text = liveRound.expectedResult?.name ?: "",
                         style = MaterialTheme.typography.titleMedium,
                         modifier = modifier
                             .clickable(enabled = true, onClick = {
                                 editLiveRound = !editLiveRound
                             }),
                         textAlign = TextAlign.Center,
-                        color = Color(liveRound.expectedResult.color)
+                        color = Color(liveRound.expectedResult?.color ?: 0xffffffff)
                     )
                 }
             }
@@ -266,6 +280,7 @@ private fun LiveRoundScreenData(
         if (editLiveRound) {
             EditLiveRound(
                 liveRound = liveRound,
+                errorHandling = errorHandling,
                 modifier = modifier,
                 onDismissRequest = { editLiveRound = !editLiveRound }
             )
@@ -389,11 +404,11 @@ fun getByTeamAndTournament(
     val liveRounds: MutableList<LiveRoundExpanded> = mutableListOf()
     LIVE_ROUND_EXPANDED_VIEW_MODEL.allLiveRounds().forEach { liveRound ->
         var playerTeam: Team? = null
-        if (liveRound.game.player01.team.isNotEmpty()) {
+        if (liveRound.game?.player01?.team?.isNotEmpty() == true) {
             playerTeam = liveRound.game.player01.team[0]
         }
 
-        if (liveRound.game.round == round &&
+        if (liveRound.game?.round == round &&
             playerTeam == team
         ) {
             liveRounds += liveRound
@@ -417,12 +432,12 @@ fun RoundResults(
     highEndScore = 0
     var highEndColor = Color(COLORS.getValue(key = "Yellow"))
     liveRounds.forEach {
-        if (it.game.outcome != null) {
+        if (it.game?.outcome != null) {
             lowEndScore += it.game.outcome.player01TeamPoints
             highEndScore += it.game.outcome.player01TeamPoints
         } else {
-            lowEndScore += it.expectedResult.minPoints
-            highEndScore += it.expectedResult.maxPoints
+            lowEndScore += it.expectedResult?.minPoints ?: 0
+            highEndScore += it.expectedResult?.maxPoints ?: 20
         }
         midScore = (lowEndScore + highEndScore) / 2
 
@@ -504,6 +519,7 @@ fun RoundResults(
 @Composable
 fun EditLiveRound(
     liveRound: LiveRoundExpanded,
+    errorHandling: ErrorHandling,
     modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit
 ) {
@@ -513,7 +529,7 @@ fun EditLiveRound(
 
     if (predictions.contains(liveRound.expectedResult)) {
         predictionIndex = predictions.indexOf(liveRound.expectedResult)
-        predictionID = liveRound.expectedResult.predictionID
+        predictionID = liveRound.expectedResult?.predictionID ?: 0
     }
 
     val onConfirmation = {
@@ -522,11 +538,9 @@ fun EditLiveRound(
             gameID = liveRound.liveRound.gameID,
             expectedResult = predictionID
         )
-        COMPOSE_DATA.getScope().launch(
-            COMPOSE_DATA.getExceptionHandler(
-                errorMessage = "Error updating the round: ${liveRound.getDisplayName()}"
-            )
-        ) {
+        errorHandling.provideCoroutineExceptionScope(
+            errorMessage = "Error updating the round: ${liveRound.getDisplayName()}"
+        ).launch {
             LIVE_ROUND_VIEW_MODEL.update(liveRound = updatedLiveRound)
             onDismissRequest()
         }

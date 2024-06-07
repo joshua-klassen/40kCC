@@ -9,7 +9,7 @@ data class OutcomeWithPlayers(
         parentColumn = "player_01",
         entityColumn = "playerID"
     )
-    val player01: Player,
+    val player01: Player? = null,
     @Relation(
         parentColumn = "player_02",
         entityColumn = "playerID"
@@ -18,7 +18,7 @@ data class OutcomeWithPlayers(
 ) : CoreObject {
     override fun getCoreColumns(): Map<String, String> {
         return mapOf(
-            Pair("Player 01", player01.getDisplayName()),
+            Pair("Player 01", player01?.getDisplayName() ?: ""),
             Pair("Player 01 Points", outcome.player01Points.toString()),
             Pair("Player 02", player02?.getDisplayName() ?: ""),
             Pair("Player 01 Points", outcome.player02Points.toString())
@@ -34,6 +34,6 @@ data class OutcomeWithPlayers(
     }
 
     override fun getDisplayName(): String {
-        return "${player01.getDisplayName()} vs ${player02?.getDisplayName()}\n${outcome.getDisplayName()}"
+        return "${player01?.getDisplayName() ?: ""} vs ${player02?.getDisplayName() ?: ""}\n${outcome.getDisplayName()}"
     }
 }

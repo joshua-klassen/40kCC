@@ -12,7 +12,6 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
@@ -65,7 +64,7 @@ import com.example.a40kcc.ui.screen.HomeScreen
 import com.example.a40kcc.ui.screen.LiveRoundScreen
 import com.example.a40kcc.ui.screen.ObjectScreen
 import com.example.a40kcc.ui.theme.Theme40kCC
-import com.example.a40kcc.ui.utilities.ComposeData
+import com.example.a40kcc.ui.utilities.ErrorHandling
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -134,12 +133,10 @@ class MainActivity : ComponentActivity() {
             Theme40kCC {
                 val margin = dimensionResource(id = R.dimen.margin_small)
                 val modifier = Modifier.padding(horizontal = margin, vertical = margin)
-                val scope = rememberCoroutineScope()
                 val snackbarHostState = remember { SnackbarHostState() }
-                COMPOSE_DATA = remember {
-                    ComposeData(
+                val errorHandling = remember {
+                    ErrorHandling(
                         snackbarHostState = snackbarHostState,
-                        coroutineScope = scope,
                         modifier = modifier
                     )
                 }
@@ -197,14 +194,15 @@ class MainActivity : ComponentActivity() {
                                 )
                             }
                             composable(route = "games") {
-                                GAME_EXPANDED_VIEW_MODEL.allGamesFlow.observeAsState().value?.let { games ->
-                                    ObjectScreen(
-                                        objectList = games,
-                                        navController = navController,
-                                        objectCompose = GameCompose(),
-                                        modifier = modifier
-                                    )
-                                }
+                                ObjectScreen(
+                                    objectList = GAME_EXPANDED_VIEW_MODEL.allGamesFlow.observeAsState().value
+                                        ?: emptyList(),
+                                    navController = navController,
+                                    objectCompose = GameCompose(
+                                        errorHandling = errorHandling
+                                    ),
+                                    modifier = modifier
+                                )
                             }
                             composable(route = "liveRound") {
                                 LiveRoundScreen(
@@ -227,34 +225,37 @@ class MainActivity : ComponentActivity() {
                                 )
                             }
                             composable(route = "players") {
-                                PLAYER_WITH_TEAMS_VIEW_MODEL.allPlayersFlow.observeAsState().value?.let { players ->
-                                    ObjectScreen(
-                                        objectList = players,
-                                        navController = navController,
-                                        objectCompose = PlayerCompose(),
-                                        modifier = modifier
-                                    )
-                                }
+                                ObjectScreen(
+                                    objectList = PLAYER_WITH_TEAMS_VIEW_MODEL.allPlayersFlow.observeAsState().value
+                                        ?: emptyList(),
+                                    navController = navController,
+                                    objectCompose = PlayerCompose(
+                                        errorHandling = errorHandling
+                                    ),
+                                    modifier = modifier
+                                )
                             }
                             composable(route = "teams") {
-                                TEAM_WITH_PLAYERS_VIEW_MODEL.allTeamsFlow.observeAsState().value?.let { teams ->
-                                    ObjectScreen(
-                                        objectList = teams,
-                                        navController = navController,
-                                        objectCompose = TeamCompose(),
-                                        modifier = modifier
-                                    )
-                                }
+                                ObjectScreen(
+                                    objectList = TEAM_WITH_PLAYERS_VIEW_MODEL.allTeamsFlow.observeAsState().value
+                                        ?: emptyList(),
+                                    navController = navController,
+                                    objectCompose = TeamCompose(
+                                        errorHandling = errorHandling
+                                    ),
+                                    modifier = modifier
+                                )
                             }
                             composable(route = "tournaments") {
-                                TOURNAMENT_VIEW_MODEL.allTournamentsFlow.observeAsState().value?.let { tournaments ->
-                                    ObjectScreen(
-                                        objectList = tournaments,
-                                        navController = navController,
-                                        objectCompose = TournamentCompose(),
-                                        modifier = modifier
-                                    )
-                                }
+                                ObjectScreen(
+                                    objectList = TOURNAMENT_VIEW_MODEL.allTournamentsFlow.observeAsState().value
+                                        ?: emptyList(),
+                                    navController = navController,
+                                    objectCompose = TournamentCompose(
+                                        errorHandling = errorHandling
+                                    ),
+                                    modifier = modifier
+                                )
                             }
                             composable(route = "editGame?gameId={gameId}",
                                 arguments = listOf(

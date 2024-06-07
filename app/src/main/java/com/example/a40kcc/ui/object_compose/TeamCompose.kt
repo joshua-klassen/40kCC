@@ -19,14 +19,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
-import com.example.a40kcc.COMPOSE_DATA
 import com.example.a40kcc.TEAM_VIEW_MODEL
 import com.example.a40kcc.data.`object`.CoreObject
 import com.example.a40kcc.data.`object`.Team
+import com.example.a40kcc.data.`object`.TeamWithPlayers
+import com.example.a40kcc.ui.utilities.ErrorHandling
 import com.example.a40kcc.ui.utilities.ScaledText
 import kotlinx.coroutines.launch
 
-class TeamCompose : CoreObjectCompose {
+class TeamCompose(override var errorHandling: ErrorHandling) : CoreObjectCompose {
     @Composable
     override fun AddObject(
         navController: NavController,
@@ -39,11 +40,9 @@ class TeamCompose : CoreObjectCompose {
             val newTeam = Team(
                 name = teamName
             )
-            COMPOSE_DATA.getScope().launch(
-                COMPOSE_DATA.getExceptionHandler(
-                    errorMessage = "Error adding team: $teamName"
-                )
-            ) {
+            errorHandling.provideCoroutineExceptionScope(
+                errorMessage = "Error adding team: $teamName"
+            ).launch {
                 TEAM_VIEW_MODEL.insert(newTeam)
                 onDismissRequest()
             }
@@ -108,15 +107,13 @@ class TeamCompose : CoreObjectCompose {
         modifier: Modifier,
         onDismissRequest: () -> Unit
     ) {
-        val team: Team = coreObject as Team
+        val team: TeamWithPlayers = coreObject as TeamWithPlayers
 
         val onConfirmation = {
-            COMPOSE_DATA.getScope().launch(
-                COMPOSE_DATA.getExceptionHandler(
-                    errorMessage = "Error removing team: ${team.getDisplayName()}"
-                )
-            ) {
-                TEAM_VIEW_MODEL.delete(team)
+            errorHandling.provideCoroutineExceptionScope(
+                errorMessage = "Error removing team: ${team.getDisplayName()}"
+            ).launch {
+                TEAM_VIEW_MODEL.delete(team.team)
                 onDismissRequest()
             }
         }
@@ -138,7 +135,7 @@ class TeamCompose : CoreObjectCompose {
                     }
                     Row {
                         ScaledText(
-                            text = "Team Name: " + team.name,
+                            text = "Team Name: " + team.team.name,
                             style = MaterialTheme.typography.bodyMedium
                         )
                     }

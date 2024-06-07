@@ -23,6 +23,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SmallFloatingActionButton
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -39,6 +41,7 @@ import androidx.navigation.NavController
 import com.example.a40kcc.R
 import com.example.a40kcc.data.`object`.CoreObject
 import com.example.a40kcc.ui.object_compose.CoreObjectCompose
+import com.example.a40kcc.ui.utilities.ErrorHandling
 import com.example.a40kcc.ui.utilities.ScaledText
 
 @Composable
@@ -50,8 +53,18 @@ fun ObjectScreen(
     columnWidth: Dp = 100.dp
 ) {
     var addObject by remember { mutableStateOf(false) }
+    val snackbarHostState = remember { SnackbarHostState() }
+    objectCompose.errorHandling = remember {
+        ErrorHandling(
+            snackbarHostState = snackbarHostState,
+            modifier = modifier
+        )
+    }
 
     Scaffold(
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        },
         topBar = {
             Button(
                 onClick = { navController.navigate(route = "home") },
@@ -138,6 +151,64 @@ fun ObjectScreen(
                             }
                         }
                     }
+
+                    if (objectCompose.canEdit(coreObject = coreObject)) {
+                        Column(
+                            modifier = Modifier
+                                .wrapContentHeight()
+                        ) {
+                            SmallFloatingActionButton(
+                                onClick = {
+                                    editObject = !editObject
+                                },
+                                modifier = Modifier.align(Alignment.End)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Filled.Build,
+                                    contentDescription = "Edit",
+                                    modifier = Modifier
+                                )
+
+                                if (editObject) {
+                                    objectCompose.EditObject(
+                                        coreObject = coreObject,
+                                        modifier = modifier,
+                                        navController = navController,
+                                        onDismissRequest = { editObject = !editObject }
+                                    )
+                                }
+                            }
+                        }
+                    }
+
+                    if (objectCompose.canRemove(coreObject = coreObject)) {
+                        Column(
+                            modifier = Modifier
+                                .wrapContentHeight()
+                        ) {
+                            SmallFloatingActionButton(
+                                onClick = {
+                                    removeObject = !removeObject
+                                },
+                                modifier = Modifier.align(Alignment.End)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Filled.Clear,
+                                    contentDescription = "Remove",
+                                    modifier = Modifier
+                                )
+
+                                if (removeObject) {
+                                    objectCompose.RemoveObject(
+                                        coreObject = coreObject,
+                                        modifier = modifier,
+                                        navController = navController,
+                                        onDismissRequest = { removeObject = !removeObject }
+                                    )
+                                }
+                            }
+                        }
+                    }
                 }
 
                 if (showDetails) {
@@ -152,64 +223,6 @@ fun ObjectScreen(
                             modifier = modifier,
                             columnWidth = columnWidth
                         )
-
-                        if (objectCompose.canEdit(coreObject = coreObject)) {
-                            Column(
-                                modifier = modifier
-                                    .wrapContentHeight()
-                            ) {
-                                SmallFloatingActionButton(
-                                    onClick = {
-                                        editObject = !editObject
-                                    },
-                                    modifier = modifier.align(Alignment.End)
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Filled.Build,
-                                        contentDescription = "Edit",
-                                        modifier = modifier
-                                    )
-
-                                    if (editObject) {
-                                        objectCompose.EditObject(
-                                            coreObject = coreObject,
-                                            modifier = modifier,
-                                            navController = navController,
-                                            onDismissRequest = { editObject = !editObject }
-                                        )
-                                    }
-                                }
-                            }
-                        }
-
-                        if (objectCompose.canRemove(coreObject = coreObject)) {
-                            Column(
-                                modifier = modifier
-                                    .wrapContentHeight()
-                            ) {
-                                SmallFloatingActionButton(
-                                    onClick = {
-                                        removeObject = !removeObject
-                                    },
-                                    modifier = modifier.align(Alignment.End)
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Filled.Clear,
-                                        contentDescription = "Remove",
-                                        modifier = modifier
-                                    )
-
-                                    if (removeObject) {
-                                        objectCompose.RemoveObject(
-                                            coreObject = coreObject,
-                                            modifier = modifier,
-                                            navController = navController,
-                                            onDismissRequest = { removeObject = !removeObject }
-                                        )
-                                    }
-                                }
-                            }
-                        }
                     }
                 }
             }

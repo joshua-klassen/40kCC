@@ -16,7 +16,6 @@ import com.example.a40kcc.data.model.TeamWithPlayersViewModel
 import com.example.a40kcc.data.model.TournamentViewModel
 import com.example.a40kcc.data.model.TournamentWithRoundsViewModel
 import com.example.a40kcc.data.`object`.DataObject
-import com.example.a40kcc.ui.utilities.ComposeData
 
 lateinit var DEPLOYMENT_DATA: DataObject
 lateinit var FACTION_DATA: DataObject
@@ -94,5 +93,3 @@ val COLORS: Map<String, Long> = mapOf(
     "White" to 0xffffffff,
     "Black" to 0xff000000
 )
-
-lateinit var COMPOSE_DATA: ComposeData

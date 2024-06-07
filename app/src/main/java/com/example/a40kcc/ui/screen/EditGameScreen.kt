@@ -24,7 +24,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,8 +38,8 @@ import com.example.a40kcc.data.`object`.Game
 import com.example.a40kcc.data.`object`.GameExpanded
 import com.example.a40kcc.data.`object`.Outcome
 import com.example.a40kcc.data.`object`.Prediction
-import com.example.a40kcc.ui.utilities.ComposeData
 import com.example.a40kcc.ui.utilities.DropDownList
+import com.example.a40kcc.ui.utilities.ErrorHandling
 import com.example.a40kcc.ui.utilities.ScaledText
 import kotlinx.coroutines.launch
 import kotlin.math.abs
@@ -51,12 +50,10 @@ fun EditGame(
     modifier: Modifier,
     onDismissRequest: () -> Unit
 ) {
-    val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
-    val composeData = remember {
-        ComposeData(
+    val errorHandling = remember {
+        ErrorHandling(
             snackbarHostState = snackbarHostState,
-            coroutineScope = scope,
             modifier = modifier
         )
     }
@@ -102,11 +99,9 @@ fun EditGame(
             outcomeID = outcomeId
         )
 
-        composeData.getScope().launch(
-            composeData.getExceptionHandler(
-                errorMessage = "Error updating the game: ${game.getDisplayName()}"
-            )
-        ) {
+        errorHandling.provideCoroutineExceptionScope(
+            errorMessage = "Error updating the game: ${game.getDisplayName()}"
+        ).launch {
             GAME_VIEW_MODEL.update(
                 game = updatedGame
             )
@@ -169,12 +164,12 @@ fun EditGame(
                     .fillMaxWidth()
             ) {
                 ScaledText(
-                    text = "Player 01: ${game.player01.player.getDisplayName()}",
+                    text = "Player 01: ${game.player01?.player?.getDisplayName() ?: ""}",
                     style = MaterialTheme.typography.bodyMedium,
                     modifier = modifier
                 )
                 ScaledText(
-                    text = "Round: ${game.round.getDisplayName()}",
+                    text = "Round: ${game.round?.getDisplayName() ?: ""}",
                     style = MaterialTheme.typography.bodyMedium,
                     modifier = modifier
                 )
@@ -250,11 +245,9 @@ fun EditGame(
                 if (addOutcome) {
                     val insertOutcome: (outcome: Outcome?) -> Unit = { outcome ->
                         if (outcome != null) {
-                            composeData.getScope().launch(
-                                composeData.getExceptionHandler(
-                                    errorMessage = "Error adding the new outcome for: ${game.getDisplayName()}"
-                                )
-                            ) {
+                            errorHandling.provideCoroutineExceptionScope(
+                                errorMessage = "Error adding the new outcome for: ${game.getDisplayName()}"
+                            ).launch {
                                 OUTCOME_VIEW_MODEL.insert(outcome)
                                 outcomeID =
                                     OUTCOME_VIEW_MODEL.getByPlayerId(game.game.player01ID)

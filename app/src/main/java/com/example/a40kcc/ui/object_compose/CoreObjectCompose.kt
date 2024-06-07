@@ -4,8 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import com.example.a40kcc.data.`object`.CoreObject
+import com.example.a40kcc.ui.utilities.ErrorHandling
 
 interface CoreObjectCompose {
+    var errorHandling: ErrorHandling
+
     fun canAdd(): Boolean {
         return true
     }

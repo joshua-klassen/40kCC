@@ -18,6 +18,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SmallFloatingActionButton
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -29,7 +31,6 @@ import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import com.example.a40kcc.COMPOSE_DATA
 import com.example.a40kcc.ROUND_VIEW_MODEL
 import com.example.a40kcc.TOURNAMENT_VIEW_MODEL
 import com.example.a40kcc.TOURNAMENT_WITH_ROUNDS_VIEW_MODEL
@@ -40,6 +41,7 @@ import com.example.a40kcc.data.`object`.TournamentWithRounds
 import com.example.a40kcc.ui.object_compose.AddRound
 import com.example.a40kcc.ui.object_compose.EditRound
 import com.example.a40kcc.ui.object_compose.RemoveRound
+import com.example.a40kcc.ui.utilities.ErrorHandling
 import com.example.a40kcc.ui.utilities.ScaledText
 import kotlinx.coroutines.launch
 
@@ -52,6 +54,14 @@ fun EditTournament(
     val tournament: TournamentWithRounds = coreObject as TournamentWithRounds
     var addRound by remember { mutableStateOf(false) }
     val rounds = remember { tournament.round.toMutableStateList() }
+    var newRounds: List<Int> = emptyList()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val errorHandling = remember {
+        ErrorHandling(
+            snackbarHostState = snackbarHostState,
+            modifier = modifier
+        )
+    }
 
     val onConfirmation = {
         val newTournament = Tournament(
@@ -61,17 +71,14 @@ fun EditTournament(
             roundCount = rounds.size
         )
 
-        COMPOSE_DATA.getScope().launch(
-            COMPOSE_DATA.getExceptionHandler(
-                errorMessage = "Error adding the new tournament ${tournament.tournament.name}"
-            )
-        ) {
+        errorHandling.provideCoroutineExceptionScope(
+            errorMessage = "Error updating the new tournament ${tournament.tournament.name}"
+        ).launch {
             TOURNAMENT_VIEW_MODEL.update(newTournament)
-            val lastTournament = TOURNAMENT_VIEW_MODEL.allTournaments().last()
-            rounds.forEach { round ->
+            newRounds.forEach { index ->
                 TOURNAMENT_WITH_ROUNDS_VIEW_MODEL.insert(
-                    tournamentID = lastTournament.tournamentID,
-                    roundID = round.roundID
+                    tournamentID = newTournament.tournamentID,
+                    roundID = rounds[index].roundID
                 )
             }
             onDismissRequest()
@@ -79,6 +86,9 @@ fun EditTournament(
     }
 
     Scaffold(
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        },
         topBar = {
             Button(
                 onClick = { onDismissRequest() },
@@ -137,13 +147,12 @@ fun EditTournament(
                 if (addRound) {
                     val insertRound: (round: Round?) -> Unit = { round ->
                         if (round != null) {
-                            COMPOSE_DATA.getScope().launch(
-                                COMPOSE_DATA.getExceptionHandler(
-                                    errorMessage = "Error adding the new round for: ${tournament.tournament.name}"
-                                )
-                            ) {
+                            errorHandling.provideCoroutineExceptionScope(
+                                errorMessage = "Error adding the new round for: ${tournament.tournament.name}"
+                            ).launch {
                                 ROUND_VIEW_MODEL.insert(round)
                                 rounds.add(ROUND_VIEW_MODEL.allRounds().last())
+                                newRounds = listOf(rounds.lastIndex) + newRounds
                                 addRound = !addRound
                             }
                         } else {
@@ -206,6 +215,7 @@ fun EditTournament(
                             if (editRound) {
                                 EditRound(
                                     round = round,
+                                    errorHandling = errorHandling,
                                     modifier = modifier,
                                     onDismissRequest = {
                                         editRound = !editRound
@@ -233,6 +243,7 @@ fun EditTournament(
                             if (removeRound) {
                                 RemoveRound(
                                     round = round,
+                                    errorHandling = errorHandling,
                                     modifier = modifier,
                                     onDismissRequest = {
                                         removeRound = !removeRound

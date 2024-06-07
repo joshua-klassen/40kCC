@@ -19,7 +19,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
-import com.example.a40kcc.COMPOSE_DATA
 import com.example.a40kcc.FACTION_DATA
 import com.example.a40kcc.GAME_VIEW_MODEL
 import com.example.a40kcc.LIVE_ROUND_VIEW_MODEL
@@ -34,12 +33,13 @@ import com.example.a40kcc.data.`object`.PlayerWithTeams
 import com.example.a40kcc.data.`object`.Prediction
 import com.example.a40kcc.data.`object`.TournamentWithRounds
 import com.example.a40kcc.ui.utilities.DropDownList
+import com.example.a40kcc.ui.utilities.ErrorHandling
 import kotlinx.coroutines.launch
 
-class GameCompose : CoreObjectCompose {
+class GameCompose(override var errorHandling: ErrorHandling) : CoreObjectCompose {
     override fun canAdd(): Boolean {
-        return !(PLAYER_WITH_TEAMS_VIEW_MODEL.allPlayers()
-            .isEmpty() || TOURNAMENT_WITH_ROUNDS_VIEW_MODEL.allTournaments().isEmpty())
+        return !(PLAYER_WITH_TEAMS_VIEW_MODEL.allPlayers().isEmpty() ||
+                TOURNAMENT_WITH_ROUNDS_VIEW_MODEL.allTournaments().isEmpty())
     }
 
     @Composable
@@ -76,11 +76,10 @@ class GameCompose : CoreObjectCompose {
                 predictionID = predictionID,
                 roundID = roundID
             )
-            COMPOSE_DATA.getScope().launch(
-                COMPOSE_DATA.getExceptionHandler(
-                    errorMessage = "Error adding the new game"
-                )
-            ) {
+
+            errorHandling.provideCoroutineExceptionScope(
+                errorMessage = "Error adding the new game"
+            ).launch {
                 GAME_VIEW_MODEL.insert(game = newGame)
                 val lastGame = GAME_VIEW_MODEL.allGames().last()
                 LIVE_ROUND_VIEW_MODEL.insert(
@@ -126,6 +125,7 @@ class GameCompose : CoreObjectCompose {
                                     if (players[player01Index].player.factionName != null) {
                                         player01FactionIndex =
                                             factionNames.indexOf(players[player01Index].player.factionName)
+                                        player01Faction = factionNames[player01FactionIndex]
                                     }
                                 }
                             }
@@ -281,11 +281,9 @@ class GameCompose : CoreObjectCompose {
         val game: GameExpanded = coreObject as GameExpanded
 
         val onConfirmation = {
-            COMPOSE_DATA.getScope().launch(
-                COMPOSE_DATA.getExceptionHandler(
-                    errorMessage = "Error removing the game: ${game.getDisplayName()}"
-                )
-            ) {
+            errorHandling.provideCoroutineExceptionScope(
+                errorMessage = "Error removing the game: ${game.getDisplayName()}"
+            ).launch {
                 GAME_VIEW_MODEL.delete(game = game.game)
                 onDismissRequest()
             }

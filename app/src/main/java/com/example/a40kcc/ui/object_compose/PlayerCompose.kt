@@ -20,7 +20,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
-import com.example.a40kcc.COMPOSE_DATA
 import com.example.a40kcc.FACTION_DATA
 import com.example.a40kcc.PLAYER_VIEW_MODEL
 import com.example.a40kcc.PLAYER_WITH_TEAMS_VIEW_MODEL
@@ -30,10 +29,11 @@ import com.example.a40kcc.data.`object`.Player
 import com.example.a40kcc.data.`object`.PlayerWithTeams
 import com.example.a40kcc.data.`object`.Team
 import com.example.a40kcc.ui.utilities.DropDownList
+import com.example.a40kcc.ui.utilities.ErrorHandling
 import com.example.a40kcc.ui.utilities.ScaledText
 import kotlinx.coroutines.launch
 
-class PlayerCompose : CoreObjectCompose {
+class PlayerCompose(override var errorHandling: ErrorHandling) : CoreObjectCompose {
     @Composable
     override fun AddObject(
         navController: NavController,
@@ -46,7 +46,7 @@ class PlayerCompose : CoreObjectCompose {
         var teamID by remember { mutableIntStateOf(0) }
         var factionIndex by remember { mutableIntStateOf(0) }
         var teamIndex by remember { mutableIntStateOf(0) }
-        val factionNames: List<String> = listOf("") + FACTION_DATA.getDataKeys().toList()
+        val factionNames: List<String> = FACTION_DATA.getDataKeys().toList()
         val teams: List<Team> = TEAM_VIEW_MODEL.allTeams()
 
         val onConfirmation = {
@@ -56,11 +56,9 @@ class PlayerCompose : CoreObjectCompose {
                 factionName = playerFaction
             )
 
-            COMPOSE_DATA.getScope().launch(
-                COMPOSE_DATA.getExceptionHandler(
-                    errorMessage = "Error adding the new player: $playerName"
-                )
-            ) {
+            errorHandling.provideCoroutineExceptionScope(
+                errorMessage = "Error adding the new player: $playerName"
+            ).launch {
                 PLAYER_VIEW_MODEL.insert(newPlayer)
                 if (teamID != 0) {
                     val lastPlayer = PLAYER_VIEW_MODEL.allPlayers().last()
@@ -119,7 +117,8 @@ class PlayerCompose : CoreObjectCompose {
                                 } else {
                                     playerFaction = factionNames[factionIndex]
                                 }
-                            })
+                            }
+                        )
                     }
                     Row {
                         DropDownList(
@@ -180,7 +179,7 @@ class PlayerCompose : CoreObjectCompose {
         var teamID by remember { mutableIntStateOf(player.team[0].teamID) }
         var factionIndex by remember { mutableIntStateOf(0) }
         var teamIndex by remember { mutableIntStateOf(0) }
-        val factionNames: List<String> = listOf("") + FACTION_DATA.getDataKeys().toList()
+        val factionNames: List<String> = FACTION_DATA.getDataKeys().toList()
         val teams: List<Team> = TEAM_VIEW_MODEL.allTeams()
 
         if (teams.contains(player.team[0])) {
@@ -196,11 +195,10 @@ class PlayerCompose : CoreObjectCompose {
                 nickname = playerNickname,
                 factionName = playerFaction
             )
-            COMPOSE_DATA.getScope().launch(
-                COMPOSE_DATA.getExceptionHandler(
-                    errorMessage = "Error updating player: ${player.getDisplayName()}"
-                )
-            ) {
+
+            errorHandling.provideCoroutineExceptionScope(
+                errorMessage = "Error updating player: ${player.getDisplayName()}"
+            ).launch {
                 PLAYER_VIEW_MODEL.update(updatedPlayer)
                 onDismissRequest()
             }
@@ -242,9 +240,18 @@ class PlayerCompose : CoreObjectCompose {
                             selectedIndex = factionIndex,
                             modifier = modifier,
                             preText = "Preferred Faction: ",
+                            addEmptyFirstOption = true,
+                            firstOptionSelected = (playerFaction.isBlank()),
                             onItemClick = {
-                                factionIndex = it; playerFaction = factionNames[factionIndex]
-                            })
+                                factionIndex = it
+                                if (factionIndex < 0) {
+                                    factionIndex = 0
+                                    playerFaction = ""
+                                } else {
+                                    playerFaction = factionNames[factionIndex]
+                                }
+                            }
+                        )
                     }
                     Row {
                         DropDownList(
@@ -260,7 +267,8 @@ class PlayerCompose : CoreObjectCompose {
                                 } else {
                                     teamID = teams[teamIndex].teamID
                                 }
-                            })
+                            }
+                        )
                     }
                     Row {
                         TextButton(
@@ -297,11 +305,9 @@ class PlayerCompose : CoreObjectCompose {
         val player: PlayerWithTeams = coreObject as PlayerWithTeams
 
         val onConfirmation = {
-            COMPOSE_DATA.getScope().launch(
-                COMPOSE_DATA.getExceptionHandler(
-                    errorMessage = "Error while deleting the player: ${player.getDisplayName()}"
-                )
-            ) {
+            errorHandling.provideCoroutineExceptionScope(
+                errorMessage = "Error while deleting the player: ${player.getDisplayName()}"
+            ).launch {
                 PLAYER_VIEW_MODEL.delete(player.player)
                 onDismissRequest()
             }

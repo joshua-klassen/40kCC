@@ -18,7 +18,7 @@ import androidx.room.PrimaryKey
             entity = Game::class,
             childColumns = ["game"],
             parentColumns = ["gameID"],
-            onDelete = ForeignKey.RESTRICT,
+            onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE,
             deferred = true
         ),

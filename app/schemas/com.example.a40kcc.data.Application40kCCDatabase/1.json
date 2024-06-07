@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "4ef277a489d63b219457f00b35f0b46e",
+    "identityHash": "18e37ff71bef6e207cbb197547ea5234",
     "entities": [
       {
         "tableName": "game",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`gameID` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `player_01` INTEGER NOT NULL, `player_02` INTEGER DEFAULT NULL, `player_01_faction` TEXT NOT NULL, `player_02_faction` TEXT NOT NULL, `player_01_faction_detachment` TEXT DEFAULT NULL, `player_02_faction_detachment` TEXT DEFAULT NULL, `prediction` INTEGER DEFAULT NULL, `round` INTEGER NOT NULL, `outcome` INTEGER DEFAULT NULL, FOREIGN KEY(`player_01`) REFERENCES `player`(`playerID`) ON UPDATE CASCADE ON DELETE RESTRICT DEFERRABLE INITIALLY DEFERRED, FOREIGN KEY(`player_02`) REFERENCES `player`(`playerID`) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED, FOREIGN KEY(`prediction`) REFERENCES `prediction`(`predictionID`) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED, FOREIGN KEY(`outcome`) REFERENCES `outcome`(`outcomeID`) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED, FOREIGN KEY(`round`) REFERENCES `round`(`roundID`) ON UPDATE CASCADE ON DELETE RESTRICT DEFERRABLE INITIALLY DEFERRED)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`gameID` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `player_01` INTEGER NOT NULL, `player_02` INTEGER DEFAULT NULL, `player_01_faction` TEXT NOT NULL, `player_02_faction` TEXT NOT NULL, `player_01_faction_detachment` TEXT DEFAULT NULL, `player_02_faction_detachment` TEXT DEFAULT NULL, `prediction` INTEGER DEFAULT NULL, `round` INTEGER NOT NULL, `outcome` INTEGER DEFAULT NULL, FOREIGN KEY(`player_01`) REFERENCES `player`(`playerID`) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED, FOREIGN KEY(`player_02`) REFERENCES `player`(`playerID`) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED, FOREIGN KEY(`prediction`) REFERENCES `prediction`(`predictionID`) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED, FOREIGN KEY(`outcome`) REFERENCES `outcome`(`outcomeID`) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED, FOREIGN KEY(`round`) REFERENCES `round`(`roundID`) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED)",
         "fields": [
           {
             "fieldPath": "gameID",
@@ -139,7 +139,7 @@
         "foreignKeys": [
           {
             "table": "player",
-            "onDelete": "RESTRICT",
+            "onDelete": "CASCADE",
             "onUpdate": "CASCADE",
             "columns": [
               "player_01"
@@ -183,7 +183,7 @@
           },
           {
             "table": "round",
-            "onDelete": "RESTRICT",
+            "onDelete": "CASCADE",
             "onUpdate": "CASCADE",
             "columns": [
               "round"
@@ -196,7 +196,7 @@
       },
       {
         "tableName": "live_round",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`liveRoundID` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `game` INTEGER NOT NULL, `expected_result` INTEGER NOT NULL, FOREIGN KEY(`game`) REFERENCES `game`(`gameID`) ON UPDATE CASCADE ON DELETE RESTRICT DEFERRABLE INITIALLY DEFERRED, FOREIGN KEY(`expected_result`) REFERENCES `prediction`(`predictionID`) ON UPDATE CASCADE ON DELETE RESTRICT DEFERRABLE INITIALLY DEFERRED)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`liveRoundID` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `game` INTEGER NOT NULL, `expected_result` INTEGER NOT NULL, FOREIGN KEY(`game`) REFERENCES `game`(`gameID`) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED, FOREIGN KEY(`expected_result`) REFERENCES `prediction`(`predictionID`) ON UPDATE CASCADE ON DELETE RESTRICT DEFERRABLE INITIALLY DEFERRED)",
         "fields": [
           {
             "fieldPath": "liveRoundID",
@@ -255,7 +255,7 @@
         "foreignKeys": [
           {
             "table": "game",
-            "onDelete": "RESTRICT",
+            "onDelete": "CASCADE",
             "onUpdate": "CASCADE",
             "columns": [
               "game"
@@ -781,7 +781,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4ef277a489d63b219457f00b35f0b46e')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '18e37ff71bef6e207cbb197547ea5234')"
     ]
   }
 }

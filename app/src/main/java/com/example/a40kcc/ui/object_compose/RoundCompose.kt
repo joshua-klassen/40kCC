@@ -18,13 +18,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.window.Dialog
-import com.example.a40kcc.COMPOSE_DATA
 import com.example.a40kcc.DEPLOYMENT_DATA
 import com.example.a40kcc.PRIMARY_MISSION_DATA
 import com.example.a40kcc.ROUND_VIEW_MODEL
 import com.example.a40kcc.SECONDARY_MISSION_DATA
 import com.example.a40kcc.data.`object`.Round
 import com.example.a40kcc.ui.utilities.DropDownList
+import com.example.a40kcc.ui.utilities.ErrorHandling
 import com.example.a40kcc.ui.utilities.ScaledText
 import kotlinx.coroutines.launch
 
@@ -132,6 +132,7 @@ fun AddRound(
 @Composable
 fun EditRound(
     round: Round,
+    errorHandling: ErrorHandling,
     modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit
 ) {
@@ -167,11 +168,10 @@ fun EditRound(
             secondaryMissionName = secondaryMissionName,
             deploymentName = deploymentName
         )
-        COMPOSE_DATA.getScope().launch(
-            COMPOSE_DATA.getExceptionHandler(
-                errorMessage = "Error updating the round: ${round.getDisplayName()}"
-            )
-        ) {
+
+        errorHandling.provideCoroutineExceptionScope(
+            errorMessage = "Error updating the round: ${round.getDisplayName()}"
+        ).launch {
             ROUND_VIEW_MODEL.update(newRound)
             onDismissRequest()
         }
@@ -252,15 +252,14 @@ fun EditRound(
 @Composable
 fun RemoveRound(
     round: Round,
+    errorHandling: ErrorHandling,
     modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit
 ) {
     val onConfirmation = {
-        COMPOSE_DATA.getScope().launch(
-            COMPOSE_DATA.getExceptionHandler(
-                errorMessage = "Error removing the round: ${round.getDisplayName()}"
-            )
-        ) {
+        errorHandling.provideCoroutineExceptionScope(
+            errorMessage = "Error removing the round: ${round.getDisplayName()}"
+        ).launch {
             ROUND_VIEW_MODEL.delete(round)
             onDismissRequest()
         }

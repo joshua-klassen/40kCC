@@ -21,7 +21,7 @@ import androidx.room.PrimaryKey
             entity = Player::class,
             childColumns = ["player_01"],
             parentColumns = ["playerID"],
-            onDelete = ForeignKey.RESTRICT,
+            onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE,
             deferred = true
         ),
@@ -53,7 +53,7 @@ import androidx.room.PrimaryKey
             entity = Round::class,
             childColumns = ["round"],
             parentColumns = ["roundID"],
-            onDelete = ForeignKey.RESTRICT,
+            onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE,
             deferred = true
         )

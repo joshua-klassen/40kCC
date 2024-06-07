@@ -14,14 +14,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
-import com.example.a40kcc.COMPOSE_DATA
 import com.example.a40kcc.TOURNAMENT_VIEW_MODEL
 import com.example.a40kcc.data.`object`.CoreObject
 import com.example.a40kcc.data.`object`.Tournament
+import com.example.a40kcc.ui.utilities.ErrorHandling
 import com.example.a40kcc.ui.utilities.ScaledText
 import kotlinx.coroutines.launch
 
-class TournamentCompose : CoreObjectCompose {
+class TournamentCompose(override var errorHandling: ErrorHandling) : CoreObjectCompose {
     @Composable
     override fun AddObject(
         navController: NavController,
@@ -57,11 +57,9 @@ class TournamentCompose : CoreObjectCompose {
         val tournament: Tournament = coreObject as Tournament
 
         val onConfirmation = {
-            COMPOSE_DATA.getScope().launch(
-                COMPOSE_DATA.getExceptionHandler(
-                    errorMessage = "Error removing the tournament: ${tournament.getDisplayName()}"
-                )
-            ) {
+            errorHandling.provideCoroutineExceptionScope(
+                errorMessage = "Error removing the tournament: ${tournament.getDisplayName()}"
+            ).launch {
                 TOURNAMENT_VIEW_MODEL.delete(tournament)
                 onDismissRequest()
             }
