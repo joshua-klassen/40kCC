@@ -2,6 +2,7 @@ package com.example.a40kcc
 
 import com.example.a40kcc.data.model.GameExpandedViewModel
 import com.example.a40kcc.data.model.GameViewModel
+import com.example.a40kcc.data.model.HistoricalRoundDataViewModel
 import com.example.a40kcc.data.model.LiveRoundExpandedViewModel
 import com.example.a40kcc.data.model.LiveRoundViewModel
 import com.example.a40kcc.data.model.OutcomeViewModel
@@ -24,6 +25,7 @@ lateinit var SECONDARY_MISSION_DATA: DataObject
 
 lateinit var GAME_VIEW_MODEL: GameViewModel
 lateinit var GAME_EXPANDED_VIEW_MODEL: GameExpandedViewModel
+lateinit var HISTORICAL_ROUND_DATA_VIEW_MODEL: HistoricalRoundDataViewModel
 lateinit var LIVE_ROUND_VIEW_MODEL: LiveRoundViewModel
 lateinit var LIVE_ROUND_EXPANDED_VIEW_MODEL: LiveRoundExpandedViewModel
 lateinit var OUTCOME_VIEW_MODEL: OutcomeViewModel

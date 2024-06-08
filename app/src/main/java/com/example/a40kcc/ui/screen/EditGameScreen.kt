@@ -30,12 +30,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.example.a40kcc.GAME_EXPANDED_VIEW_MODEL
 import com.example.a40kcc.GAME_VIEW_MODEL
+import com.example.a40kcc.HISTORICAL_ROUND_DATA_VIEW_MODEL
+import com.example.a40kcc.LIVE_ROUND_EXPANDED_VIEW_MODEL
 import com.example.a40kcc.OUTCOME_VIEW_MODEL
 import com.example.a40kcc.PREDICTION_VIEW_MODEL
 import com.example.a40kcc.data.`object`.CoreObject
 import com.example.a40kcc.data.`object`.Game
 import com.example.a40kcc.data.`object`.GameExpanded
+import com.example.a40kcc.data.`object`.LiveRoundExpanded
 import com.example.a40kcc.data.`object`.Outcome
 import com.example.a40kcc.data.`object`.Prediction
 import com.example.a40kcc.ui.utilities.DropDownList
@@ -105,6 +109,20 @@ fun EditGame(
             GAME_VIEW_MODEL.update(
                 game = updatedGame
             )
+
+            var liveRound: LiveRoundExpanded? = null
+            var gameCompleted = false
+            if (outcomeId != null) {
+                gameCompleted = true
+                liveRound = LIVE_ROUND_EXPANDED_VIEW_MODEL.getByGameId(game.game.gameID)
+            }
+
+            HISTORICAL_ROUND_DATA_VIEW_MODEL.insert(
+                game = GAME_EXPANDED_VIEW_MODEL.getById(game.game.gameID),
+                prediction = liveRound?.expectedResult,
+                isComplete = gameCompleted
+            )
+
             onDismissRequest()
         }
     }

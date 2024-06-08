@@ -4,6 +4,7 @@ import android.app.Application
 import com.example.a40kcc.data.Application40kCCDatabase
 import com.example.a40kcc.data.repository.GameExpandedRepository
 import com.example.a40kcc.data.repository.GameRepository
+import com.example.a40kcc.data.repository.HistoricalRoundDataRepository
 import com.example.a40kcc.data.repository.LiveRoundExpandedRepository
 import com.example.a40kcc.data.repository.LiveRoundRepository
 import com.example.a40kcc.data.repository.OutcomeRepository
@@ -26,6 +27,7 @@ class Application40kCC : Application() {
     private val database by lazy { Application40kCCDatabase.getDatabase(this, applicationScope) }
     val game by lazy { GameRepository(database.gameDao()) }
     val gameExpanded by lazy { GameExpandedRepository(database.gameExpandedDao()) }
+    val historicalRoundData by lazy { HistoricalRoundDataRepository(database.historicalRoundDataDao()) }
     val liveRound by lazy { LiveRoundRepository(database.liveRoundDao()) }
     val liveRoundExpanded by lazy { LiveRoundExpandedRepository(database.liveRoundExpandedDao()) }
     val outcome by lazy { OutcomeRepository(database.outcomeDao()) }

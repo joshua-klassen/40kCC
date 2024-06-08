@@ -20,7 +20,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
 import com.example.a40kcc.FACTION_DATA
+import com.example.a40kcc.GAME_EXPANDED_VIEW_MODEL
 import com.example.a40kcc.GAME_VIEW_MODEL
+import com.example.a40kcc.HISTORICAL_ROUND_DATA_VIEW_MODEL
 import com.example.a40kcc.LIVE_ROUND_VIEW_MODEL
 import com.example.a40kcc.PLAYER_WITH_TEAMS_VIEW_MODEL
 import com.example.a40kcc.PREDICTION_VIEW_MODEL
@@ -87,6 +89,9 @@ class GameCompose(override var errorHandling: ErrorHandling) : CoreObjectCompose
                         gameID = lastGame.gameID,
                         expectedResult = lastGame.predictionID!!
                     )
+                )
+                HISTORICAL_ROUND_DATA_VIEW_MODEL.insert(
+                    game = GAME_EXPANDED_VIEW_MODEL.getById(lastGame.gameID)
                 )
                 onDismissRequest()
             }

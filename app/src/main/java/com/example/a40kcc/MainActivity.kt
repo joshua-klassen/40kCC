@@ -25,6 +25,8 @@ import com.example.a40kcc.data.model.GameExpandedViewModel
 import com.example.a40kcc.data.model.GameExpandedViewModelFactory
 import com.example.a40kcc.data.model.GameViewModel
 import com.example.a40kcc.data.model.GameViewModelFactory
+import com.example.a40kcc.data.model.HistoricalRoundDataViewModel
+import com.example.a40kcc.data.model.HistoricalRoundDataViewModelFactory
 import com.example.a40kcc.data.model.LiveRoundExpandedViewModel
 import com.example.a40kcc.data.model.LiveRoundExpandedViewModelFactory
 import com.example.a40kcc.data.model.LiveRoundViewModel
@@ -77,6 +79,10 @@ class MainActivity : ComponentActivity() {
             owner = this,
             factory = GameExpandedViewModelFactory((application as Application40kCC).gameExpanded)
         )[GameExpandedViewModel::class.java]
+        HISTORICAL_ROUND_DATA_VIEW_MODEL = ViewModelProvider(
+            owner = this,
+            factory = HistoricalRoundDataViewModelFactory((application as Application40kCC).historicalRoundData)
+        )[HistoricalRoundDataViewModel::class.java]
         LIVE_ROUND_VIEW_MODEL = ViewModelProvider(
             owner = this,
             factory = LiveRoundViewModelFactory((application as Application40kCC).liveRound)

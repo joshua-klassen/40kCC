@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
 import com.example.a40kcc.COLORS
+import com.example.a40kcc.HISTORICAL_ROUND_DATA_VIEW_MODEL
 import com.example.a40kcc.LIVE_ROUND_EXPANDED_VIEW_MODEL
 import com.example.a40kcc.LIVE_ROUND_VIEW_MODEL
 import com.example.a40kcc.PREDICTION_VIEW_MODEL
@@ -542,6 +543,14 @@ fun EditLiveRound(
             errorMessage = "Error updating the round: ${liveRound.getDisplayName()}"
         ).launch {
             LIVE_ROUND_VIEW_MODEL.update(liveRound = updatedLiveRound)
+
+            if (liveRound.game != null) {
+                HISTORICAL_ROUND_DATA_VIEW_MODEL.insert(
+                    game = liveRound.game,
+                    prediction = predictions[predictionIndex]
+                )
+            }
+
             onDismissRequest()
         }
     }
