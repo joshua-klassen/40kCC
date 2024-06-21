@@ -133,7 +133,7 @@ abstract class Application40kCCDatabase : RoomDatabase() {
                     "40kCC-database"
                 )
                     .addCallback(Application40kCCDatabaseCallback(scope))
-                    //.allowMainThreadQueries() //HACK TO FIX PLAYER TEAM INSERT FOR ALPHA
+                    .allowMainThreadQueries()
                     .build()
                 INSTANCE = instance
                 instance

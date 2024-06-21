@@ -9,6 +9,7 @@ import com.example.a40kcc.data.`object`.GameExpanded
 import com.example.a40kcc.data.`object`.HistoricalRoundData
 import com.example.a40kcc.data.`object`.Outcome
 import com.example.a40kcc.data.`object`.Player
+import com.example.a40kcc.data.`object`.PlayerWithTeams
 import com.example.a40kcc.data.`object`.Prediction
 import com.example.a40kcc.data.`object`.Round
 import com.example.a40kcc.data.`object`.Tournament
@@ -20,8 +21,16 @@ class HistoricalRoundDataViewModel(private val historicalRoundDataRepository: Hi
         return historicalRoundDataRepository.getById(historicalRoundDataId)
     }
 
-    fun getByPlayerId(playerName: String): List<HistoricalRoundData> {
+    fun getByPlayerName(playerName: String): List<HistoricalRoundData> {
         return historicalRoundDataRepository.getByPlayerName(playerName)
+    }
+
+    fun getByTournamentName(tournamentName: String): List<HistoricalRoundData> {
+        return historicalRoundDataRepository.getByTournamentName(tournamentName)
+    }
+
+    fun getByTeamName(teamName: String): List<HistoricalRoundData> {
+        return historicalRoundDataRepository.getByTeamName(teamName)
     }
 
     suspend fun insert(historicalRoundData: HistoricalRoundData) {
@@ -32,8 +41,8 @@ class HistoricalRoundDataViewModel(private val historicalRoundDataRepository: Hi
         tournament: Tournament?,
         round: Round?,
         game: Game?,
-        player01: Player?,
-        player02: Player? = null,
+        player01: PlayerWithTeams?,
+        player02: PlayerWithTeams? = null,
         initialPrediction: Prediction? = null,
         prediction: Prediction? = null,
         outcome: Outcome? = null,
@@ -46,12 +55,14 @@ class HistoricalRoundDataViewModel(private val historicalRoundDataRepository: Hi
                 primaryMission = round?.primaryMissionName ?: "",
                 secondaryMission = round?.secondaryMissionName ?: "",
                 deployment = round?.deploymentName ?: "",
-                player01 = player01?.name ?: "",
+                player01 = player01?.player?.name ?: "",
                 player01Faction = game?.player01FactionName ?: "",
                 player01Detachment = game?.player01FactionDetachment ?: "",
-                player02 = player02?.name ?: "",
+                player01Team = player01?.team?.get(0)?.name ?: "",
+                player02 = player02?.player?.name ?: "",
                 player02Faction = game?.player02FactionName ?: "",
                 player02Detachment = game?.player02FactionDetachment ?: "",
+                player02Team = player01?.team?.get(0)?.name ?: "",
                 initialPrediction = initialPrediction?.name ?: "",
                 prediction = prediction?.name ?: "",
                 player01Points = outcome?.player01Points ?: -1,
@@ -79,9 +90,11 @@ class HistoricalRoundDataViewModel(private val historicalRoundDataRepository: Hi
                 player01 = game.player01?.player?.name ?: "",
                 player01Faction = game.game.player01FactionName,
                 player01Detachment = game.game.player01FactionDetachment ?: "",
+                player01Team = game.player01?.team?.get(0)?.name ?: "",
                 player02 = game.player02?.player?.name ?: "",
                 player02Faction = game.game.player02FactionName,
                 player02Detachment = game.game.player02FactionDetachment ?: "",
+                player02Team = game.player01?.team?.get(0)?.name ?: "",
                 initialPrediction = game.prediction?.name ?: "",
                 prediction = prediction?.name ?: "",
                 player01Points = game.outcome?.player01Points ?: -1,

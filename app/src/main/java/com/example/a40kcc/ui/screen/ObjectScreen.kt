@@ -124,6 +124,7 @@ fun ObjectScreen(
                     horizontalArrangement = Arrangement.SpaceEvenly,
                     modifier = modifier
                         .fillMaxWidth()
+                        .horizontalScroll(ScrollState(initial = 1))
                         .clickable(enabled = clickable, onClick = {
                             showDetails = !showDetails
                         })

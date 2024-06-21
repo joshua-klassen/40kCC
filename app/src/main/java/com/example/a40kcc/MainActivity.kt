@@ -307,6 +307,16 @@ class MainActivity : ComponentActivity() {
                                     )
                                 }
                             }
+                            composable(route = "historical") {
+                                ObjectScreen(
+                                    objectList = HISTORICAL_ROUND_DATA_VIEW_MODEL.getByTeamName(""),
+                                    navController = navController,
+                                    objectCompose = TournamentCompose(
+                                        errorHandling = errorHandling
+                                    ),
+                                    modifier = modifier
+                                )
+                            }
                         }
                     }
                 }

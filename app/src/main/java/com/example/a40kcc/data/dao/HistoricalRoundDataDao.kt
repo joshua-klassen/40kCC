@@ -22,4 +22,10 @@ interface HistoricalRoundDataDao {
 
     @Query("SELECT * FROM historical_round_data WHERE (player_01 LIKE :playerName OR player_02 LIKE :playerName)")
     fun getByPlayerName(playerName: String): List<HistoricalRoundData>
+
+    @Query("SELECT * FROM historical_round_data WHERE tournament LIKE :tournamentName")
+    fun getByTournamentName(tournamentName: String): List<HistoricalRoundData>
+
+    @Query("SELECT * FROM historical_round_data WHERE (player_01_team LIKE :teamName OR player_02_team LIKE :teamName)")
+    fun getByTeamName(teamName: String): List<HistoricalRoundData>
 }

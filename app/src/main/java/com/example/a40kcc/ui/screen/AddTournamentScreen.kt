@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Build
-import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.Button
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -39,7 +38,6 @@ import com.example.a40kcc.data.`object`.Round
 import com.example.a40kcc.data.`object`.Tournament
 import com.example.a40kcc.ui.object_compose.AddRound
 import com.example.a40kcc.ui.object_compose.EditRound
-import com.example.a40kcc.ui.object_compose.RemoveRound
 import com.example.a40kcc.ui.utilities.ErrorHandling
 import com.example.a40kcc.ui.utilities.ScaledText
 import kotlinx.coroutines.launch
@@ -221,7 +219,7 @@ fun AddTournament(
                             }
                         }
                     }
-                    Column(
+                    /*Column(
                         modifier = modifier
                             .wrapContentHeight()
                     ) {
@@ -249,7 +247,7 @@ fun AddTournament(
                                 )
                             }
                         }
-                    }
+                    }*/
                 }
             }
         }

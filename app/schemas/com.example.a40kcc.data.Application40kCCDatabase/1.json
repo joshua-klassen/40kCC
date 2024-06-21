@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "92d8631bf9bc0b2479851ed08b016bfe",
+    "identityHash": "63ab23c885c316e38cd26e604ab9f57a",
     "entities": [
       {
         "tableName": "game",
@@ -196,7 +196,7 @@
       },
       {
         "tableName": "historical_round_data",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`historicalRoundDataID` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `inserted_timestamp` INTEGER NOT NULL DEFAULT CURRENT_TIMESTAMP, `tournament` TEXT NOT NULL DEFAULT '', `round` INTEGER NOT NULL DEFAULT -1, `primary_mission` TEXT NOT NULL DEFAULT '', `secondary_mission` TEXT NOT NULL DEFAULT '', `deployment` TEXT NOT NULL DEFAULT '', `player_01` TEXT NOT NULL DEFAULT '', `player_01_faction` TEXT NOT NULL DEFAULT '', `player_01_detachment` TEXT NOT NULL DEFAULT '', `player_02` TEXT NOT NULL DEFAULT '', `player_02_faction` TEXT NOT NULL DEFAULT '', `player_02_detachment` TEXT NOT NULL DEFAULT '', `initial_prediction` TEXT NOT NULL DEFAULT '', `prediction` TEXT NOT NULL DEFAULT '', `player_01_points` INTEGER NOT NULL DEFAULT -1, `player_02_points` INTEGER NOT NULL DEFAULT -1, `player_01_team_points` INTEGER NOT NULL DEFAULT -1, `player_02_team_points` INTEGER NOT NULL DEFAULT -1, `point_differential` INTEGER NOT NULL DEFAULT -1, `is_complete` INTEGER NOT NULL DEFAULT false)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`historicalRoundDataID` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `inserted_timestamp` INTEGER NOT NULL DEFAULT CURRENT_TIMESTAMP, `tournament` TEXT NOT NULL DEFAULT '', `round` INTEGER NOT NULL DEFAULT -1, `primary_mission` TEXT NOT NULL DEFAULT '', `secondary_mission` TEXT NOT NULL DEFAULT '', `deployment` TEXT NOT NULL DEFAULT '', `player_01` TEXT NOT NULL DEFAULT '', `player_01_faction` TEXT NOT NULL DEFAULT '', `player_01_detachment` TEXT NOT NULL DEFAULT '', `player_01_team` TEXT NOT NULL DEFAULT '', `player_02` TEXT NOT NULL DEFAULT '', `player_02_faction` TEXT NOT NULL DEFAULT '', `player_02_detachment` TEXT NOT NULL DEFAULT '', `player_02_team` TEXT NOT NULL DEFAULT '', `initial_prediction` TEXT NOT NULL DEFAULT '', `prediction` TEXT NOT NULL DEFAULT '', `player_01_points` INTEGER NOT NULL DEFAULT -1, `player_02_points` INTEGER NOT NULL DEFAULT -1, `player_01_team_points` INTEGER NOT NULL DEFAULT -1, `player_02_team_points` INTEGER NOT NULL DEFAULT -1, `point_differential` INTEGER NOT NULL DEFAULT -1, `is_complete` INTEGER NOT NULL DEFAULT false)",
         "fields": [
           {
             "fieldPath": "historicalRoundDataID",
@@ -268,6 +268,13 @@
             "defaultValue": "''"
           },
           {
+            "fieldPath": "player01Team",
+            "columnName": "player_01_team",
+            "affinity": "TEXT",
+            "notNull": true,
+            "defaultValue": "''"
+          },
+          {
             "fieldPath": "player02",
             "columnName": "player_02",
             "affinity": "TEXT",
@@ -284,6 +291,13 @@
           {
             "fieldPath": "player02Detachment",
             "columnName": "player_02_detachment",
+            "affinity": "TEXT",
+            "notNull": true,
+            "defaultValue": "''"
+          },
+          {
+            "fieldPath": "player02Team",
+            "columnName": "player_02_team",
             "affinity": "TEXT",
             "notNull": true,
             "defaultValue": "''"
@@ -439,7 +453,7 @@
       },
       {
         "tableName": "outcome",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`outcomeID` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `player_01` INTEGER NOT NULL, `player_02` INTEGER DEFAULT NULL, `player_01_points` INTEGER NOT NULL, `player_02_points` INTEGER NOT NULL, `player_01_team_points` INTEGER NOT NULL, `player_02_team_points` INTEGER NOT NULL, `point_differential` INTEGER NOT NULL, FOREIGN KEY(`player_01`) REFERENCES `player`(`playerID`) ON UPDATE CASCADE ON DELETE RESTRICT DEFERRABLE INITIALLY DEFERRED, FOREIGN KEY(`player_02`) REFERENCES `player`(`playerID`) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`outcomeID` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `player_01` INTEGER NOT NULL, `player_02` INTEGER DEFAULT NULL, `player_01_points` INTEGER NOT NULL, `player_02_points` INTEGER NOT NULL, `player_01_team_points` INTEGER NOT NULL, `player_02_team_points` INTEGER NOT NULL, `point_differential` INTEGER NOT NULL, FOREIGN KEY(`player_01`) REFERENCES `player`(`playerID`) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED, FOREIGN KEY(`player_02`) REFERENCES `player`(`playerID`) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED)",
         "fields": [
           {
             "fieldPath": "outcomeID",
@@ -529,7 +543,7 @@
         "foreignKeys": [
           {
             "table": "player",
-            "onDelete": "RESTRICT",
+            "onDelete": "CASCADE",
             "onUpdate": "CASCADE",
             "columns": [
               "player_01"
@@ -941,7 +955,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '92d8631bf9bc0b2479851ed08b016bfe')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '63ab23c885c316e38cd26e604ab9f57a')"
     ]
   }
 }

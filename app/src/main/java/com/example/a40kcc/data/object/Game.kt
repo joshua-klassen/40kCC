@@ -98,6 +98,6 @@ data class Game(
     }
 
     override fun getDisplayName(): String {
-        return "gameID: $gameID"
+        return gameID.toString()
     }
 }

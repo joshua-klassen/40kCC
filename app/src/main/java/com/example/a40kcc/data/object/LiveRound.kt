@@ -50,6 +50,6 @@ data class LiveRound(
     }
 
     override fun getDisplayName(): String {
-        return "liveRoundID: $liveRoundID"
+        return liveRoundID.toString()
     }
 }

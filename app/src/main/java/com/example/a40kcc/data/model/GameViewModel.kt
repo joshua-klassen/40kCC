@@ -24,6 +24,10 @@ class GameViewModel(private val gameRepository: GameRepository) : ViewModel() {
         return gameRepository.getByPlayerId(playerId)
     }
 
+    fun getGameByTournamentId(tournamentId: Int): List<Game> {
+        return gameRepository.getGameByTournamentId(tournamentId)
+    }
+
     suspend fun insert(game: Game) {
         gameRepository.insert(game)
     }

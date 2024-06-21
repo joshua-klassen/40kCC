@@ -6,11 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -18,7 +14,6 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -27,9 +22,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import com.example.a40kcc.GAME_EXPANDED_VIEW_MODEL
 import com.example.a40kcc.GAME_VIEW_MODEL
 import com.example.a40kcc.HISTORICAL_ROUND_DATA_VIEW_MODEL
@@ -46,7 +38,6 @@ import com.example.a40kcc.ui.utilities.DropDownList
 import com.example.a40kcc.ui.utilities.ErrorHandling
 import com.example.a40kcc.ui.utilities.ScaledText
 import kotlinx.coroutines.launch
-import kotlin.math.abs
 
 @Composable
 fun EditGame(
@@ -64,6 +55,9 @@ fun EditGame(
 
     val game: GameExpanded = coreObject as GameExpanded
     var addOutcome: Boolean by remember { mutableStateOf(false) }
+    var canEditOutcome: Boolean by remember { mutableStateOf(false) }
+    var editOutcome: Boolean by remember { mutableStateOf(false) }
+    var outcome: Outcome? = remember { null }
 
     val predictions: List<Prediction> = PREDICTION_VIEW_MODEL.allPredictions()
     var predictionID by remember {
@@ -81,6 +75,10 @@ fun EditGame(
         }
     }
 
+    if (game.game.outcomeID != null) {
+        canEditOutcome = true
+        outcome = OUTCOME_VIEW_MODEL.getById(outcomeID)
+    }
     var predictionIndex by remember { mutableIntStateOf(0) }
 
     if (predictions.contains(game.prediction)) {
@@ -224,16 +222,26 @@ fun EditGame(
                 modifier = modifier
                     .fillMaxWidth()
             ) {
-                DropDownList(
-                    itemList = predictions.map { it.getDisplayName() },
-                    selectedIndex = predictionIndex,
-                    modifier = modifier,
-                    preText = "Prediction: ",
-                    onItemClick = { index ->
-                        predictionIndex = index
-                        predictionID = predictions[predictionIndex].predictionID
-                    }
-                )
+                if(!canEditOutcome) {
+                    DropDownList(
+                        itemList = predictions.map { it.getDisplayName() },
+                        selectedIndex = predictionIndex,
+                        modifier = modifier,
+                        preText = "Prediction: ",
+                        onItemClick = { index ->
+                            predictionIndex = index
+                            predictionID = predictions[predictionIndex].predictionID
+                        }
+                    )
+                }
+                else
+                {
+                    ScaledText(
+                        text = "Prediction: ${predictions[predictionIndex].getDisplayName()}",
+                        style = MaterialTheme.typography.titleLarge,
+                        modifier = modifier
+                    )
+                }
             }
             Row(
                 horizontalArrangement = Arrangement.SpaceEvenly,
@@ -242,172 +250,82 @@ fun EditGame(
             ) {
                 if (outcomeID != 0) {
                     ScaledText(
-                        text = "Outcome: ${OUTCOME_VIEW_MODEL.getById(outcomeID).getDisplayName()}",
-                        style = MaterialTheme.typography.bodyMedium,
-                        modifier = modifier
-                    )
-                }
-                TextButton(
-                    onClick = {
-                        addOutcome = !addOutcome
-                    },
-                    modifier = modifier
-                ) {
-                    ScaledText(
-                        text = "Add Outcome",
+                        text = "Outcome: ${outcome?.getDisplayName() ?: "None"}",
                         style = MaterialTheme.typography.bodyMedium,
                         modifier = modifier
                     )
                 }
 
+                if(!canEditOutcome) {
+                    TextButton(
+                        onClick = {
+                            addOutcome = !addOutcome
+                        },
+                        modifier = modifier
+                    ) {
+                        ScaledText(
+                            text = "Add Outcome",
+                            style = MaterialTheme.typography.bodyMedium,
+                            modifier = modifier
+                        )
+                    }
+                }
+                else
+                {
+                    TextButton(
+                        onClick = {
+                            editOutcome = !editOutcome
+                        },
+                        modifier = modifier
+                    ) {
+                        ScaledText(
+                            text = "Edit Outcome",
+                            style = MaterialTheme.typography.bodyMedium,
+                            modifier = modifier
+                        )
+                    }
+                }
+
                 if (addOutcome) {
-                    val insertOutcome: (outcome: Outcome?) -> Unit = { outcome ->
-                        if (outcome != null) {
+                    val insertOutcome: (outcome: Outcome?) -> Unit = { newOutcome ->
+                        if (newOutcome != null) {
                             errorHandling.provideCoroutineExceptionScope(
                                 errorMessage = "Error adding the new outcome for: ${game.getDisplayName()}"
                             ).launch {
-                                OUTCOME_VIEW_MODEL.insert(outcome)
+                                OUTCOME_VIEW_MODEL.insert(newOutcome)
                                 outcomeID =
                                     OUTCOME_VIEW_MODEL.getByPlayerId(game.game.player01ID)
                                         .last().outcomeID
+                                outcome = newOutcome
                             }
-                        } else {
-                            addOutcome = !addOutcome
                         }
+                        addOutcome = !addOutcome
                     }
                     AddOutcome(
-                        playerId = game.game.player01ID,
+                        player01Id = game.game.player01ID,
+                        player02Id = game.game.player02ID,
                         modifier = modifier,
                         onDismissRequest = insertOutcome
                     )
                 }
-            }
-        }
-    }
-}
 
-@Composable
-private fun AddOutcome(
-    playerId: Int,
-    modifier: Modifier,
-    onDismissRequest: (outcome: Outcome?) -> Unit
-) {
-    var player01Points by remember { mutableStateOf("0") }
-    var player02Points by remember { mutableStateOf("0") }
-    var pointDifferential by remember { mutableIntStateOf(0) }
-    var player01TeamPoints by remember { mutableIntStateOf(10) }
-    var player02TeamPoints by remember { mutableIntStateOf(10) }
-
-    val onConfirmation = {
-        val newOutcome = Outcome(
-            player01ID = playerId,
-            player01Points = player01Points.toInt(),
-            player02Points = player02Points.toInt(),
-            player01TeamPoints = player01TeamPoints,
-            player02TeamPoints = player02TeamPoints,
-            pointDifferential = pointDifferential
-        )
-        onDismissRequest(newOutcome)
-    }
-
-    fun calculatePoints() {
-        if (player01Points.toIntOrNull() == null || player02Points.toIntOrNull() == null) {
-            return
-        }
-
-        val differential = player01Points.toInt() - player02Points.toInt()
-        val wtcPoints = (abs(differential) - 1) / 5
-
-        if (differential < 0) {
-            player02TeamPoints = 10 + wtcPoints
-            player01TeamPoints = 10 - wtcPoints
-        } else {
-            player01TeamPoints = 10 + wtcPoints
-            player02TeamPoints = 10 - wtcPoints
-        }
-
-        if (player01TeamPoints > 20) player01TeamPoints = 20
-        if (player02TeamPoints > 20) player02TeamPoints = 20
-        if (player01TeamPoints < 0) player01TeamPoints = 0
-        if (player02TeamPoints < 0) player02TeamPoints = 0
-
-        pointDifferential = abs(differential)
-    }
-
-    Dialog(onDismissRequest = { onDismissRequest(null) }) {
-        Card(
-            modifier = modifier.wrapContentSize()
-        ) {
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = modifier.fillMaxWidth()
-            ) {
-                Row {
-                    ScaledText(
-                        text = "Add a new outcome",
-                        style = MaterialTheme.typography.titleLarge,
-                        modifier = modifier
-                    )
-                }
-                Row {
-                    TextField(
-                        value = player01Points,
-                        onValueChange = { player01Points = it; calculatePoints() },
-                        label = { Text(text = "Player 01 Points: ") },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                        textStyle = MaterialTheme.typography.bodyMedium
-                    )
-                }
-                Row {
-                    TextField(
-                        value = player02Points,
-                        onValueChange = { player02Points = it; calculatePoints() },
-                        label = { Text(text = "Player 02 Points: ") },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                        textStyle = MaterialTheme.typography.bodyMedium
-                    )
-                }
-                Row(horizontalArrangement = Arrangement.SpaceEvenly) {
-                    Column(modifier = modifier.width(100.dp)) {
-                        ScaledText(
-                            text = "Point Differential: $pointDifferential",
-                            style = MaterialTheme.typography.bodyMedium,
-                            modifier = modifier
-                        )
+                if (editOutcome) {
+                    val insertOutcome: (outcome: Outcome) -> Unit = { newOutcome ->
+                        if (newOutcome != game.outcome) {
+                            errorHandling.provideCoroutineExceptionScope(
+                                errorMessage = "Error updating the outcome for: ${game.getDisplayName()}"
+                            ).launch {
+                                OUTCOME_VIEW_MODEL.update(newOutcome)
+                                outcome = newOutcome
+                            }
+                        }
+                        editOutcome = !editOutcome
                     }
-                    Column(modifier = modifier.width(100.dp)) {
-                        ScaledText(
-                            text = "Player 01 WTC Points: $player01TeamPoints",
-                            style = MaterialTheme.typography.bodyMedium,
-                            modifier = modifier
-                        )
-                    }
-                    Column(modifier = modifier.width(100.dp)) {
-                        ScaledText(
-                            text = "Player 02 WTC Points: $player02TeamPoints",
-                            style = MaterialTheme.typography.bodyMedium,
-                            modifier = modifier
-                        )
-                    }
-                }
-                Row {
-                    TextButton(
-                        onClick = { onDismissRequest(null) },
-                        modifier = modifier
-                    ) {
-                        Text(
-                            text = "Cancel",
-                            style = MaterialTheme.typography.titleMedium
-                        )
-                    }
-                    TextButton(
-                        onClick = { onConfirmation() },
-                        modifier = modifier
-                    ) {
-                        Text(
-                            text = "Add",
-                            style = MaterialTheme.typography.titleMedium
+                    game.outcome?.let {
+                        EditOutcome(
+                            outcome = it,
+                            modifier = modifier,
+                            onDismissRequest = insertOutcome
                         )
                     }
                 }

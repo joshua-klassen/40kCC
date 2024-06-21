@@ -3,6 +3,7 @@ package com.example.a40kcc.data.repository
 import androidx.annotation.WorkerThread
 import com.example.a40kcc.data.dao.GameDao
 import com.example.a40kcc.data.`object`.Game
+import com.example.a40kcc.data.`object`.LiveRound
 import kotlinx.coroutines.flow.Flow
 
 class GameRepository(private val gameDao: GameDao) {
@@ -21,6 +22,11 @@ class GameRepository(private val gameDao: GameDao) {
     @WorkerThread
     fun getByPlayerId(playerId: Int): List<Game> {
         return gameDao.getByPlayerId(playerId)
+    }
+
+    @WorkerThread
+    fun getGameByTournamentId(tournamentId: Int): List<Game> {
+        return gameDao.getGameByTournamentId(tournamentId)
     }
 
     @WorkerThread

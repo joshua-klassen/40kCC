@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
+import com.example.a40kcc.GAME_VIEW_MODEL
 import com.example.a40kcc.TOURNAMENT_VIEW_MODEL
 import com.example.a40kcc.data.`object`.CoreObject
 import com.example.a40kcc.data.`object`.Tournament
@@ -31,6 +32,14 @@ class TournamentCompose(override var errorHandling: ErrorHandling) : CoreObjectC
         navController.navigate(
             route = "addTournament"
         )
+    }
+
+    override fun canEdit(coreObject: CoreObject): Boolean {
+        val tournament: Tournament = coreObject as Tournament
+
+        val games = GAME_VIEW_MODEL.getGameByTournamentId(tournament.tournamentID)
+
+        return games.isEmpty()
     }
 
     @Composable
