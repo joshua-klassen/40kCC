@@ -166,7 +166,6 @@ private fun LiveRoundScreenData(
     modifier: Modifier = Modifier,
     columnWidth: Dp = 100.dp
 ) {
-    var editLiveRound by remember { mutableStateOf(false) }
     val liveRounds: List<LiveRoundExpanded> = getByTeamAndTournament(
         round = round,
         team = team
@@ -219,6 +218,7 @@ private fun LiveRoundScreenData(
     }
 
     liveRounds.forEach { liveRound ->
+        var editLiveRound by remember { mutableStateOf(false) }
         Row(
             horizontalArrangement = Arrangement.SpaceEvenly,
             modifier = modifier.fillMaxWidth()
