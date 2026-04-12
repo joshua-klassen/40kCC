@@ -24,7 +24,7 @@ interface CoreObjectCompose {
     @Composable
     fun AddObject(
         navController: NavController,
-        modifier: Modifier = Modifier,
+        modifier: Modifier,
         onDismissRequest: () -> Unit
     ) {
     }
@@ -33,7 +33,7 @@ interface CoreObjectCompose {
     fun EditObject(
         coreObject: CoreObject,
         navController: NavController,
-        modifier: Modifier = Modifier,
+        modifier: Modifier,
         onDismissRequest: () -> Unit
     ) {
     }
@@ -42,7 +42,7 @@ interface CoreObjectCompose {
     fun RemoveObject(
         coreObject: CoreObject,
         navController: NavController,
-        modifier: Modifier = Modifier,
+        modifier: Modifier,
         onDismissRequest: () -> Unit
     ) {
     }

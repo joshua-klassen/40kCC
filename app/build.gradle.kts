@@ -1,22 +1,19 @@
-val roomVersion = "2.6.1"
-val navVersion = "2.7.7"
-val composeBomVersion = "2024.06.00"
-
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
-    id("com.google.devtools.ksp")
-    id("androidx.room")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.room)
 }
 
 android {
     namespace = "com.example.a40kcc"
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.example.a40kcc"
         minSdk = 27
-        targetSdk = 34
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
@@ -36,17 +33,14 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
     buildFeatures {
         compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
     }
     packaging {
         resources {
@@ -58,44 +52,45 @@ android {
     }
 }
 
+kotlin {
+    jvmToolchain(21)
+}
+
 dependencies {
-    testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
-    testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-    androidTestImplementation("androidx.navigation:navigation-testing:$navVersion")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
-    androidTestImplementation("androidx.test.ext:junit:1.2.1")
-    androidTestImplementation(platform("androidx.compose:compose-bom:$composeBomVersion"))
-    androidTestImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
-    annotationProcessor("androidx.room:room-compiler:$roomVersion")
-    debugImplementation("androidx.compose.ui:ui-test-manifest")
-    debugImplementation("androidx.compose.ui:ui-tooling")
-    implementation("androidx.activity:activity-compose:1.9.0")
-    implementation("androidx.appcompat:appcompat:1.7.0")
-    implementation("androidx.compose.material3:material3")
-    implementation("androidx.compose.runtime:runtime-livedata:1.6.8")
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-graphics")
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.core:core-ktx:1.13.1")
-    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.3")
-    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.3")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.3")
-    implementation("androidx.navigation:navigation-compose:$navVersion")
-    implementation("androidx.navigation:navigation-dynamic-features-fragment:$navVersion")
-    implementation("androidx.navigation:navigation-fragment-ktx:$navVersion")
-    implementation("androidx.navigation:navigation-ui-ktx:$navVersion")
-    implementation("androidx.recyclerview:recyclerview:1.3.2")
-    implementation("androidx.room:room-guava:$roomVersion")
-    implementation("androidx.room:room-ktx:$roomVersion")
-    implementation("androidx.room:room-paging:$roomVersion")
-    implementation("androidx.room:room-runtime:$roomVersion")
-    implementation("androidx.room:room-rxjava2:$roomVersion")
-    implementation("androidx.room:room-rxjava3:$roomVersion")
-    implementation("com.google.accompanist:accompanist-drawablepainter:0.35.0-alpha")
-    implementation("com.google.android.material:material:1.12.0")
-    implementation(platform("androidx.compose:compose-bom:$composeBomVersion"))
-    ksp("androidx.room:room-compiler:$roomVersion")
+    implementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.compose.material.icons.extended)
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.runtime.livedata)
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.ui.graphics)
+    implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.recyclerview)
+    implementation(libs.androidx.room.guava)
+    implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.room.paging)
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.accompanist.drawablepainter)
+    implementation(libs.material)
+
+    ksp(libs.androidx.room.compiler)
+
+    testImplementation(libs.junit4)
+
+    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+    androidTestImplementation(libs.androidx.navigation.testing)
+    androidTestImplementation(libs.androidx.test.espresso.core)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
+    debugImplementation(libs.androidx.compose.ui.tooling)
 }
