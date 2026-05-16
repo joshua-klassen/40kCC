@@ -13,7 +13,7 @@ import com.example.a40kcc.COLORS
 data class Prediction(
     @PrimaryKey(autoGenerate = true) val predictionID: Int = 0,
     @ColumnInfo(name = "name") val name: String,
-    @ColumnInfo(name = "color") val color: Long,
+    @ColumnInfo(name = "color") val color: Int,
     @ColumnInfo(name = "minimum_points") val minPoints: Int,
     @ColumnInfo(name = "maximum_points") val maxPoints: Int,
     @ColumnInfo(name = "default_option") val defaultOption: Boolean = false

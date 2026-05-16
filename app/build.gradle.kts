@@ -33,14 +33,17 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
+    // kotlinOptions removed — compilerOptions / jvmToolchain is configured in the top-level `kotlin` block
     buildFeatures {
         compose = true
+    }
+    // Ensure the Compose compiler extension version matches the Kotlin/Compose setup
+    composeOptions {
+        // Use the version from the version catalog so it's kept in sync
+        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
     }
     packaging {
         resources {
@@ -52,8 +55,17 @@ android {
     }
 }
 
-kotlin {
-    jvmToolchain(21)
+// NOTE: We intentionally do not force a Gradle-managed JVM toolchain here so the build
+// uses the developer's installed JDK (set via JAVA_HOME) which avoids trying to
+// auto-download toolchains in environments where download repositories are not configured.
+// If you prefer Gradle to provision a JVM toolchain, re-add `kotlin { jvmToolchain(17) }`
+// and ensure toolchain download repositories are available.
+
+// Ensure Kotlin compilation target matches Java compatibility to avoid target mismatch errors
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class.java).configureEach {
+    kotlinOptions {
+        jvmTarget = "21"
+    }
 }
 
 dependencies {

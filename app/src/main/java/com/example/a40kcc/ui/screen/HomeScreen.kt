@@ -37,9 +37,10 @@ fun HomeScreen(
         columns = GridCells.Adaptive(minSize = dimensionResource(id = R.dimen.card_minimum_size))
     ) {
         items(MAIN_ROUTES.keys.toList()) { key ->
+            val info = MAIN_ROUTES[key]!!
             HomeScreenCard(
-                stringResource(id = MAIN_ROUTES[key]!!["Text"]!!.toInt()),
-                painterResource(MAIN_ROUTES[key]!!["Image"]!!.toInt()),
+                stringResource(id = info.textResId),
+                painterResource(id = info.imageResId),
                 { navController.navigate(key) },
                 modifier.padding(
                     start = cardSideMargin,

@@ -133,7 +133,11 @@ abstract class Application40kCCDatabase : RoomDatabase() {
                     "40kCC-database"
                 )
                     .addCallback(Application40kCCDatabaseCallback(scope))
-                    .allowMainThreadQueries()
+                    // prefer WAL for better concurrency
+                    .setJournalMode(RoomDatabase.JournalMode.WRITE_AHEAD_LOGGING)
+                    // register migrations (scaffold in DatabaseMigrations). If none available, fall back to a destructive migration
+                    .addMigrations(*DatabaseMigrations.MIGRATIONS)
+                    .fallbackToDestructiveMigration()
                     .build()
                 INSTANCE = instance
                 instance

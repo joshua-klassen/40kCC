@@ -247,7 +247,7 @@ private fun LiveRoundScreenData(
                     style = MaterialTheme.typography.titleLarge,
                     modifier = modifier,
                     textAlign = TextAlign.Center,
-                    color = Color(liveRound.expectedResult?.color ?: 0xffffffff)
+                    color = Color(liveRound.expectedResult?.color ?: 0xffffffff.toInt())
                 )
             }
             Column(
@@ -272,7 +272,7 @@ private fun LiveRoundScreenData(
                                 editLiveRound = !editLiveRound
                             }),
                         textAlign = TextAlign.Center,
-                        color = Color(liveRound.expectedResult?.color ?: 0xffffffff)
+                        color = Color(liveRound.expectedResult?.color ?: 0xffffffff.toInt())
                     )
                 }
             }

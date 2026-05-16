@@ -40,58 +40,33 @@ lateinit var TEAM_WITH_PLAYERS_VIEW_MODEL: TeamWithPlayersViewModel
 lateinit var TOURNAMENT_VIEW_MODEL: TournamentViewModel
 lateinit var TOURNAMENT_WITH_ROUNDS_VIEW_MODEL: TournamentWithRoundsViewModel
 
-val MAIN_ROUTES: Map<String, Map<String, String>> = mapOf(
-    "deployments" to mapOf(
-        "Text" to R.string.deployment_text.toString(),
-        "Image" to R.drawable.icon_deployments.toString()
-    ),
-    "factions" to mapOf(
-        "Text" to R.string.faction_text.toString(),
-        "Image" to R.drawable.icon_factions.toString()
-    ),
-    "games" to mapOf(
-        "Text" to R.string.game_text.toString(),
-        "Image" to R.drawable.icon_games.toString()
-    ),
-    "liveRound" to mapOf(
-        "Text" to R.string.live_round_text.toString(),
-        "Image" to R.drawable.icon_live_round.toString()
-    ),
-    "primaryMissions" to mapOf(
-        "Text" to R.string.primary_mission_text.toString(),
-        "Image" to R.drawable.icon_primary_missions.toString()
-    ),
-    "secondaryMissions" to mapOf(
-        "Text" to R.string.secondary_mission_text.toString(),
-        "Image" to R.drawable.icon_secondary_missions.toString()
-    ),
-    "players" to mapOf(
-        "Text" to R.string.player_text.toString(),
-        "Image" to R.drawable.icon_players.toString()
-    ),
-    "teams" to mapOf(
-        "Text" to R.string.team_text.toString(),
-        "Image" to R.drawable.icon_teams.toString()
-    ),
-    "tournaments" to mapOf(
-        "Text" to R.string.tournament_text.toString(),
-        "Image" to R.drawable.icon_tournaments.toString()
-    )
+data class RouteInfo(val textResId: Int, val imageResId: Int)
+
+val MAIN_ROUTES: Map<String, RouteInfo> = mapOf(
+    "deployments" to RouteInfo(textResId = R.string.deployment_text, imageResId = R.drawable.icon_deployments),
+    "factions" to RouteInfo(textResId = R.string.faction_text, imageResId = R.drawable.icon_factions),
+    "games" to RouteInfo(textResId = R.string.game_text, imageResId = R.drawable.icon_games),
+    "liveRound" to RouteInfo(textResId = R.string.live_round_text, imageResId = R.drawable.icon_live_round),
+    "primaryMissions" to RouteInfo(textResId = R.string.primary_mission_text, imageResId = R.drawable.icon_primary_missions),
+    "secondaryMissions" to RouteInfo(textResId = R.string.secondary_mission_text, imageResId = R.drawable.icon_secondary_missions),
+    "players" to RouteInfo(textResId = R.string.player_text, imageResId = R.drawable.icon_players),
+    "teams" to RouteInfo(textResId = R.string.team_text, imageResId = R.drawable.icon_teams),
+    "tournaments" to RouteInfo(textResId = R.string.tournament_text, imageResId = R.drawable.icon_tournaments)
 )
 
-val COLORS: Map<String, Long> = mapOf(
-    "Blue" to 0xff0000ff,
-    "Green" to 0xff00ff00,
-    "Yellow" to 0xffffff00,
-    "Orange" to 0xffffaa00,
-    "Red" to 0xffff0000,
-    "Aqua" to 0xff00ffff,
-    "Purple" to 0xffff00ff,
-    "Light Blue" to 0xff00aaff,
-    "Sea Green" to 0xff00ffaa,
-    "Sick Yellow" to 0xffaaff00,
-    "Deep Purple" to 0xffaa00ff,
-    "Pink" to 0xffff00aa,
-    "White" to 0xffffffff,
-    "Black" to 0xff000000
+val COLORS: Map<String, Int> = mapOf(
+    "Blue" to 0xFF0000FF.toInt(),
+    "Green" to 0xFF00FF00.toInt(),
+    "Yellow" to 0xFFFFFF00.toInt(),
+    "Orange" to 0xFFFFAA00.toInt(),
+    "Red" to 0xFFFF0000.toInt(),
+    "Aqua" to 0xFF00FFFF.toInt(),
+    "Purple" to 0xFFFF00FF.toInt(),
+    "Light Blue" to 0xFF00AAFF.toInt(),
+    "Sea Green" to 0xFF00FFAA.toInt(),
+    "Sick Yellow" to 0xFFAAFF00.toInt(),
+    "Deep Purple" to 0xFFAA00FF.toInt(),
+    "Pink" to 0xFFFF00AA.toInt(),
+    "White" to 0xFFFFFFFF.toInt(),
+    "Black" to 0xFF000000.toInt()
 )
